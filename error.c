@@ -17,7 +17,7 @@ void		error(int error)
 	if (error == USAGE)
 		ft_putendl("Usage: ./ft_ls [invalid argument]");
 	if (error == OPTION)
-		ft_putendl("ls: illegal option --");
+		ft_putendl("ls: illegal option; -Rralt");
 	if (error == ARGUMENT)
 		ft_putendl("No such file or directory");
 	if (error == ERROR)

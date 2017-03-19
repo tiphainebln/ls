@@ -23,7 +23,7 @@ int				print_rights(t_file *file)
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
 	ft_putchar((file->st_mode & S_IXOTH) ? 'x' : '-');
-	ft_putchar('\n');
+	ft_putchar(' ');
 	return (0);
 
 }
@@ -48,7 +48,7 @@ int 			file_type_letter(t_file *file)
         c = 's';
     else
     	c = '?';
-    ft_putchar(c);
+	ft_putchar(c);
     return(c);
 }
 
@@ -58,7 +58,6 @@ t_file				*print_total(t_file *file, t_op *op)
 	int				total;
 
 	total = 0;
-	file = op->begin;
 	while (file != NULL)
 	{
 		total += file->st_blocks;
@@ -73,16 +72,16 @@ t_file				*print_total(t_file *file, t_op *op)
 	return (file);
 }
 
-t_file				*print_fname(t_file *file, t_op *op, char *content)
+char				*print_fname(char *entry)
 {
 	char			*input;
 	char			*fn;
 
-	input = &content[0];
-	if (ft_strcmp(&content[1], "-") == 0 && input[(ft_strlen(input) - 1)] == '\'')
+	input = entry;
+	if (input[(ft_strlen(input) - 1)] == '/')
 		input[(ft_strlen(input) - 1)] = '\0';
 	(fn = ft_strrchr(input, '/')) ? ++fn : (fn = input);
-	ft_putstr(fn);
-	ft_putchar('\n');
-	return (file);
+	// ft_putstr(fn);
+	// ft_putchar('\n');
+	return (fn);
 }

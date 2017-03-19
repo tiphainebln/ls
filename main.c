@@ -24,16 +24,32 @@ int 		main(int argc, char **argv, char **env)
 	file = NULL;
 	while (argv[++i])
 	{
-		//if (ft_strcmp(argv[1], "-") != 0)
-		file = get_directories(argv[i], file, o);
+		if (argv[i][0] != '-')
+			file = get_directory(argv[i], file, o);
 		//if (o->R)
 		//	file = get_sub(file, o);
 	}
 	file = o->begin;
+	print_total(file, o);
 	while (file)
 	{
-		printf("%s\n", file->name);
+		if (opt_a(file, o) == 0)
+		{
+			file = file->next;
+			continue ;
+		}
+		if (file->type == DT_DIR)
+			ft_putstr("\033[31m");
+		print_grp(file);
+		print_uid(file);
+		file_type_letter(file);
+		print_rights(file);
+		print_size(file, o);
+		print_links(file, o);
+		ft_putstr(file->name);
+		ft_putchar('\n');
 		file = file->next;
+		ft_putstr("\033[00m");
 	}
 	return (0);
 }

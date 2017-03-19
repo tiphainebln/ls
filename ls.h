@@ -73,10 +73,10 @@ void					error(int error);
 t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
 t_op 					*get_options(char *argv, t_op *o);
-t_file					*print_fname(t_file *file, t_op *op, char *content);
-t_file					*get_directories(char *argv, t_file *file, t_op *op);
+char					*print_fname(char *entry);
+t_file					*get_directory(char *argv, t_file *file, t_op *op);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
-t_file					*new_list(t_file *file, t_op *op);
+t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op);
 t_file					*print_grp(t_file *file);
 t_file					*print_uid(t_file *file);
@@ -86,5 +86,8 @@ t_file					*print_total(t_file *file, t_op *op);
 t_file					*print_size(t_file *file, t_op *op);
 t_file					*print_links(t_file *file, t_op *op);
 t_file					*long_format(t_file *file, t_op *op);
+t_file					*add_file(struct stat *data, t_op *op, char *entry);
+t_file					*new_file(t_file *file, t_op *op, char *entry);
+int 					opt_a(t_file *file, t_op *op);
 
 #endif

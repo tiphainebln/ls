@@ -12,19 +12,34 @@
 
 #include "ls.h"
 
-t_file			*opt_a(t_file *file, t_op *op)
+// USAGE IN YOUR FINAL PRINT LOOP
+//	if (opt_a(file, op) == 0)
+//	{
+//		file = file->next;
+//		continue ;
+//	}
+//	print dsifgjidfgj
+//	print dfgiogjfddfg
+//  print \n
+//	file = file->next;
+
+//	___
+//	|8|
+//	|8|
+//	|8|
+//	|8|
+//	 V
+
+int 			opt_a(t_file *file, t_op *op)
 {
-	while (file)
+	if (file->name[0] == '.')
 	{
-		if (op->a == 1 && ft_strcmp(file->name, "..") == 0 &&\
-			ft_strcmp(file->name, ".") == 0 && ft_strcmp(&file->name[0], ".") == 0)
+		if (!op->a)
 		{
-			ft_putstr(file->name);
-			ft_putchar('\n');
-			file->next = file;
-		}
+			return (0);
+		}	
 	}
-	return (file);
+	return (1);
 }
 
 t_file			*long_format(t_file *file, t_op *op)

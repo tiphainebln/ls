@@ -12,23 +12,24 @@
 
 #include "ls.h"
 
-t_file				*get_directories(char *content, t_file *file, t_op *op)
+t_file				*get_directory(char *entry, t_file *file, t_op *op)
 {
 	DIR 			*fd;
 
-	if (((fd = opendir(content))) != NULL)
+	if (((fd = opendir(entry))) != NULL)
 	{
 		if (op->current)
 			free(op->current);
-		//op->current = ft_strjoin(ft_strjoin(current, content), "/");
-		op->current = ft_strjoin(ft_strjoin(op->origin, content), "/");
+		//op->current = ft_strjoin(ft_strjoin(current, entry), "/");
+		op->current = ft_strjoin(ft_strjoin(op->origin, entry), "/");
 		file = read_content(file, fd, op);
 		closedir(fd);
 	}
 	else
-		print_fname(file, op, content);
+		file = new_file(file, op, entry);
 	return (file);
 }
+
 /*
 t_file				*get_sub(t_file *file, t_op *op)
 {
@@ -53,6 +54,7 @@ t_file				*get_sub(t_file *file, t_op *op)
 	return (file);
 }
 ajouter le flag completed*/
+
 t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 {
 	struct dirent	*dirent;
@@ -60,15 +62,8 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 	if (!(dirent = (struct dirent *)malloc(sizeof(struct dirent))))
 		error(MALLOC_ERROR);
 	while (((dirent = readdir(fd)) != NULL))
-		file = new_list(file, op);
-			print_grp(file);
-			print_uid(file);
-			print_total(file, op);
-			file_type_letter(file);
-			print_rights(file);
-			print_size(file, op);
-			print_links(file, op);
-			//long_format(file, op);
+		file = new_list(file, dirent, op);
+	//long_format(file, op);
 	return (file);
 	
 }

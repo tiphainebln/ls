@@ -12,6 +12,51 @@
 
 #include "ls.h"
 
+t_file					*add_file(struct stat *data, t_op *op, char *entry)
+{
+		t_file			*file;
+
+		file = (t_file *)malloc(sizeof(t_file));
+		file->name = print_fname(entry);
+		//file->type = dirent->d_type;
+		file->st_size = data->st_size;
+		file->st_nlink = data->st_nlink;
+		file->st_mode = data->st_mode;
+		file->st_gid = data->st_gid;
+		file->st_uid = data->st_uid;
+		file->st_blocks = data->st_blocks;
+		file->st_blksize = data->st_blksize;
+		file->path = ft_strdup(op->origin);
+		file->next = NULL;
+		file->visited = 0;
+		file->completed = 0;
+		return (file);
+}
+
+
+t_file					*new_file(t_file *file, t_op *op, char *entry)
+{
+	struct stat 		*data;
+
+	data = (struct stat *)malloc(sizeof(struct stat));
+	if (stat(entry, data) == -1) // Chemin absolu ? Relatif ? Faut relativiser :)
+	{
+		error(ARGUMENT);
+		return (file);
+	}
+	if (!file)
+	{
+		file = add_file(data, op, entry);
+		op->begin = file;
+	}
+	else
+	{
+		while (file->next)
+			file = file->next;
+		file->next = add_file(data, op, entry);
+	}
+	return (file);
+}
 
 t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 {
@@ -35,15 +80,16 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 }
 
 
-t_file					*new_list(t_file *file, t_op *op)
+t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 {
 	struct stat 		*data;
-	struct dirent		*dirent;
 
 	data = (struct stat *)malloc(sizeof(struct stat));
-	dirent = (struct dirent *)malloc(sizeof(struct dirent));
 	if (stat(ft_strjoin(op->current, dirent->d_name), data) == -1)
-		error(ERROR);
+	{
+		error(ARGUMENT);
+		return (file);
+	}
 	if (!file)
 	{
 		file = add_list(data, dirent, op);

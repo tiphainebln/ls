@@ -23,13 +23,13 @@ t_file					*print_grp(t_file *file)
 	{
 		gid = ft_itoa(file->st_gid);
 		ft_putstr(gid);
-		ft_putchar('\n');
+		ft_putchar(' ');
 	}
 	else
 	{
 		gid = ft_strdup(grp->gr_name);
 		ft_putstr(grp->gr_name);
-		ft_putchar('\n');
+		ft_putchar(' ');
 	}
 	grp = NULL;
 	free(grp);
@@ -47,13 +47,13 @@ t_file					*print_uid(t_file *file)
 	{	
 		id = ft_itoa(file->st_uid);
 		ft_putstr(id);
-		ft_putchar('\n');
+		ft_putchar(' ');
 	}
 	else
 	{ 
 		id = ft_strdup(uid->pw_name);
 		ft_putstr(uid->pw_name);
-		ft_putchar('\n');
+		ft_putchar(' ');
 	}
 	uid = NULL;
 	free(uid);
@@ -75,7 +75,7 @@ t_file					*print_links(t_file *file, t_op *op)
 	if (links >= 0)
 	{
 		ft_putnbr(links);
-		ft_putchar('\n');
+		ft_putchar(' ');
 	}
 	return (file);
 }
@@ -95,7 +95,7 @@ t_file					*print_size(t_file *file, t_op *op)
 	if (size >= 0)
 	{
 		ft_putnbr(size);
-		ft_putchar('\n');
+		ft_putchar(' ');
 	}
 	return (file);
 }
