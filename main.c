@@ -39,7 +39,7 @@ int 		main(int argc, char **argv, char **env)
 			continue ;
 		}
 		if (file->type == DT_DIR)
-			ft_putstr("\033[31m");
+			ft_putstr("\033[34m");
 		print_grp(file);
 		print_uid(file);
 		file_type_letter(file);
