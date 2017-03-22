@@ -6,7 +6,7 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 09:36:27 by tbouline          #+#    #+#              #
-#    Updated: 2017/03/09 09:36:29 by tbouline         ###   ########.fr        #
+#    Updated: 2017/03/22 03:51:38 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ OBJ = main.o \
 	  init.o \
 	  options.o \
 	  error.o \
-	  list.c \
+	  list.o \
 	  directories.o \
 	  print_rights.o
 

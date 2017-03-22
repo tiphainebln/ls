@@ -23,7 +23,7 @@ int				print_rights(t_file *file)
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
 	ft_putchar((file->st_mode & S_IXOTH) ? 'x' : '-');
-	ft_putchar(' ');
+	ft_putstr("  ");
 	return (0);
 
 }

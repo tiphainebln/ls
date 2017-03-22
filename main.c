@@ -22,6 +22,8 @@ int 		main(int argc, char **argv, char **env)
 	o = init(o, env);
 	o = options(argv, o);
 	file = NULL;
+		if (argc == 0)
+		print_fname(argv[i]);
 	while (argv[++i])
 	{
 		if (argv[i][0] != '-')
@@ -30,6 +32,15 @@ int 		main(int argc, char **argv, char **env)
 		//	file = get_sub(file, o);
 	}
 	file = o->begin;
+	/*
+	while (file)
+	{
+		ft_putstr(file->name);
+		ft_putchar('\n');
+		file = file->next;
+	}
+	*/
+	
 	print_total(file, o);
 	while (file)
 	{
@@ -39,13 +50,13 @@ int 		main(int argc, char **argv, char **env)
 			continue ;
 		}
 		if (file->type == DT_DIR)
-			ft_putstr("\033[34m");
-		print_grp(file);
-		print_uid(file);
+			ft_putstr("\033[31m");
 		file_type_letter(file);
 		print_rights(file);
-		print_size(file, o);
 		print_links(file, o);
+		print_uid(file);
+		print_grp(file);
+		print_size(file, o);
 		ft_putstr(file->name);
 		ft_putchar('\n');
 		file = file->next;

@@ -72,8 +72,8 @@ typedef struct 			s_ls
 void					error(int error);
 t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
-t_op 					*get_options(char *argv, t_op *o);
 char					*print_fname(char *entry);
+t_op 					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);

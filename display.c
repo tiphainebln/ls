@@ -30,6 +30,22 @@
 //	|8|
 //	 V
 
+t_file			*display_a(t_file *file, t_op *op)
+{
+	while (file)
+	{
+		if (opt_a(file, op) == 0)
+		{
+			file = file->next;
+			continue ;
+		}
+		ft_putstr(file->name);
+		ft_putchar('\n');
+	}
+	file = file->next;
+	return (file);
+}
+
 int 			opt_a(t_file *file, t_op *op)
 {
 	if (file->name[0] == '.')
@@ -48,20 +64,20 @@ t_file			*long_format(t_file *file, t_op *op)
 	print_total(file, op);
 	while (file)
 	{
-		if (op->l == 1 && ft_strcmp(file->name, "..") != 0 &&\
-			ft_strcmp(file->name, ".") != 0)
+		if (op->l == 1 && file->name[0] != '.')
 		{
+			ft_putstr("\033[34m");
 			file_type_letter(file);
 			print_rights(file);
 			print_links(file, op);
+			print_grp(file);
 			print_uid(file);
-			print_grp (file);
 			print_size(file, op);
 			ft_putstr(file->name);
 			ft_putchar('\n');
-			ft_putchar('\n');
+			file = file->next;
+			ft_putstr("\033[00m");
 		}
-		file = file->next;
 	}
 	return (file);
 }
