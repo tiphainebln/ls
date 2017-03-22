@@ -62,6 +62,8 @@ typedef struct 			s_op
 	t_file				*begin;
 	char				*origin;
 	char				*current;
+	int 				nblinkspace;
+	int 				nbsizespace;
 }						t_op;
 
 typedef struct 			s_ls
@@ -78,10 +80,10 @@ t_file					*get_directory(char *argv, t_file *file, t_op *op);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op);
-t_file					*print_grp(t_file *file);
+t_file					*print_grp(t_file *file, t_op *op);
 t_file					*print_uid(t_file *file);
 int 					file_type_letter(t_file *file);
-int						print_rights(t_file *file);
+int						print_rights(t_file *file, t_op *op);
 t_file					*print_total(t_file *file, t_op *op);
 t_file					*print_size(t_file *file, t_op *op);
 t_file					*print_links(t_file *file, t_op *op);
@@ -89,5 +91,6 @@ t_file					*long_format(t_file *file, t_op *op);
 t_file					*add_file(struct stat *data, t_op *op, char *entry);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 int 					opt_a(t_file *file, t_op *op);
+void					ft_putspaces(t_file *file, t_op *op, int choice);
 
 #endif

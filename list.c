@@ -30,6 +30,10 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 		file->next = NULL;
 		file->visited = 0;
 		file->completed = 0;
+		if (op->nblinkspace < ft_intlen(file->st_nlink))
+			op->nblinkspace = ft_intlen(file->st_nlink);
+		if (op->nbsizespace < ft_intlen(file->st_size))
+			op->nbsizespace = ft_intlen(file->st_size);
 		return (file);
 }
 
@@ -76,6 +80,10 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		file->next = NULL;
 		file->visited = 0;
 		file->completed = 0;
+		if (op->nblinkspace < ft_intlen(file->st_nlink))
+			op->nblinkspace = ft_intlen(file->st_nlink);
+		if (op->nbsizespace < ft_intlen(file->st_size))
+			op->nbsizespace = ft_intlen(file->st_size);
 		return (file);
 }
 
@@ -120,6 +128,8 @@ t_op	*init(t_op *op, char **env)
 		op->t = 0;
 		op->begin = NULL;
 		op->origin = NULL;
+		op->nbsizespace = 0;
+		op->nblinkspace = 0;
 		while (env[++i])
 		{
 			if (ft_strncmp(env[i], "PWD=", 4) == 0)

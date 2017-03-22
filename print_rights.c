@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-int				print_rights(t_file *file)
+int				print_rights(t_file *file, t_op *op)
 {
 	ft_putchar((file->st_mode & S_IRUSR) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWUSR) ? 'w' : '-');
@@ -23,7 +23,7 @@ int				print_rights(t_file *file)
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
 	ft_putchar((file->st_mode & S_IXOTH) ? 'x' : '-');
-	ft_putstr("  ");
+	ft_putspaces(file, op, 0);
 	return (0);
 
 }

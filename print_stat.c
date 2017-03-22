@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-t_file					*print_grp(t_file *file)
+t_file					*print_grp(t_file *file, t_op *op)
 {
 	struct group 	*grp;
 	char			*gid;
@@ -23,13 +23,13 @@ t_file					*print_grp(t_file *file)
 	{
 		gid = ft_itoa(file->st_gid);
 		ft_putstr(gid);
-		ft_putstr("  ");
+		ft_putspaces(file, op, 1);
 	}
 	else
 	{
 		gid = ft_strdup(grp->gr_name);
 		ft_putstr(grp->gr_name);
-		ft_putstr("  ");
+		ft_putspaces(file, op, 1);
 	}
 	grp = NULL;
 	free(grp);

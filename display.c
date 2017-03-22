@@ -68,9 +68,9 @@ t_file			*long_format(t_file *file, t_op *op)
 		{
 			ft_putstr("\033[34m");
 			file_type_letter(file);
-			print_rights(file);
+			print_rights(file, op);
 			print_links(file, op);
-			print_grp(file);
+			print_grp(file, op);
 			print_uid(file);
 			print_size(file, op);
 			ft_putstr(file->name);
@@ -80,6 +80,20 @@ t_file			*long_format(t_file *file, t_op *op)
 		}
 	}
 	return (file);
+}
+
+void			ft_putspaces(t_file *file, t_op *op, int choice)
+{
+	int space;
+
+	space = 0;
+	if (choice == 1)
+		space = op->nbsizespace - ft_intlen(file->st_size);
+	else
+		space = op->nblinkspace - ft_intlen(file->st_nlink);
+	while (--space >= 0)
+		ft_putchar(' ');
+	ft_putstr("  ");
 }
 
 // corriger print_links -> lolo devrait en avoir deux

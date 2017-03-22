@@ -52,10 +52,10 @@ int 		main(int argc, char **argv, char **env)
 		if (file->type == DT_DIR)
 			ft_putstr("\033[31m");
 		file_type_letter(file);
-		print_rights(file);
+		print_rights(file, o);
 		print_links(file, o);
 		print_uid(file);
-		print_grp(file);
+		print_grp(file, o);
 		print_size(file, o);
 		ft_putstr(file->name);
 		ft_putchar('\n');
