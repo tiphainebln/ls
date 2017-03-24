@@ -82,17 +82,24 @@ t_file					*print_size(t_file *file, t_op *op)
 	return (file);
 }
 
-/*
-t_file				*print_time(t_file *file, t_op *op)
-{
-	time_t			actualtime;
 
-	ctime(&actualtime);
-	while (file)
-	{
-		ft_putstr(&actualtime);
-		file = file->next;
-	}
+t_file				*print_time(t_file *file)
+{
+	char 			*time;
+	char			*year;
+	char			*hour;
+
+	time = ctime(&file->mtime);
+	year = ft_strrchr(time, ':') + 4;
+	hour = ft_strrchr(time, ':') - 5;
+	hour[5] = '\0';
+	time = ft_strchr(time, ':') - 9;
+	time[6] = '\0';
+	ft_putstr(time);
+	ft_putchar(' ');
+	//if (time() < timefichierenepoch + whatevercequ'estuneanneeenepoch)
+	//heure
+	//else
+	//annee
 	return (file);
 }
-*/

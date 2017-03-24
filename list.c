@@ -12,6 +12,18 @@
 
 #include "ls.h"
 
+int 					valuemax(int size, t_op *op, char *name, int origin)
+{
+	if (name[0] == '.')
+	{
+		if (op->a)
+			return (size);
+		else
+			return (origin);
+	}
+	return (size);
+}
+
 t_file					*add_file(struct stat *data, t_op *op, char *entry)
 {
 		t_file			*file;
@@ -26,14 +38,15 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 		file->st_uid = data->st_uid;
 		file->st_blocks = data->st_blocks;
 		file->st_blksize = data->st_blksize;
+		file->mtime = data->st_mtime;
 		file->path = ft_strdup(op->origin);
 		file->next = NULL;
 		file->visited = 0;
 		file->completed = 0;
 		if (op->nblinkspace < ft_intlen(file->st_nlink))
-			op->nblinkspace = ft_intlen(file->st_nlink);
+			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
 		if (op->nbsizespace < ft_intlen(file->st_size))
-			op->nbsizespace = ft_intlen(file->st_size);
+			op->nbsizespace = valuemax(ft_intlen(file->st_size), op, file->name, op->nbsizespace);
 		return (file);
 }
 
@@ -76,14 +89,15 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		file->st_uid = data->st_uid;
 		file->st_blocks = data->st_blocks;
 		file->st_blksize = data->st_blksize;
+		file->mtime = data->st_mtime;
 		file->path = ft_strdup(op->current);
 		file->next = NULL;
 		file->visited = 0;
 		file->completed = 0;
 		if (op->nblinkspace < ft_intlen(file->st_nlink))
-			op->nblinkspace = ft_intlen(file->st_nlink);
+			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
 		if (op->nbsizespace < ft_intlen(file->st_size))
-			op->nbsizespace = ft_intlen(file->st_size);
+			op->nbsizespace = valuemax(ft_intlen(file->st_size), op, file->name, op->nbsizespace);
 		return (file);
 }
 

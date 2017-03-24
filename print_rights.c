@@ -60,7 +60,13 @@ t_file				*print_total(t_file *file, t_op *op)
 	total = 0;
 	while (file != NULL)
 	{
-		total += file->st_blocks;
+		if (file->name[0] == '.')
+		{
+			if (op->a)
+				total += file->st_blocks;
+		}
+		else
+			total += file->st_blocks;
 		file = file->next;
 	}
 	if (total > 0)

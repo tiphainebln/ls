@@ -47,6 +47,7 @@ typedef struct 			s_file
 	uid_t				st_uid;
 	blkcnt_t			st_blocks;
 	blksize_t			st_blksize;
+	time_t				mtime;
 	char				*id;
 	char				*grp;
 	struct s_file		*next;
@@ -92,5 +93,5 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 int 					opt_a(t_file *file, t_op *op);
 void					ft_putspaces(t_file *file, t_op *op, int choice);
-
+t_file					*print_time(t_file *file);
 #endif

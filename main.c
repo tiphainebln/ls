@@ -57,6 +57,7 @@ int 		main(int argc, char **argv, char **env)
 		print_uid(file);
 		print_grp(file, o);
 		print_size(file, o);
+		print_time(file);
 		ft_putstr(file->name);
 		ft_putchar('\n');
 		file = file->next;
