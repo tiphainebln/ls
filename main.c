@@ -32,6 +32,7 @@ int 		main(int argc, char **argv, char **env)
 		//	file = get_sub(file, o);
 	}
 	file = o->begin;
+	long_format(file, o);
 	/*
 	while (file)
 	{
@@ -39,7 +40,7 @@ int 		main(int argc, char **argv, char **env)
 		ft_putchar('\n');
 		file = file->next;
 	}
-	*/
+	
 	
 	print_total(file, o);
 	while (file)
@@ -54,7 +55,7 @@ int 		main(int argc, char **argv, char **env)
 		file_type_letter(file);
 		print_rights(file, o);
 		print_links(file, o);
-		print_uid(file);
+		print_uid(file, o);
 		print_grp(file, o);
 		print_size(file, o);
 		print_time(file);
@@ -63,5 +64,6 @@ int 		main(int argc, char **argv, char **env)
 		file = file->next;
 		ft_putstr("\033[00m");
 	}
+	*/
 	return (0);
 }

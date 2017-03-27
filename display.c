@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/10 04:12:19 by tbouline          #+#    #+#             */
-/*   Updated: 2017/03/10 04:12:24 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/03/27 03:27:53 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,26 @@ int 			opt_a(t_file *file, t_op *op)
 
 t_file			*long_format(t_file *file, t_op *op)
 {
-	file = op->begin;
+	//file = op->begin;
 	print_total(file, op);
 	while (file)
-	{
+	{		
+		if (opt_a(file, op) == 0)
+		{
+			file = file->next;
+			continue ;
+		}
 		if (op->l == 1 && file->name[0] != '.')
 		{
-			ft_putstr("\033[34m");
+			if (file->type == DT_DIR)
+				ft_putstr("\033[31m");
 			file_type_letter(file);
 			print_rights(file, op);
 			print_links(file, op);
+			print_uid(file, op);
 			print_grp(file, op);
-			print_uid(file);
 			print_size(file, op);
+			print_time(file);
 			ft_putstr(file->name);
 			ft_putchar('\n');
 			file = file->next;
@@ -89,15 +96,18 @@ void			ft_putspaces(t_file *file, t_op *op, int choice)
 	space = 0;
 	if (choice == 1)
 		space = op->nbsizespace - ft_intlen(file->st_size);
+	else if (choice == 2)
+		space = op->nbgrpspace - ft_strlen(file->grp);
+	else if (choice == 3)
+		space = op->nbuidspace - ft_strlen(file->uid);
 	else
 		space = op->nblinkspace - ft_intlen(file->st_nlink);
+	if (choice != 2)
+		ft_putstr("  ");
 	while (--space >= 0)
 		ft_putchar(' ');
-	ft_putstr("  ");
 }
 
-// corriger print_links -> lolo devrait en avoir deux
-// corriger print_size -> tout est mis a 0 hors lolo, ok et testdir2 ne sont pas = 0
 // le -l est affiché, il ne devrait pas (voir else de directories)
 // tester, est ce que cela fontionne sans passer un dir en argv ? les informations sont elles correctement recuperees ? 
 // ajouter time

@@ -30,23 +30,31 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 
 		file = (t_file *)malloc(sizeof(t_file));
 		file->name = print_fname(entry);
-		//file->type = dirent->d_type;
-		file->st_size = data->st_size;
-		file->st_nlink = data->st_nlink;
-		file->st_mode = data->st_mode;
-		file->st_gid = data->st_gid;
-		file->st_uid = data->st_uid;
-		file->st_blocks = data->st_blocks;
-		file->st_blksize = data->st_blksize;
-		file->mtime = data->st_mtime;
-		file->path = ft_strdup(op->origin);
-		file->next = NULL;
-		file->visited = 0;
-		file->completed = 0;
+		file = store_basic(file, data, op);
+		// //file->type = dirent->d_type;
+		// file->st_size = data->st_size;
+		// file->st_nlink = data->st_nlink;
+		// file->st_mode = data->st_mode;
+		// file->st_gid = data->st_gid;
+		// file->st_uid = data->st_uid;
+		// file->st_blocks = data->st_blocks;
+		// file->st_blksize = data->st_blksize;
+		// file->mtime = data->st_mtime;
+		// file->path = ft_strdup(op->origin);
+		// file->next = NULL;
+		// file->visited = 0;
+		// file->completed = 0;
+		file = store_groups_uid(file, op);
+		//if (op->nbgrpspace < ft_strlen(op->grp))
+			//op->nbgrpspace = valuemax(ft_strlen(op->grp), op, file->name, op->nbgrpspace);
 		if (op->nblinkspace < ft_intlen(file->st_nlink))
+		{
 			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
+		}
 		if (op->nbsizespace < ft_intlen(file->st_size))
+		{
 			op->nbsizespace = valuemax(ft_intlen(file->st_size), op, file->name, op->nbsizespace);
+		}
 		return (file);
 }
 
@@ -80,27 +88,20 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		t_file			*file;
 
 		file = (t_file *)malloc(sizeof(t_file));
-		file->name = ft_strdup(dirent->d_name);
+		file = store_basic(file, data, op);
+		file->name = print_fname(dirent->d_name);
 		file->type = dirent->d_type;
-		file->st_size = data->st_size;
-		file->st_nlink = data->st_nlink;
-		file->st_mode = data->st_mode;
-		file->st_gid = data->st_gid;
-		file->st_uid = data->st_uid;
-		file->st_blocks = data->st_blocks;
-		file->st_blksize = data->st_blksize;
-		file->mtime = data->st_mtime;
-		file->path = ft_strdup(op->current);
-		file->next = NULL;
-		file->visited = 0;
-		file->completed = 0;
+		file = store_groups_uid(file, op);
+		if (op->nbuidspace < ft_strlen(file->uid))
+			op->nbuidspace = valuemax(ft_strlen(file->uid), op, file->name, op->nbuidspace);
+		if (op->nbgrpspace < ft_strlen(file->grp))
+			op->nbgrpspace = valuemax(ft_strlen(file->grp), op, file->name, op->nbgrpspace);
 		if (op->nblinkspace < ft_intlen(file->st_nlink))
 			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
 		if (op->nbsizespace < ft_intlen(file->st_size))
 			op->nbsizespace = valuemax(ft_intlen(file->st_size), op, file->name, op->nbsizespace);
 		return (file);
 }
-
 
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 {
@@ -144,6 +145,8 @@ t_op	*init(t_op *op, char **env)
 		op->origin = NULL;
 		op->nbsizespace = 0;
 		op->nblinkspace = 0;
+		op->nbgrpspace = 0;
+		op->nbuidspace = 0;
 		while (env[++i])
 		{
 			if (ft_strncmp(env[i], "PWD=", 4) == 0)

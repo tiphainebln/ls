@@ -49,8 +49,9 @@ typedef struct 			s_file
 	blksize_t			st_blksize;
 	time_t				mtime;
 	char				*id;
-	char				*grp;
 	struct s_file		*next;
+	char 				*grp;
+	char 				*uid;
 }						t_file;
 
 typedef struct 			s_op
@@ -65,6 +66,8 @@ typedef struct 			s_op
 	char				*current;
 	int 				nblinkspace;
 	int 				nbsizespace;
+	int 				nbgrpspace;
+	int 				nbuidspace;
 }						t_op;
 
 typedef struct 			s_ls
@@ -80,9 +83,11 @@ t_op 					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
+t_file					*store_basic(t_file *file, struct stat *data, t_op *op);
+t_file					*store_groups_uid(t_file *file, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op);
 t_file					*print_grp(t_file *file, t_op *op);
-t_file					*print_uid(t_file *file);
+t_file					*print_uid(t_file *file, t_op *op);
 int 					file_type_letter(t_file *file);
 int						print_rights(t_file *file, t_op *op);
 t_file					*print_total(t_file *file, t_op *op);

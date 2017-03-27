@@ -87,7 +87,5 @@ char				*print_fname(char *entry)
 	if (input[(ft_strlen(input) - 1)] == '/')
 		input[(ft_strlen(input) - 1)] = '\0';
 	(fn = ft_strrchr(input, '/')) ? ++fn : (fn = input);
-	// ft_putstr(fn);
-	// ft_putchar('\n');
 	return (fn);
 }
