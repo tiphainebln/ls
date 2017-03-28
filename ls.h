@@ -75,10 +75,12 @@ typedef struct 			s_ls
 
 }						t_ls;
 
+void					init_tab(int (*tab[13])(void));
 void					error(int error);
 t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
-char					*print_fname(char *entry);
+char					*get_fname(char *entry);
+t_file					*print_fname(t_file *file, char *entry);
 t_op 					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
@@ -99,4 +101,12 @@ t_file					*new_file(t_file *file, t_op *op, char *entry);
 int 					opt_a(t_file *file, t_op *op);
 void					ft_putspaces(t_file *file, t_op *op, int choice);
 t_file					*print_time(t_file *file);
+int						ft_putblk(void);
+int 					ft_putchr(void);
+int 					ft_putdir(void);
+int						ft_putfifo(void);
+int 					ft_putlnk(void);
+int 					ft_putreg(void);
+int						ft_putsoc(void);
+int 					ft_putwat(void);
 #endif

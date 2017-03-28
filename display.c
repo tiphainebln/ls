@@ -12,24 +12,6 @@
 
 #include "ls.h"
 
-// USAGE IN YOUR FINAL PRINT LOOP
-//	if (opt_a(file, op) == 0)
-//	{
-//		file = file->next;
-//		continue ;
-//	}
-//	print dsifgjidfgj
-//	print dfgiogjfddfg
-//  print \n
-//	file = file->next;
-
-//	___
-//	|8|
-//	|8|
-//	|8|
-//	|8|
-//	 V
-
 t_file			*display_a(t_file *file, t_op *op)
 {
 	while (file)
@@ -51,41 +33,27 @@ int 			opt_a(t_file *file, t_op *op)
 	if (file->name[0] == '.')
 	{
 		if (!op->a)
-		{
 			return (0);
-		}	
 	}
 	return (1);
 }
 
 t_file			*long_format(t_file *file, t_op *op)
 {
-	//file = op->begin;
-	print_total(file, op);
-	while (file)
-	{		
-		if (opt_a(file, op) == 0)
-		{
-			file = file->next;
-			continue ;
-		}
-		if (op->l == 1 && file->name[0] != '.')
-		{
-			if (file->type == DT_DIR)
-				ft_putstr("\033[31m");
-			file_type_letter(file);
-			print_rights(file, op);
-			print_links(file, op);
-			print_uid(file, op);
-			print_grp(file, op);
-			print_size(file, op);
-			print_time(file);
-			ft_putstr(file->name);
-			ft_putchar('\n');
-			file = file->next;
-			ft_putstr("\033[00m");
-		}
-	}
+	//if (file->type == DT_DIR)
+		//ft_putstr("\033[31m");
+	//else
+	//	ft_putstr("\033[32m");
+	file_type_letter(file);
+	print_rights(file, op);
+	print_links(file, op);
+	print_uid(file, op);
+	print_grp(file, op);
+	print_size(file, op);
+	print_time(file);
+	ft_putstr(file->name);
+	ft_putchar('\n');
+	ft_putstr("\033[00m");
 	return (file);
 }
 
@@ -107,7 +75,3 @@ void			ft_putspaces(t_file *file, t_op *op, int choice)
 	while (--space >= 0)
 		ft_putchar(' ');
 }
-
-// le -l est affiché, il ne devrait pas (voir else de directories)
-// tester, est ce que cela fontionne sans passer un dir en argv ? les informations sont elles correctement recuperees ? 
-// ajouter time

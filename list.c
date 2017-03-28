@@ -29,21 +29,8 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 		t_file			*file;
 
 		file = (t_file *)malloc(sizeof(t_file));
-		file->name = print_fname(entry);
+		file->name = get_fname(entry);
 		file = store_basic(file, data, op);
-		// //file->type = dirent->d_type;
-		// file->st_size = data->st_size;
-		// file->st_nlink = data->st_nlink;
-		// file->st_mode = data->st_mode;
-		// file->st_gid = data->st_gid;
-		// file->st_uid = data->st_uid;
-		// file->st_blocks = data->st_blocks;
-		// file->st_blksize = data->st_blksize;
-		// file->mtime = data->st_mtime;
-		// file->path = ft_strdup(op->origin);
-		// file->next = NULL;
-		// file->visited = 0;
-		// file->completed = 0;
 		file = store_groups_uid(file, op);
 		//if (op->nbgrpspace < ft_strlen(op->grp))
 			//op->nbgrpspace = valuemax(ft_strlen(op->grp), op, file->name, op->nbgrpspace);
@@ -89,7 +76,7 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 
 		file = (t_file *)malloc(sizeof(t_file));
 		file = store_basic(file, data, op);
-		file->name = print_fname(dirent->d_name);
+		file->name = dirent->d_name;
 		file->type = dirent->d_type;
 		file = store_groups_uid(file, op);
 		if (op->nbuidspace < ft_strlen(file->uid))
@@ -132,7 +119,6 @@ t_op	*init(t_op *op, char **env)
 	int 		i;
 
 	i = -1;
-	
 	if (op == NULL)
 	{
 		op = (t_op *)malloc(sizeof(t_op));

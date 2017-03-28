@@ -78,7 +78,14 @@ t_file				*print_total(t_file *file, t_op *op)
 	return (file);
 }
 
-char				*print_fname(char *entry)
+t_file				*print_fname(t_file *file, char *entry)
+{
+	file->name = get_fname(entry);
+	ft_putstr(file->name);
+	return (file);
+}
+
+char				*get_fname(char *entry)
 {
 	char			*input;
 	char			*fn;
