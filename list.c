@@ -75,9 +75,9 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		t_file			*file;
 
 		file = (t_file *)malloc(sizeof(t_file));
-		file = store_basic(file, data, op);
 		file->name = dirent->d_name;
 		file->type = dirent->d_type;
+		file = store_basic(file, data, op);
 		file = store_groups_uid(file, op);
 		if (op->nbuidspace < ft_strlen(file->uid))
 			op->nbuidspace = valuemax(ft_strlen(file->uid), op, file->name, op->nbuidspace);

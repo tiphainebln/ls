@@ -34,7 +34,6 @@
 
 typedef struct 			s_file
 {
-	int 				visited;
 	int 				completed;
 	char				*name;
 	off_t				st_size;
@@ -52,6 +51,7 @@ typedef struct 			s_file
 	struct s_file		*next;
 	char 				*grp;
 	char 				*uid;
+	int 				visited;
 }						t_file;
 
 typedef struct 			s_op
@@ -82,12 +82,12 @@ t_op					*options(char **argv, t_op *o);
 char					*get_fname(char *entry);
 t_file					*print_fname(t_file *file, char *entry);
 t_op 					*get_options(char *argv, t_op *o);
-t_file					*get_directory(char *argv, t_file *file, t_op *op);
+t_file					*get_directory(char *argv, t_file *file, t_op *op, int sub);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*store_basic(t_file *file, struct stat *data, t_op *op);
 t_file					*store_groups_uid(t_file *file, t_op *op);
-t_file					*get_sub(t_file *file, t_op *op);
+t_file					*get_sub(char *name, t_file *file, t_op *op);
 t_file					*print_grp(t_file *file, t_op *op);
 t_file					*print_uid(t_file *file, t_op *op);
 int 					file_type_letter(t_file *file);

@@ -28,12 +28,16 @@ int 		main(int argc, char **argv, char **env)
 	while (argv[++i])
 	{
 		if (argv[i][0] != '-')
-			file = get_directory(argv[i], file, o);
-		//if (o->R)
-		//	file = get_sub(file, o);
+			file = get_directory(argv[i], file, o, 0);
+		if (o->R)
+			file = get_sub(argv[i], file, o);
 	}
 	if (!file)
-		file = get_directory(".", file, o);
+	{
+		file = get_directory(".", file, o, 0);
+		if (o->R)
+			file = get_sub(".", file, o);
+	}
 	file = o->begin;
 	if (o->l)
 		print_total(file, o);

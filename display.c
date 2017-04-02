@@ -40,10 +40,6 @@ int 			opt_a(t_file *file, t_op *op)
 
 t_file			*long_format(t_file *file, t_op *op)
 {
-	//if (file->type == DT_DIR)
-		//ft_putstr("\033[31m");
-	//else
-	//	ft_putstr("\033[32m");
 	file_type_letter(file);
 	print_rights(file, op);
 	print_links(file, op);
