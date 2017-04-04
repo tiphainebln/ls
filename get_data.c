@@ -24,7 +24,7 @@ t_file				*store_basic(t_file *file, struct stat *data, t_op *op)
 		file->mtime = data->st_mtime;
 		file->path = ft_strdup(op->current);
 		file->next = NULL;
-		if (file->type == DT_DIR)
+		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		{
 			file->visited = 0;
 			file->completed = 0;

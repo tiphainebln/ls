@@ -75,7 +75,7 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		t_file			*file;
 
 		file = (t_file *)malloc(sizeof(t_file));
-		file->name = dirent->d_name;
+		file->name = ft_strdup(dirent->d_name);
 		file->type = dirent->d_type;
 		file = store_basic(file, data, op);
 		file = store_groups_uid(file, op);

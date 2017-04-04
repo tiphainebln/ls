@@ -29,14 +29,15 @@ int 		main(int argc, char **argv, char **env)
 	{
 		if (argv[i][0] != '-')
 			file = get_directory(argv[i], file, o, 0);
-		if (o->R)
-			file = get_sub(argv[i], file, o);
+		if (argv[i][0] != '-' && o->R)
+		 	file = get_sub(file, o);
 	}
+	file = o->begin;
 	if (!file)
 	{
-		file = get_directory(".", file, o, 0);
+		file = get_directory(o->origin, file, o, 0);
 		if (o->R)
-			file = get_sub(".", file, o);
+			file = get_sub(file, o);
 	}
 	file = o->begin;
 	if (o->l)
@@ -54,6 +55,14 @@ int 		main(int argc, char **argv, char **env)
 		else
 			ft_putendl(file->name);
 		ft_putstr("\033[00m");
+		if (o->R && file->next)
+		{
+			if (ft_strcmp(file->path, file->next->path))
+			{
+				ft_putchar('\n');
+				ft_putendl(ft_strjoin(file->next->path, ":"));
+			}
+		}
 		file = file->next;
 	}
 	return (0);

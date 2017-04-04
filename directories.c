@@ -14,7 +14,8 @@
 
 void				change_dir(char **old, char *new)
 {
-	free(*old);
+	if (*old)
+		free(*old);
 	*old = ft_strdup(new);
 }
 
@@ -25,7 +26,12 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 	if (((fd = opendir(entry))) != NULL)
 	{
 		if (entry[0] == '/' || sub)
-			change_dir(&op->current, ft_strjoin(entry, "/"));
+		{
+			if (entry[ft_strlen(entry) - 1] == '/')
+				change_dir(&op->current, entry);
+			else
+				change_dir(&op->current, ft_strjoin(entry, "/"));
+		}
 		else
 			change_dir(&op->current, ft_strjoin(ft_strjoin(op->origin, entry), "/"));
 		file = read_content(file, fd, op);
@@ -60,13 +66,16 @@ int					ft_isitover(t_file *file)
 	return (1);
 }	
 
-t_file				*get_sub(char *name, t_file *file, t_op *op)
+t_file				*get_sub(t_file *file, t_op *op)
 {
 	t_file	*curr_dir;
 
 	file = op->begin;
 	while (file && ft_strcmp(file->path, op->current))
+	{
+		ft_putendl(file->path);
 		file = file->next;
+	}
 	curr_dir = file;
 	while (file)
 	{
@@ -81,7 +90,10 @@ t_file				*get_sub(char *name, t_file *file, t_op *op)
 				while (file && ft_strcmp(ft_strjoin(ft_strjoin(file->path, file->name), "/"), op->current))
 					file = file->next;
 				file->completed = 1;
-				change_dir(&op->current, ft_strsub(op->current, 0, ft_second_to_last(op->current)));
+				if (ft_strcmp(curr_dir->path, op->current))
+					change_dir(&op->current, ft_strjoin(ft_strsub(op->current, 0, ft_second_to_last(op->current)), "/"));
+				else
+					return (file);
 			}
 		}
 		else if (file->visited)
@@ -109,7 +121,10 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 	if (!(dirent = (struct dirent *)malloc(sizeof(struct dirent))))
 		error(MALLOC_ERROR);
 	while (((dirent = readdir(fd)) != NULL))
+	{
+		file = op->begin;
 		file = new_list(file, dirent, op);
+	}
 	return (file);
 	
 }
