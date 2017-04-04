@@ -69,7 +69,7 @@ t_file				*print_total(t_file *file, t_op *op)
 			total += file->st_blocks;
 		file = file->next;
 	}
-	if (total > 0)
+	if (total >= 0)
 	{
 		ft_putstr("total ");
 		ft_putnbr(total);

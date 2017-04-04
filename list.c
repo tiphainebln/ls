@@ -32,8 +32,9 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 		file->name = get_fname(entry);
 		file = store_basic(file, data, op);
 		file = store_groups_uid(file, op);
-		//if (op->nbgrpspace < ft_strlen(op->grp))
-			//op->nbgrpspace = valuemax(ft_strlen(op->grp), op, file->name, op->nbgrpspace);
+		file->path = ft_strdup(op->origin);
+		file->completed = 1;
+		file->visited = 1;
 		if (op->nblinkspace < ft_intlen(file->st_nlink))
 		{
 			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
@@ -78,6 +79,7 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		file->name = ft_strdup(dirent->d_name);
 		file->type = dirent->d_type;
 		file = store_basic(file, data, op);
+		file->path = ft_strdup(op->current);
 		file = store_groups_uid(file, op);
 		if (op->nbuidspace < ft_strlen(file->uid))
 			op->nbuidspace = valuemax(ft_strlen(file->uid), op, file->name, op->nbuidspace);
@@ -87,6 +89,16 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
 		if (op->nbsizespace < ft_intlen(file->st_size))
 			op->nbsizespace = valuemax(ft_intlen(file->st_size), op, file->name, op->nbsizespace);
+		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+		{
+			file->visited = 0;
+			file->completed = 0;
+		}
+		else
+		{
+			file->completed = 1;
+			file->visited = 1;
+		}
 		return (file);
 }
 

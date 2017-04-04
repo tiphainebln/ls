@@ -81,6 +81,7 @@ t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
 char					*get_fname(char *entry);
 t_file					*print_fname(t_file *file, char *entry);
+void					change_dir(char **old, char *new);
 t_op 					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op, int sub);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);

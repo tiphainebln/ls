@@ -22,18 +22,7 @@ t_file				*store_basic(t_file *file, struct stat *data, t_op *op)
 		file->st_blocks = data->st_blocks;
 		file->st_blksize = data->st_blksize;
 		file->mtime = data->st_mtime;
-		file->path = ft_strdup(op->current);
 		file->next = NULL;
-		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
-		{
-			file->visited = 0;
-			file->completed = 0;
-		}
-		else
-		{
-			file->completed = 1;
-			file->visited = 1;
-		}
 		return (file);
 }
 

@@ -61,6 +61,7 @@ int 		main(int argc, char **argv, char **env)
 			{
 				ft_putchar('\n');
 				ft_putendl(ft_strjoin(file->next->path, ":"));
+				print_total(file, o);
 			}
 		}
 		file = file->next;
