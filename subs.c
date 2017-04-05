@@ -49,10 +49,7 @@ t_file				*get_sub(t_file *file, t_op *op)
 
 	file = op->begin;
 	while (file && ft_strcmp(file->path, op->current))
-	{
-		ft_putendl(file->path);
 		file = file->next;
-	}
 	curr_dir = file;
 	while (file)
 	{

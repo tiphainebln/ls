@@ -30,7 +30,7 @@ t_file			*display_a(t_file *file, t_op *op)
 
 int 			opt_a(t_file *file, t_op *op)
 {
-	if (file->name[0] == '.')
+	if (ft_strstr(file->path, "/.") || file->name[0] == '.')
 	{
 		if (!op->a)
 			return (0);
