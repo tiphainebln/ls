@@ -67,7 +67,10 @@ t_file				*print_total(t_file *file, t_op *op)
 		}
 		else
 			total += file->st_blocks;
-		file = file->next;
+		if (file->next && ft_strcmp(file->path, file->next->path) == 0)
+			file = file->next;
+		else
+			break ;
 	}
 	if (total >= 0)
 	{
