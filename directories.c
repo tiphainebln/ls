@@ -16,6 +16,7 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 {
 	DIR 			*fd;
 
+	op->relative = 0;
 	if (((fd = opendir(entry))) != NULL)
 	{
 		if (entry[0] == '/' || sub)
@@ -26,7 +27,10 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 				change_dir(&op->current, ft_strjoin(entry, "/"));
 		}
 		else
+		{
+			op->relative = 1;
 			change_dir(&op->current, ft_strjoin(ft_strjoin(op->origin, entry), "/"));
+		}
 		file = read_content(file, fd, op);
 		closedir(fd);
 	}
@@ -45,6 +49,8 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 	{
 		file = op->begin;
 		file = new_list(file, dirent, op);
+		if (op->relative)
+			file->relative = 1;
 	}
 	return (file);
 	

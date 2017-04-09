@@ -52,6 +52,7 @@ typedef struct 			s_file
 	char 				*grp;
 	char 				*uid;
 	int 				visited;
+	int 				relative;
 }						t_file;
 
 typedef struct 			s_op
@@ -68,6 +69,8 @@ typedef struct 			s_op
 	int 				nbsizespace;
 	int 				nbgrpspace;
 	int 				nbuidspace;
+	int 				noarg;
+	int 				relative;
 }						t_op;
 
 typedef struct 			s_ls

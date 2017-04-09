@@ -46,6 +46,33 @@ int 		same_path_everywhere(t_file *file)
 	return (1);
 }
 
+void	write_path(char *path, char *origin, int noarg, int relative)
+{
+	int 		last_slash;
+	int 		i;
+	char		*tmp;
+
+	last_slash = 0;
+	i = 0;
+	tmp = ft_strdup(path);
+	tmp[ft_strlen(tmp) - 1] = '\0';
+	if (noarg || relative)
+	{
+		while (tmp[i] && origin[i] && origin[i] == tmp[i])
+		{
+			if (tmp[i] == '/')
+				last_slash = i;
+			i++;
+		}
+		if (noarg)
+			ft_putstr(".");
+		ft_putendl(ft_strjoin(&tmp[last_slash], ":"));
+	}
+	else
+		ft_putendl(ft_strjoin(tmp, ":"));
+}
+
+
 int 		main(int argc, char **argv, char **env)
 {
 	t_op	*o;
@@ -71,6 +98,7 @@ int 		main(int argc, char **argv, char **env)
 	file = o->begin;
 	if (!file)
 	{
+		o->noarg = 1;
 		file = get_directory(o->origin, file, o, 0);
 		if (o->R)
 			file = get_sub(file, o);
@@ -86,7 +114,7 @@ int 		main(int argc, char **argv, char **env)
 			{
 				if (oldpath)
 					ft_putchar('\n');
-				ft_putendl(ft_strjoin(file->path, ":"));
+				write_path(file->path, o->origin, o->noarg, file->relative);
 			}
 			file = file->next;
 			continue ;
@@ -96,7 +124,7 @@ int 		main(int argc, char **argv, char **env)
 			if (ft_strcmp(file->path, oldpath))
 			{
 				ft_putchar('\n');
-				ft_putendl(ft_strjoin(file->path, ":"));
+				write_path(file->path, o->origin, o->noarg, file->relative);
 				if (o->l)
 					print_total(file, o);
 			}
@@ -105,7 +133,7 @@ int 		main(int argc, char **argv, char **env)
 		else if (!same_path_everywhere(file))
 		{
 			if (!o->R)
-				ft_putendl(ft_strjoin(file->path, ":"));
+				write_path(file->path, o->origin, o->noarg, file->relative);
 			if (o->l)
 				print_total(file, o);
 		}
@@ -120,3 +148,15 @@ int 		main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
+
+/*
+if no arg: remplacer la section "op->origin" par ./, et laisser le reste
+if arg relatif (si ca rentre dans le else)
+enlever tout
+*/
+
+/*
+    Si on ordonne laffichage dun dossier cache sans option -a activee, on doit le faire quand meme. 
+    On veriefiera si: 1- on est present dans le dossier cache et on a fait un ls sans dossier precise, 2- si argv comporte le nom de ce dossier. 
+    Dans ce cas de figure on continue a ne pas afficher les fichiers et dossiers caches, on deroge juste au strstr(file->path, [/.]).
+    Il serait intelligent de gerer ca apres avoir transforme les chemins absolus en chemins relatifs. */

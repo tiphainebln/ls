@@ -99,6 +99,7 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 			file->completed = 1;
 			file->visited = 1;
 		}
+		file->relative = 0;
 		return (file);
 }
 
@@ -145,6 +146,8 @@ t_op	*init(t_op *op, char **env)
 		op->nblinkspace = 0;
 		op->nbgrpspace = 0;
 		op->nbuidspace = 0;
+		op->noarg = 0;
+		op->relative = 0;
 		while (env[++i])
 		{
 			if (ft_strncmp(env[i], "PWD=", 4) == 0)
