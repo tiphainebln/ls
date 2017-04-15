@@ -46,5 +46,7 @@ t_op		*get_options(char *argv, t_op *o)
 			error(OPTION);
 		j++;
 	}
+	if (!o->a && !o->t && !o->r && !o->R && !o->l)
+		error(OPTION);
 	return (o);
 }

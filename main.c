@@ -64,14 +64,15 @@ void	write_path(char *path, char *origin, int noarg, int relative)
 				last_slash = i;
 			i++;
 		}
-		if (noarg)
-			ft_putstr(".");
+		if (tmp[0] == '/')
+			tmp++;
+		if (noarg == 1)
+			ft_putstr("./");
 		ft_putendl(ft_strjoin(&tmp[last_slash], ":"));
 	}
 	else
 		ft_putendl(ft_strjoin(tmp, ":"));
 }
-
 
 int 		main(int argc, char **argv, char **env)
 {
@@ -88,17 +89,21 @@ int 		main(int argc, char **argv, char **env)
 	o = options(argv, o);
 	file = NULL;
 	oldpath = NULL;
+	if (argc < 0)
+		error(ARGUMENT);
 	while (argv[++i])
 	{
 		if (argv[i][0] != '-')
+		{
+			o->noarg++;
 			file = get_directory(argv[i], file, o, 0);
+		}
 		if (argv[i][0] != '-' && o->R)
 		 	file = get_sub(file, o);
 	}
 	file = o->begin;
-	if (!file)
+	if (o->noarg == 1)
 	{
-		o->noarg = 1;
 		file = get_directory(o->origin, file, o, 0);
 		if (o->R)
 			file = get_sub(file, o);
@@ -108,7 +113,7 @@ int 		main(int argc, char **argv, char **env)
 		print_total(file, o);
 	while (file)
 	{
-		if (opt_a(file, o) == 0)
+		if (opt_a(file, o, argv) == 0)
 		{
 			if (ft_strcmp(file->name, ".") && only_contains_hidden(file))
 			{
@@ -123,8 +128,8 @@ int 		main(int argc, char **argv, char **env)
 		{
 			if (ft_strcmp(file->path, oldpath))
 			{
-				ft_putchar('\n');
-				write_path(file->path, o->origin, o->noarg, file->relative);
+					ft_putchar('\n');
+					write_path(file->path, o->origin, o->noarg, file->relative);
 				if (o->l)
 					print_total(file, o);
 			}
@@ -132,7 +137,7 @@ int 		main(int argc, char **argv, char **env)
 		}
 		else if (!same_path_everywhere(file))
 		{
-			if (!o->R)
+			if (!o->R || (o->noarg > 2 && file->file == 0))
 				write_path(file->path, o->origin, o->noarg, file->relative);
 			if (o->l)
 				print_total(file, o);
@@ -149,10 +154,13 @@ int 		main(int argc, char **argv, char **env)
 	return (0);
 }
 
+/* when illegal option shut down fucking errythang */
+
 /*
 if no arg: remplacer la section "op->origin" par ./, et laisser le reste
 if arg relatif (si ca rentre dans le else)
 enlever tout
+- SEGFAULT -R + fichier
 */
 
 /*

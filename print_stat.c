@@ -27,7 +27,7 @@ t_file					*print_uid(t_file *file, t_op *op)
 }
 
 
-t_file					*print_links(t_file *file, t_op *op)
+t_file					*print_links(t_file *file)
 {
 	ft_putnbr(file->st_nlink);
 	ft_putchar(' ');

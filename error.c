@@ -19,11 +19,15 @@ void		error(int error)
 	if (error == OPTION)
 		ft_putendl("ls: illegal option; -Rralt");
 	if (error == ARGUMENT)
+	{
 		ft_putendl("No such file or directory");
+		return ;
+	}
 	if (error == ERROR)
 		ft_putendl("error");
 	else if (error == MALLOC_ERROR)
 		ft_putendl("Malloc error");
+	exit(error);
 }
 
 

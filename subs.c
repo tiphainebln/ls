@@ -41,7 +41,8 @@ int					ft_isitover(t_file *file)
 		file = file->next;
 	}
 	return (1);
-}	
+}
+
 
 t_file				*get_sub(t_file *file, t_op *op)
 {

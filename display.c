@@ -12,28 +12,57 @@
 
 #include "ls.h"
 
-t_file			*display_a(t_file *file, t_op *op)
+int 			ft_cmppostorigin(char *origin, char *path)
 {
-	while (file)
-	{
-		if (opt_a(file, op) == 0)
-		{
-			file = file->next;
-			continue ;
-		}
-		ft_putstr(file->name);
-		ft_putchar('\n');
-	}
-	file = file->next;
-	return (file);
+	int 		i;
+
+	i = 0;
+	while (origin[i] && path[i] && origin[i] == path[i])
+		i++;
+	if (path[i])
+		if (ft_strstr(&path[i - 1], "/."))
+			return (0);
+	return (1);
 }
 
-int 			opt_a(t_file *file, t_op *op)
+int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 {
-	if (ft_strstr(file->path, "/.") || file->name[0] == '.')
+	int 	i;
+	int 	j;
+
+	i = 1;
+	j = 1;
+	while (argv[i])
 	{
-		if (!op->a)
-			return (0);
+		if (argv[i][0] != '-')
+			j++;
+		if (j == file->noarg)
+			break ;
+		i++;
+	}
+	if (argv[i][0] == '/')
+		return (ft_cmppostorigin(argv[i], file->path));
+	else
+		return (ft_cmppostorigin(ft_strjoin(op->origin, argv[i]), file->path));
+} 
+
+int 			opt_a(t_file *file, t_op *op, char **argv)
+{
+	if (op->a)
+		return (1);
+	if (file->name[0] == '.')
+		return (0);
+	if (ft_strstr(file->path, "/."))
+	{
+		if (op->noarg == 1 && ft_strstr(op->origin, "/."))
+		{
+			if (!op->R)
+				return (1);
+			else
+				return (ft_cmppostorigin(op->origin, file->path));
+		}
+		else if (op->noarg > 1 && ft_strstr(file->path, "/."))
+			return (relative_hiddenry(file, op, argv));
 	}
 	return (1);
 }
@@ -42,7 +71,7 @@ t_file			*long_format(t_file *file, t_op *op)
 {
 	file_type_letter(file);
 	print_rights(file, op);
-	print_links(file, op);
+	print_links(file);
 	print_uid(file, op);
 	print_grp(file, op);
 	print_size(file, op);

@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-t_file				*store_basic(t_file *file, struct stat *data, t_op *op)
+t_file				*store_basic(t_file *file, struct stat *data)
 {
 		file->st_size = data->st_size;
 		file->st_nlink = data->st_nlink;
@@ -26,7 +26,7 @@ t_file				*store_basic(t_file *file, struct stat *data, t_op *op)
 		return (file);
 }
 
-t_file				*store_groups_uid(t_file *file, t_op *op)
+t_file				*store_groups_uid(t_file *file)
 {
 	struct group 	*grp;
 	struct passwd	*uid;

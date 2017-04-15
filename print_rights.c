@@ -28,7 +28,7 @@ int				print_rights(t_file *file, t_op *op)
 
 }
 
-int 			file_type_letter(t_file *file)
+char 			file_type_letter(t_file *file)
 {
     char  	  c;
 
