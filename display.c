@@ -63,6 +63,8 @@ int 			opt_a(t_file *file, t_op *op, char **argv)
 		}
 		else if (op->noarg > 1 && ft_strstr(file->path, "/."))
 			return (relative_hiddenry(file, op, argv));
+		else
+			return (0);
 	}
 	return (1);
 }
