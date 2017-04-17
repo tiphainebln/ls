@@ -81,6 +81,7 @@ int 		main(int argc, char **argv, char **env)
 	int 	i;
 	int 	(*tab[13])(void);
 	char	*oldpath;
+	int 	oldarg;
 
 	init_tab(tab);
 	i = 0;
@@ -89,6 +90,7 @@ int 		main(int argc, char **argv, char **env)
 	o = options(argv, o);
 	file = NULL;
 	oldpath = NULL;
+	oldarg = 1;
 	if (argc < 0)
 		error(ARGUMENT);
 	while (argv[++i])
@@ -99,14 +101,14 @@ int 		main(int argc, char **argv, char **env)
 			file = get_directory(argv[i], file, o, 0);
 		}
 		if (argv[i][0] != '-' && o->R)
-		 	file = get_sub(file, o);
+		 	file = get_sub(file, o, o->noarg);
 	}
 	file = o->begin;
 	if (o->noarg == 1)
 	{
 		file = get_directory(o->origin, file, o, 0);
 		if (o->R)
-			file = get_sub(file, o);
+			file = get_sub(file, o, o->noarg);
 	}
 	file = o->begin;
 	if (o->l && same_path_everywhere(file))
@@ -124,16 +126,23 @@ int 		main(int argc, char **argv, char **env)
 			file = file->next;
 			continue ;
 		}
-		if (oldpath)
+		if (file->noarg != oldarg && o->noarg > 2)
+		{
+			if (oldpath)
+				ft_putchar('\n');
+			write_path(file->path, o->origin, o->noarg, file->relative);
+			if (o->l)
+				print_total(file, o);
+		}
+		else if (oldpath)
 		{
 			if (ft_strcmp(file->path, oldpath))
 			{
-					ft_putchar('\n');
-					write_path(file->path, o->origin, o->noarg, file->relative);
+				ft_putchar('\n');
+				write_path(file->path, o->origin, o->noarg, file->relative);
 				if (o->l)
 					print_total(file, o);
 			}
-			ft_strdel(&oldpath);
 		}
 		else if (!same_path_everywhere(file))
 		{
@@ -142,7 +151,10 @@ int 		main(int argc, char **argv, char **env)
 			if (o->l)
 				print_total(file, o);
 		}
+		if (oldpath)
+			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
+		oldarg = file->noarg;
 		tab[file->type]();
 		if (o->l)
 			long_format(file, o);
@@ -155,16 +167,10 @@ int 		main(int argc, char **argv, char **env)
 }
 
 /* when illegal option shut down fucking errythang */
-
+// 1- Integrer un concept de levels pour savoir dissocier le meme dossier passe en argument plusieurs fois. 2- gerer les fichiers proprement
 /*
 if no arg: remplacer la section "op->origin" par ./, et laisser le reste
 if arg relatif (si ca rentre dans le else)
 enlever tout
 - SEGFAULT -R + fichier
 */
-
-/*
-    Si on ordonne laffichage dun dossier cache sans option -a activee, on doit le faire quand meme. 
-    On veriefiera si: 1- on est present dans le dossier cache et on a fait un ls sans dossier precise, 2- si argv comporte le nom de ce dossier. 
-    Dans ce cas de figure on continue a ne pas afficher les fichiers et dossiers caches, on deroge juste au strstr(file->path, [/.]).
-    Il serait intelligent de gerer ca apres avoir transforme les chemins absolus en chemins relatifs. */

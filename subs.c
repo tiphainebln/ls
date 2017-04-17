@@ -44,12 +44,12 @@ int					ft_isitover(t_file *file)
 }
 
 
-t_file				*get_sub(t_file *file, t_op *op)
+t_file				*get_sub(t_file *file, t_op *op, int where)
 {
 	t_file	*curr_dir;
 
 	file = op->begin;
-	while (file && ft_strcmp(file->path, op->current))
+	while (file && file->noarg != where)
 		file = file->next;
 	curr_dir = file;
 	while (file)

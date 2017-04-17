@@ -96,7 +96,7 @@ t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*store_basic(t_file *file, struct stat *data);
 t_file					*store_groups_uid(t_file *file);
-t_file					*get_sub(t_file *file, t_op *op);
+t_file					*get_sub(t_file *file, t_op *op, int where);
 t_file					*print_grp(t_file *file, t_op *op);
 t_file					*print_uid(t_file *file, t_op *op);
 char 					file_type_letter(t_file *file);
