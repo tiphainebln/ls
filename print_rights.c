@@ -90,12 +90,15 @@ t_file				*print_fname(t_file *file, char *entry)
 
 char				*get_fname(char *entry)
 {
-	char			*input;
 	char			*fn;
+	int 			i;
 
-	input = entry;
-	if (input[(ft_strlen(input) - 1)] == '/')
-		input[(ft_strlen(input) - 1)] = '\0';
-	(fn = ft_strrchr(input, '/')) ? ++fn : (fn = input);
-	return (fn);
+	i = ft_strlen(entry) - 1;
+	fn = NULL;
+	if (entry[i] == '/')
+		entry[i] = '\0';
+	if ((fn = ft_strrchr(entry, '/')))
+		return (ft_strdup(fn + 1));
+	else
+		return (ft_strdup(entry));;
 }

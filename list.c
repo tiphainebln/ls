@@ -24,36 +24,47 @@ int 					valuemax(int size, t_op *op, char *name, int origin)
 	return (size);
 }
 
+
 t_file					*add_file(struct stat *data, t_op *op, char *entry)
 {
 		t_file			*file;
 
 		file = (t_file *)malloc(sizeof(t_file));
+		if (entry[0] == '/')
+			file->relative = 0;
+		else
+			file->relative = 1;
 		file->name = get_fname(entry);
+		file->type = determine_type(data);
 		file = store_basic(file, data);
 		file = store_groups_uid(file);
-		file->path = ft_strdup(op->origin);
+		file->path = get_path(entry, op);
 		file->completed = 1;
 		file->visited = 1;
+		if (op->nbuidspace < ft_strlen(file->uid))
+			op->nbuidspace = valuemax(ft_strlen(file->uid), op, file->name, op->nbuidspace);
+		if (op->nbgrpspace < ft_strlen(file->grp))
+			op->nbgrpspace = valuemax(ft_strlen(file->grp), op, file->name, op->nbgrpspace);
 		if (op->nblinkspace < ft_intlen(file->st_nlink))
-		{
 			op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, file->name, op->nblinkspace);
-		}
 		if (op->nbsizespace < ft_intlen(file->st_size))
-		{
 			op->nbsizespace = valuemax(ft_intlen(file->st_size), op, file->name, op->nbsizespace);
-		}
 		file->file = 1;
+		file->noarg = op->noarg;
 		return (file);
 }
-
 
 t_file					*new_file(t_file *file, t_op *op, char *entry)
 {
 	struct stat 		*data;
+	char 				*fullpath;
 
+	if (entry[0] == '/')
+		fullpath = ft_strdup(entry);
+	else
+		fullpath = ft_strjoin(op->origin, entry);
 	data = (struct stat *)malloc(sizeof(struct stat));
-	if (stat(entry, data) == -1) // Chemin absolu ? Relatif ? Faut relativiser :)
+	if (stat(fullpath, data) == -1)
 	{
 		error(ARGUMENT);
 		return (file);

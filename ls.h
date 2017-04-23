@@ -110,6 +110,8 @@ t_file					*new_file(t_file *file, t_op *op, char *entry);
 int 					opt_a(t_file *file, t_op *op, char **argv);
 void					ft_putspaces(t_file *file, t_op *op, int choice);
 t_file					*print_time(t_file *file);
+int						determine_type(struct stat *data);
+char					*get_path(char *entry, t_op *op);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

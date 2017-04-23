@@ -46,7 +46,7 @@ int 		same_path_everywhere(t_file *file)
 	return (1);
 }
 
-void	write_path(char *path, char *origin, int noarg, int relative)
+void		write_path(char *path, char *origin, int noarg, int relative)
 {
 	int 		last_slash;
 	int 		i;
@@ -56,7 +56,7 @@ void	write_path(char *path, char *origin, int noarg, int relative)
 	i = 0;
 	tmp = ft_strdup(path);
 	tmp[ft_strlen(tmp) - 1] = '\0';
-	if (noarg || relative)
+	if (relative)
 	{
 		while (tmp[i] && origin[i] && origin[i] == tmp[i])
 		{
