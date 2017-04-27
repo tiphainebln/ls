@@ -56,6 +56,10 @@ typedef struct 			s_file
 	int 				file;
 	int 				directed;
 	int 				noarg;
+	int 				minor;
+	int 				major;
+	char 				*linkname;
+	char 				*displayname;
 }						t_file;
 
 typedef struct 			s_op
@@ -72,10 +76,13 @@ typedef struct 			s_op
 	int 				nbsizespace;
 	size_t 				nbgrpspace;
 	size_t 				nbuidspace;
+	int 				nbminorspace;
+	int 				nbmajorspace;
 	int 				noarg;
 	int 				relative;
 	int 				args;
-	char 				**paths;
+	int 				link;
+	char 				*linkname;
 }						t_op;
 
 typedef struct 			s_ls
@@ -83,6 +90,7 @@ typedef struct 			s_ls
 
 }						t_ls;
 
+void					print_major_minor(t_file *file, t_op *op);
 void					init_tab(int (*tab[13])(void));
 void					error(int error);
 t_op					*init(t_op *op, char **env);
@@ -96,10 +104,12 @@ t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*store_basic(t_file *file, struct stat *data);
 t_file					*store_groups_uid(t_file *file);
+t_file					*nb_spaces(t_file *file, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op, int where);
+int 					only_contains_hidden(t_file *start);
 t_file					*print_grp(t_file *file, t_op *op);
 t_file					*print_uid(t_file *file, t_op *op);
-char 					file_type_letter(t_file *file);
+void 					file_type_letter(t_file *file);
 int						print_rights(t_file *file, t_op *op);
 t_file					*print_total(t_file *file, t_op *op);
 t_file					*print_size(t_file *file, t_op *op);
@@ -112,6 +122,9 @@ void					ft_putspaces(t_file *file, t_op *op, int choice);
 t_file					*print_time(t_file *file);
 int						determine_type(struct stat *data);
 char					*get_path(char *entry, t_op *op);
+void					write_path(char *path, char *origin, int noarg, int relative);
+int 					same_path_everywhere(t_file *file);
+void					read_link(char *path);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

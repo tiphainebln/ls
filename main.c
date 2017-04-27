@@ -35,45 +35,6 @@ int 		only_contains_hidden(t_file *start)
 	return (1);
 }
 
-int 		same_path_everywhere(t_file *file)
-{
-	while (file->next)
-	{
-		if (ft_strcmp(file->path, file->next->path))
-			return (0);
-		file = file->next;
-	}
-	return (1);
-}
-
-void		write_path(char *path, char *origin, int noarg, int relative)
-{
-	int 		last_slash;
-	int 		i;
-	char		*tmp;
-
-	last_slash = 0;
-	i = 0;
-	tmp = ft_strdup(path);
-	tmp[ft_strlen(tmp) - 1] = '\0';
-	if (relative)
-	{
-		while (tmp[i] && origin[i] && origin[i] == tmp[i])
-		{
-			if (tmp[i] == '/')
-				last_slash = i;
-			i++;
-		}
-		if (tmp[0] == '/')
-			tmp++;
-		if (noarg == 1)
-			ft_putstr("./");
-		ft_putendl(ft_strjoin(&tmp[last_slash], ":"));
-	}
-	else
-		ft_putendl(ft_strjoin(tmp, ":"));
-}
-
 int 		main(int argc, char **argv, char **env)
 {
 	t_op	*o;
@@ -111,7 +72,7 @@ int 		main(int argc, char **argv, char **env)
 			file = get_sub(file, o, o->noarg);
 	}
 	file = o->begin;
-	if (o->l && same_path_everywhere(file))
+	if (o->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, o);
 	while (file)
 	{
@@ -130,8 +91,9 @@ int 		main(int argc, char **argv, char **env)
 		{
 			if (oldpath)
 				ft_putchar('\n');
+			if (file->file == 0)
 			write_path(file->path, o->origin, o->noarg, file->relative);
-			if (o->l)
+			if (o->l && file->file == 0)
 				print_total(file, o);
 		}
 		else if (oldpath)
@@ -139,8 +101,9 @@ int 		main(int argc, char **argv, char **env)
 			if (ft_strcmp(file->path, oldpath))
 			{
 				ft_putchar('\n');
+				if (file->file == 0)
 				write_path(file->path, o->origin, o->noarg, file->relative);
-				if (o->l)
+				if (o->l && file->file == 0)
 					print_total(file, o);
 			}
 		}
@@ -148,7 +111,7 @@ int 		main(int argc, char **argv, char **env)
 		{
 			if (!o->R || (o->noarg > 2 && file->file == 0))
 				write_path(file->path, o->origin, o->noarg, file->relative);
-			if (o->l)
+			if (o->l && file->file == 0)
 				print_total(file, o);
 		}
 		if (oldpath)
@@ -159,18 +122,22 @@ int 		main(int argc, char **argv, char **env)
 		if (o->l)
 			long_format(file, o);
 		else
-			ft_putendl(file->name);
+			(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
 		ft_putstr("\033[00m");
 		file = file->next;
 	}
 	return (0);
 }
 
-/* when illegal option shut down fucking errythang */
-// 1- Integrer un concept de levels pour savoir dissocier le meme dossier passe en argument plusieurs fois. 2- gerer les fichiers proprement
-/*
-if no arg: remplacer la section "op->origin" par ./, et laisser le reste
-if arg relatif (si ca rentre dans le else)
-enlever tout
+/* when illegal option shut down fucking errythang 
+24/04 : -penser a gerer l'affichage du path lorsque ../fichier est passé en paramètre
+- test dans /dev pourquoi type_rights ne fonctionne pas du fd ? sur ce meme fd, les minors/majors ne doivent pas s'afficher car 'd'
 - SEGFAULT -R + fichier
+- Quand ., traiter l'affichage du path de la meme maniere que quand noarg == 1; pour cette section seulement.
+
+- paufiner la gestion d'erreur
+- tri normal (alphabetique)
+- decouper le main en petites fonctions -> parse // -> affichage
+- tri par temps
+- tri inverse
 */

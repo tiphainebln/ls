@@ -6,42 +6,41 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 09:36:27 by tbouline          #+#    #+#              #
-#    Updated: 2017/03/22 03:51:38 by tbouline         ###   ########.fr        #
+#    Updated: 2017/04/27 06:03:22 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-EXEC = ft_ls
-
 SRC = main.c \
-	  init.c \
 	  options.c \
 	  error.c \
 	  list.c \
 	  directories.c \
-	  print_rights.c
+	  print_rights.c \
+	  print_stat.c \
+	  display.c \
+	  color.c \
+	  color2.c \
+	  subs.c \
+	  tools.c \
+	  get_data.c \
+	  path.c
+
+OBJ = $(SRC:.c=.o)
+
+NAME = ft_ls
+
+FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
 
 HEADER = ls.h
 
-OBJ = main.o \
-	  init.o \
-	  options.o \
-	  error.o \
-	  list.o \
-	  directories.o \
-	  print_rights.o
-
-FLAG = -Wall -Wextra -Werror
-
 OP = -c -I $(HEADER)
 
-all: $(EXEC)
-
-$(EXEC): $(OBJ) $(HEADER)
+all: $(OBJ) $(HEADER)
 	make -C libft/
-	$(CC) $(FLAG) $(OP) $(SRC)
-	$(CC) -o $(EXEC) $(OBJ) -L libft/ -lft
+	$(CC) $(FLAGS) $(OP) $(SRC)
+	$(CC) -o $(NAME) $(OBJ) libft/libft.a
 
 clean:
 	make -C libft/ clean
@@ -49,7 +48,7 @@ clean:
 
 fclean: clean
 	make -C libft/ fclean
-	/bin/rm -f $(EXEC)
+	rm -f $(NAME)
 
 re: fclean all
 

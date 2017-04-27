@@ -28,30 +28,28 @@ int				print_rights(t_file *file, t_op *op)
 
 }
 
-char 			file_type_letter(t_file *file)
+void 			file_type_letter(t_file *file)
 {
     char  	  c;
 
-    if (S_ISREG(file->st_mode))
+    if (file->type == 8)
         c = '-';
-    else if (S_ISDIR(file->st_mode))
+    else if (file->type == 4)
         c = 'd';
-    else if (S_ISBLK(file->st_mode))
+    else if (file->type == 6)
         c = 'b';
-    else if (S_ISCHR(file->st_mode))
+    else if (file->type == 2)
         c = 'c';
-    else if (S_ISFIFO(file->st_mode))
+    else if (file->type == 1)
         c = 'p';
-    else if (S_ISLNK(file->st_mode))
+    else if (file->type == 10)
         c = 'l';
-    else if (S_ISSOCK(file->st_mode))
+    else if (file->type == 12)
         c = 's';
     else
     	c = '?';
-	ft_putchar(c);
-    return(c);
+    ft_putchar(c);
 }
-
 
 t_file				*print_total(t_file *file, t_op *op)
 {
@@ -81,11 +79,14 @@ t_file				*print_total(t_file *file, t_op *op)
 	return (file);
 }
 
-t_file				*print_fname(t_file *file, char *entry)
+void				print_major_minor(t_file *file, t_op *op)
 {
-	file->name = get_fname(entry);
-	ft_putstr(file->name);
-	return (file);
+	ft_putspaces(file, op, 4);
+	ft_putnbr(file->major);
+	ft_putstr(",");
+	ft_putspaces(file, op, 5);
+	ft_putnbr(file->minor);
+	ft_putstr(" ");
 }
 
 char				*get_fname(char *entry)

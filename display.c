@@ -76,9 +76,14 @@ t_file			*long_format(t_file *file, t_op *op)
 	print_links(file);
 	print_uid(file, op);
 	print_grp(file, op);
-	print_size(file, op);
+	if (file->minor == -1)
+		print_size(file, op);
+	else
+		print_major_minor(file, op);
 	print_time(file);
-	ft_putstr(file->name);
+	(file->file) ? ft_putstr(file->displayname) : ft_putstr(file->name);
+	if (file->linkname != NULL)
+		ft_putstr(ft_strjoin(" -> ", file->linkname));
 	ft_putchar('\n');
 	ft_putstr("\033[00m");
 	return (file);
@@ -95,6 +100,10 @@ void			ft_putspaces(t_file *file, t_op *op, int choice)
 		space = op->nbgrpspace - ft_strlen(file->grp);
 	else if (choice == 3)
 		space = op->nbuidspace - ft_strlen(file->uid);
+	else if (choice == 4)
+		space = op->nbmajorspace - ft_intlen(file->major);
+	else if (choice == 5)
+		space = op->nbminorspace - ft_intlen(file->minor);
 	else
 		space = op->nblinkspace - ft_intlen(file->st_nlink);
 	if (choice != 2)

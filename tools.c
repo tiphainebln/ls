@@ -32,28 +32,6 @@ int		determine_type(struct stat *data)
 		return (0);
 }
 
-//Absolute path => pareil que ton get_fname, mais renvoie tout ce qu'il y a avant le 
-
-// t_file				*print_fname(t_file *file, char *entry)
-// {
-// 	file->name = get_fname(entry);
-// 	ft_putstr(file->name);
-// 	return (file);
-// }
-
-// char				*get_fname(char *entry)
-// {
-// 	char			*input;
-// 	char			*fn;
-
-// 	input = entry;
-// 	if (input[(ft_strlen(input) - 1)] == '/')
-// 		input[(ft_strlen(input) - 1)] = '\0';
-// 	(fn = ft_strrchr(input, '/')) ? ++fn : (fn = input);
-// 	return (fn);
-// }
-//				docs/tiph/dossier/test/file
-
 char		*get_path(char *entry, t_op *op)
 {
 	int 	i;

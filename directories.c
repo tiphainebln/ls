@@ -53,5 +53,4 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 			file->relative = 1;
 	}
 	return (file);
-	
 }
