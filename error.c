@@ -12,22 +12,30 @@
 
 # include "ls.h"
 
-void		error(int error)
+void 		ft_free(t_file *file, t_op *op, int error)
 {
-	if (error == USAGE)
-		ft_putendl("Usage: ./ft_ls [invalid argument]");
-	if (error == OPTION)
-		ft_putendl("ls: illegal option; -Rralt");
-	if (error == ARGUMENT)
+	if (file)
 	{
-		ft_putendl("No such file or directory");
-		return ;
+		free(file);
+		file = NULL;
 	}
-	if (error == ERROR)
-		ft_putendl("error");
-	else if (error == MALLOC_ERROR)
-		ft_putendl("Malloc error");
+	if (op)
+	{
+		free(op);
+		op = NULL;
+	}
 	exit(error);
+}
+
+void		error(t_file *file, int error, t_op *op, char *entry)
+{
+	file = op->begin;
+	if (error == USAGE)
+		ft_putendl_fd("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]", 2);
+	else if (error != NOTHINGTODO)
+		perror(entry);
+	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
+		ft_free(file, op, error);
 }
 
 

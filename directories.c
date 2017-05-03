@@ -35,7 +35,12 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 		closedir(fd);
 	}
 	else
-		file = new_file(file, op, entry);
+	{
+		if (errno == ENOTDIR)
+			file = new_file(file, op, entry);
+		else
+			error(file, PERMISSION, op, entry);
+	}
 	return (file);
 }
 
@@ -44,7 +49,7 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 	struct dirent	*dirent;
 
 	if (!(dirent = (struct dirent *)malloc(sizeof(struct dirent))))
-		error(MALLOC_ERROR);
+		error(file, MALLOC_ERROR, op, NULL);
 	while (((dirent = readdir(fd)) != NULL))
 	{
 		file = op->begin;

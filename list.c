@@ -35,7 +35,9 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 		file->visited = 1;
 		file = nb_spaces(file, op);
 		file->file = 1;
+		file->error = 0;
 		file->noarg = op->noarg;
+		file->errmsg = NULL;
 		return (file);
 }
 
@@ -48,6 +50,7 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 
 	data = (struct stat *)malloc(sizeof(struct stat));
 	op->link = 0;
+	op->error = 0;
 	if (entry[0] == '/')
 		fullpath = ft_strdup(entry);
 	else
@@ -59,18 +62,15 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 		buf[len] = '\0';
 		if (lstat(fullpath, data) == -1)
 		{
-			error(ARGUMENT);
+			error(file, ARGUMENT, op, entry);
 			return (file);
 		}
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
 	else if (stat(fullpath, data) == -1)
-	{
-		error(ARGUMENT);
-		return (file);
-	}
-	if (!file)
+		error(file, ARGUMENT, op, entry);
+	else if (!file)
 	{
 		file = add_file(data, op, entry);
 		op->begin = file;
@@ -113,6 +113,8 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 		file->noarg = op->noarg;
 		file->relative = 0;
 		file->file = 0;
+		file->error = 0;
+		file->errmsg = NULL;
 		return (file);
 }
 
@@ -124,6 +126,7 @@ t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 
 	data = (struct stat *)malloc(sizeof(struct stat));
 	op->link = 0;
+	op->error = 0;
 	if (op->linkname)
 		ft_strdel(&op->linkname);
 	if ((len = readlink(ft_strjoin(op->current, dirent->d_name), buf, 1024)) > 0)
@@ -131,18 +134,15 @@ t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 		buf[len] = '\0';
 		if (lstat(ft_strjoin(op->current, dirent->d_name), data) == -1)
 		{
-			error(ARGUMENT);
+			error(file, ARGUMENT, op, dirent->d_name);
 			return (file);
 		}
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
 	else if (stat(ft_strjoin(op->current, dirent->d_name), data) == -1)
-	{
-		error(ARGUMENT);
-		return (file);
-	}
-	if (!file)
+		error(file, ARGUMENT, op, dirent->d_name);
+	else if (!file)
 	{
 		file = add_list(data, dirent, op);
 		op->begin = file;
@@ -188,7 +188,7 @@ t_op	*init(t_op *op, char **env)
 		}
 		op->current = NULL;
 		if (op->origin == NULL)
-			error(ERROR);
+			error(NULL, ERROR, op, NULL);
 	}
 	return (op);
 }

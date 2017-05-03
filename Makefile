@@ -23,7 +23,8 @@ SRC = main.c \
 	  subs.c \
 	  tools.c \
 	  get_data.c \
-	  path.c
+	  path.c \
+	  sort.c
 
 OBJ = $(SRC:.c=.o)
 

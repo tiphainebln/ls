@@ -31,6 +31,8 @@
 # define ARGUMENT 3
 # define ERROR 4
 # define MALLOC_ERROR 5
+# define PERMISSION 6
+# define NOTHINGTODO 0
 
 typedef struct 			s_file
 {
@@ -60,6 +62,8 @@ typedef struct 			s_file
 	int 				major;
 	char 				*linkname;
 	char 				*displayname;
+	int 				error;
+	char 				*errmsg;
 }						t_file;
 
 typedef struct 			s_op
@@ -83,6 +87,7 @@ typedef struct 			s_op
 	int 				args;
 	int 				link;
 	char 				*linkname;
+	int 				error;
 }						t_op;
 
 typedef struct 			s_ls
@@ -92,7 +97,7 @@ typedef struct 			s_ls
 
 void					print_major_minor(t_file *file, t_op *op);
 void					init_tab(int (*tab[13])(void));
-void					error(int error);
+void					error(t_file *file, int error, t_op *op, char *entry);
 t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
 char					*get_fname(char *entry);
@@ -125,6 +130,8 @@ char					*get_path(char *entry, t_op *op);
 void					write_path(char *path, char *origin, int noarg, int relative);
 int 					same_path_everywhere(t_file *file);
 void					read_link(char *path);
+void					check_rights(t_file *file);
+t_file					*sort(t_file *t_file, t_op *op);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

@@ -24,8 +24,6 @@ t_file				*store_basic(t_file *file, struct stat *data)
 		file->mtime = data->st_mtime;
 		if (S_ISBLK(file->st_mode) || S_ISCHR(file->st_mode))
 		{
-			// file->minor = (data->st_rdev << 8) >> 8;
-			// file->major = (data->st_rdev >> 8) << 8;
 			file->major = major(data->st_rdev);
 			file->minor = minor(data->st_rdev);
 		}

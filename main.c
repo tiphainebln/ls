@@ -48,12 +48,11 @@ int 		main(int argc, char **argv, char **env)
 	i = 0;
 	o = NULL;
 	o = init(o, env);
-	o = options(argv, o);
+	if (argc > 1)
+		o = options(argv, o);
 	file = NULL;
 	oldpath = NULL;
 	oldarg = 1;
-	if (argc < 0)
-		error(ARGUMENT);
 	while (argv[++i])
 	{
 		if (argv[i][0] != '-')
@@ -72,6 +71,8 @@ int 		main(int argc, char **argv, char **env)
 			file = get_sub(file, o, o->noarg);
 	}
 	file = o->begin;
+	if (!file)
+		error(file, NOTHINGTODO, o, NULL);
 	if (o->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, o);
 	while (file)
@@ -87,7 +88,7 @@ int 		main(int argc, char **argv, char **env)
 			file = file->next;
 			continue ;
 		}
-		if (file->noarg != oldarg && o->noarg > 2)
+		else if (file->noarg != oldarg && o->noarg > 2)
 		{
 			if (oldpath)
 				ft_putchar('\n');
@@ -122,20 +123,19 @@ int 		main(int argc, char **argv, char **env)
 		if (o->l)
 			long_format(file, o);
 		else
+		{
+			sort(file, o);
 			(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
+		}
 		ft_putstr("\033[00m");
 		file = file->next;
 	}
 	return (0);
 }
 
-/* when illegal option shut down fucking errythang 
-24/04 : -penser a gerer l'affichage du path lorsque ../fichier est passé en paramètre
-- test dans /dev pourquoi type_rights ne fonctionne pas du fd ? sur ce meme fd, les minors/majors ne doivent pas s'afficher car 'd'
-- SEGFAULT -R + fichier
-- Quand ., traiter l'affichage du path de la meme maniere que quand noarg == 1; pour cette section seulement.
-
-- paufiner la gestion d'erreur
+/* 
+- data->m_time = structure.st_mtimespec;
+- test dans /dev pourquoi type_rights ne fonctionne pas avec fd ? sur ce meme fd, les minors/majors ne doivent pas s'afficher car 'd'
 - tri normal (alphabetique)
 - decouper le main en petites fonctions -> parse // -> affichage
 - tri par temps
