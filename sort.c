@@ -21,36 +21,30 @@ void	swap_list(t_file **a, t_file **b)
 	*b = c;
 }
 
-int		is_sorted(t_file *file)
+int		cmp_links(t_file *a, t_file *b)
 {
-	while (file->next)
-	{
-		if (file > file->next)
-			return (0);
-		file = file->next;
-	}
+	if (a > b)
+		return (0);
 	return (1);
 }
 
 t_file		*sort(t_file *file, t_op *op)
 {
-	t_file	*tmp;
+	t_file	*a;
+	t_file	*b;
 
-	tmp = NULL;
 	file = op->begin;
-	while (is_sorted(file) == 0)
+	a = file;
+	while (a)
 	{
-		while (file->next)
+		b = file->next;
+		while (b)
 		{
-			if (file > file->next)
-			{
-				tmp = file;
-				file = file->next;
-				file->next = tmp;
-			}
-			else
-				 file = file->next;
+			if (cmp_links(a, b))
+				swap_list(&a, &b);
+			b = b->next;
 		}
+		a = a->next;
 	}
 	return (file);
 }

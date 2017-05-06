@@ -69,7 +69,7 @@ int 			opt_a(t_file *file, t_op *op, char **argv)
 	return (1);
 }
 
-t_file			*long_format(t_file *file, t_op *op)
+t_file			*long_format(t_file *file, t_op *op, int (*tab[13])(void))
 {
 	file_type_letter(file);
 	print_rights(file, op);
@@ -83,7 +83,11 @@ t_file			*long_format(t_file *file, t_op *op)
 	print_time(file);
 	(file->file) ? ft_putstr(file->displayname) : ft_putstr(file->name);
 	if (file->linkname != NULL)
-		ft_putstr(ft_strjoin(" -> ", file->linkname));
+	{
+		ft_putstr(" -> ");
+		tab[file->typereal]();
+		ft_putstr(file->linkname);
+	}
 	ft_putchar('\n');
 	ft_putstr("\033[00m");
 	return (file);

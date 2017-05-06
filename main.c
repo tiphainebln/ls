@@ -93,7 +93,7 @@ int 		main(int argc, char **argv, char **env)
 			if (oldpath)
 				ft_putchar('\n');
 			if (file->file == 0)
-			write_path(file->path, o->origin, o->noarg, file->relative);
+				write_path(file->path, o->origin, o->noarg, file->relative);
 			if (o->l && file->file == 0)
 				print_total(file, o);
 		}
@@ -103,7 +103,7 @@ int 		main(int argc, char **argv, char **env)
 			{
 				ft_putchar('\n');
 				if (file->file == 0)
-				write_path(file->path, o->origin, o->noarg, file->relative);
+					write_path(file->path, o->origin, o->noarg, file->relative);
 				if (o->l && file->file == 0)
 					print_total(file, o);
 			}
@@ -119,12 +119,13 @@ int 		main(int argc, char **argv, char **env)
 			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
+		ft_putnbr(file->type);
 		tab[file->type]();
 		if (o->l)
-			long_format(file, o);
+			long_format(file, o, tab);
 		else
 		{
-			sort(file, o);
+			//sort(file, o);
 			(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
 		}
 		ft_putstr("\033[00m");
@@ -140,4 +141,6 @@ int 		main(int argc, char **argv, char **env)
 - decouper le main en petites fonctions -> parse // -> affichage
 - tri par temps
 - tri inverse
+- lien symbolique supprime.
+- lien stnbolique dans un dossier, file->realtype n'est pas set
 */

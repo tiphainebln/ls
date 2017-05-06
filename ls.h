@@ -64,6 +64,7 @@ typedef struct 			s_file
 	char 				*displayname;
 	int 				error;
 	char 				*errmsg;
+	int 				typereal;
 }						t_file;
 
 typedef struct 			s_op
@@ -119,7 +120,7 @@ int						print_rights(t_file *file, t_op *op);
 t_file					*print_total(t_file *file, t_op *op);
 t_file					*print_size(t_file *file, t_op *op);
 t_file					*print_links(t_file *file);
-t_file					*long_format(t_file *file, t_op *op);
+t_file					*long_format(t_file *file, t_op *op, int (*tab[13])(void));
 t_file					*add_file(struct stat *data, t_op *op, char *entry);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 int 					opt_a(t_file *file, t_op *op, char **argv);

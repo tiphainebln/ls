@@ -22,12 +22,18 @@ t_file					*add_file(struct stat *data, t_op *op, char *entry)
 		else
 			file->relative = 1;
 		if (op->link)
+		{
+			file->type = 10;
+			file->typereal = determine_type(data);
 			file->linkname = ft_strdup(op->linkname);
+		}
 		else
+		{
+			file->type = determine_type(data);
 			file->linkname = NULL;
+		}
 		file->name = get_fname(entry);
 		file->displayname = ft_strdup(entry);
-		file->type = determine_type(data);
 		file = store_basic(file, data);
 		file = store_groups_uid(file);
 		file->path = get_path(entry, op);
@@ -68,7 +74,7 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
-	else if (stat(fullpath, data) == -1)
+	if (stat(fullpath, data) == -1)
 		error(file, ARGUMENT, op, entry);
 	else if (!file)
 	{
@@ -90,16 +96,23 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 
 		file = (t_file *)malloc(sizeof(t_file));
 		file->name = ft_strdup(dirent->d_name);
-		file->type = dirent->d_type;
 		file = store_basic(file, data);
 		file->path = ft_strdup(op->current);
 		file = store_groups_uid(file);
 		file = nb_spaces(file, op);
 		file->displayname = NULL;
 		if (op->link)
+		{
 			file->linkname = ft_strdup(op->linkname);
+			file->type = 10;
+			file->typereal = dirent->d_type;
+			ft_putendl("df");
+		}
 		else
+		{
+			file->type = dirent->d_type;
 			file->linkname = NULL;
+		}
 		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		{
 			file->visited = 0;
@@ -140,7 +153,7 @@ t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
-	else if (stat(ft_strjoin(op->current, dirent->d_name), data) == -1)
+	if (stat(ft_strjoin(op->current, dirent->d_name), data) == -1)
 		error(file, ARGUMENT, op, dirent->d_name);
 	else if (!file)
 	{
