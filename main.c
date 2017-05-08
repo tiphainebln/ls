@@ -70,9 +70,14 @@ int 		main(int argc, char **argv, char **env)
 		if (o->R)
 			file = get_sub(file, o, o->noarg);
 	}
-	file = o->begin;
 	if (!file)
 		error(file, NOTHINGTODO, o, NULL);
+	if (!o->t)
+		file = sort(file, o, NAME);
+	// else
+	// 	file = sort(file, o, TIME);
+	// if (o->r)
+	// 	file = rev_list(file, o, REVERSE);
 	if (o->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, o);
 	while (file)
@@ -119,15 +124,11 @@ int 		main(int argc, char **argv, char **env)
 			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
-		ft_putnbr(file->type);
 		tab[file->type]();
 		if (o->l)
 			long_format(file, o, tab);
 		else
-		{
-			//sort(file, o);
 			(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
-		}
 		ft_putstr("\033[00m");
 		file = file->next;
 	}
@@ -143,4 +144,6 @@ int 		main(int argc, char **argv, char **env)
 - tri inverse
 - lien symbolique supprime.
 - lien stnbolique dans un dossier, file->realtype n'est pas set
+http://faculty.salina.k-state.edu/tim/CMST302/study_guide/topic7/bubble.html   -> revoir logique
+ou placer le sort pour que le -R soit effectif ? apres get_sub ? 
 */

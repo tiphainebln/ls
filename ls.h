@@ -34,6 +34,10 @@
 # define PERMISSION 6
 # define NOTHINGTODO 0
 
+# define NAME 0
+# define TIME 1
+# define REVERSE 2
+
 typedef struct 			s_file
 {
 	int 				completed;
@@ -132,7 +136,7 @@ void					write_path(char *path, char *origin, int noarg, int relative);
 int 					same_path_everywhere(t_file *file);
 void					read_link(char *path);
 void					check_rights(t_file *file);
-t_file					*sort(t_file *t_file, t_op *op);
+t_file					*sort(t_file *t_file, t_op *op, int tri);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

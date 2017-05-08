@@ -12,41 +12,62 @@
 
 #include "ls.h"
 
-void	swap_list(t_file **a, t_file **b)
+t_file	*swap_list(t_file *a, t_file *b)
 {
-	t_file	*c;
-
-	c = *a;
-	*a = *b;
-	*b = c;
+	a->next = b->next;
+	b->next = a;
+	return (b);
 }
 
-int		cmp_links(t_file *a, t_file *b)
+int		cmp_links(t_file *a, t_file *b, int tri)
 {
-	if (a > b)
-		return (0);
-	return (1);
+	if (tri == NAME)
+	{
+		if (ft_strcmp(a->name, b->name) > 0)
+			return (0);
+		return (1);
+	}
+	// if (tri == TIME)
+	// {
+	// 	if (ft_strcmp(a->name, b->name) > 0)
+	// 		return (0);
+	// 	return (1);
+	// }
+	else
+		return (1);
 }
 
-t_file		*sort(t_file *file, t_op *op)
+t_file		*sort(t_file *file, t_op *op, int tri)
 {
+	t_file	*start;
 	t_file	*a;
 	t_file	*b;
+	int		changed;
 
+	changed = 1;
+	start = (t_file *)malloc(sizeof(t_file));
 	file = op->begin;
-	a = file;
-	while (a)
+	start->next = file;
+	while (changed)
 	{
-		b = file->next;
-		while (b)
+		changed = 0;
+		a = start;
+		b = start->next;
+		while (b->next)
 		{
-			if (cmp_links(a, b))
-				swap_list(&a, &b);
-			b = b->next;
+			if (cmp_links(b, b->next, tri) == 0)
+			{
+				a->next = swap_list(b, b->next);
+				changed = 1;
+			}
+			a = b;
+			if (b->next)
+				b = b->next;
 		}
-		a = a->next;
 	}
-	return (file);
+	b = start->next;
+	free(start);
+	return (b);
 }
 
 /*

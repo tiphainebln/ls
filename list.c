@@ -63,7 +63,7 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 		fullpath = ft_strjoin(op->origin, entry);
 	if (op->linkname)
 		ft_strdel(&op->linkname);
-	else if ((len = readlink(fullpath, buf, 1024)) > 0)
+	if ((len = readlink(fullpath, buf, 1024)) > 0)
 	{
 		buf[len] = '\0';
 		if (lstat(fullpath, data) == -1)
@@ -74,7 +74,7 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
-	if (stat(fullpath, data) == -1)
+	if (len <= 0 && stat(fullpath, data) == -1)
 		error(file, ARGUMENT, op, entry);
 	else if (!file)
 	{
@@ -106,7 +106,6 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 			file->linkname = ft_strdup(op->linkname);
 			file->type = 10;
 			file->typereal = dirent->d_type;
-			ft_putendl("df");
 		}
 		else
 		{
@@ -153,7 +152,7 @@ t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
-	if (stat(ft_strjoin(op->current, dirent->d_name), data) == -1)
+	if (len <= 0 && stat(ft_strjoin(op->current, dirent->d_name), data) == -1)
 		error(file, ARGUMENT, op, dirent->d_name);
 	else if (!file)
 	{
