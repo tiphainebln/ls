@@ -46,12 +46,12 @@ t_file					*print_size(t_file *file, t_op *op)
 
 t_file				*print_time(t_file *file)
 {
-	char 			*strtime;
 	char			*year;
-	char			*hour;
 	char			*date;
+	char			*hour;
+	char			*strtime;
 
-	strtime = ctime(&file->mtime);
+	strtime = ctime(&file->st_mtimes);
 	year = ft_strrchr(strtime, ':') + 4;
 	hour = ft_strrchr(strtime, ':') - 5;
 	year[4] = '\0';
@@ -61,7 +61,7 @@ t_file				*print_time(t_file *file)
 	date[6] = '\0';
 	ft_putstr(date);
 	ft_putchar(' ');
-	if (time(NULL) - 15768000 < file->mtime)
+	if (time(NULL) - 15768000 < file->st_mtimes)
 		ft_putstr(hour);
 	else
 	{

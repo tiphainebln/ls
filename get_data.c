@@ -21,7 +21,7 @@ t_file				*store_basic(t_file *file, struct stat *data)
 		file->st_uid = data->st_uid;
 		file->st_blocks = data->st_blocks;
 		file->st_blksize = data->st_blksize;
-		file->mtime = data->st_mtime;
+		file->st_mtimes = data->st_mtime;
 		if (S_ISBLK(file->st_mode) || S_ISCHR(file->st_mode))
 		{
 			file->major = major(data->st_rdev);

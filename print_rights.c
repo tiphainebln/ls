@@ -12,94 +12,86 @@
 
 #include "ls.h"
 
+void		get_suid(t_file *file)
+{
+	char	c;
+
+	if (file->st_mode & S_ISUID && (file->st_mode & S_IXUSR))
+		c = 's';
+	else if (file->st_mode & S_ISUID && !(file->st_mode & S_IXUSR))
+		c = 'S';
+	else if (file->st_mode & S_IXUSR)
+		c = 'x';
+	else
+		c = '-';
+	ft_putchar(c);
+}
+
+void		get_guid(t_file *file)
+{
+	char	c;
+
+	if (file->st_mode & S_ISGID && (file->st_mode & S_IXGRP))
+		c = 's';
+	else if (file->st_mode & S_ISGID && !(file->st_mode & S_IXGRP))
+		c = 'S';
+	else if (file->st_mode & S_IXGRP)
+		c = 'x';
+	else
+		c = '-';
+	ft_putchar(c);
+}
+
+void		get_stickybit(t_file *file)
+{
+	char	c;
+
+	if (file->st_mode & S_ISVTX && (file->st_mode & S_IXOTH))
+		c = 't';
+	else if (file->st_mode & S_ISVTX && !(file->st_mode & S_IXOTH))
+		c = 'T';
+	else if (file->st_mode & S_IXOTH)
+		c = 'x';
+	else
+		c = '-';
+	ft_putchar(c);
+}
+
 int				print_rights(t_file *file, t_op *op)
 {
 	ft_putchar((file->st_mode & S_IRUSR) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWUSR) ? 'w' : '-');
-	ft_putchar((file->st_mode & S_IXUSR) ? 'x' : '-');
+	get_suid(file);
 	ft_putchar((file->st_mode & S_IRGRP) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWGRP) ? 'w' : '-');
-	ft_putchar((file->st_mode & S_IXGRP) ? 'x' : '-');
+	get_guid(file);
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
-	ft_putchar((file->st_mode & S_IXOTH) ? 'x' : '-');
+	get_stickybit(file);
 	ft_putspaces(file, op, 0);
 	return (0);
 
 }
-
+ 
 void 			file_type_letter(t_file *file)
 {
     char  	  c;
 
     if (file->type == 8)
-        c = '-';
+    	c = '-';
     else if (file->type == 4)
-        c = 'd';
+    	c = 'd';
     else if (file->type == 6)
-        c = 'b';
+    	c = 'b';
     else if (file->type == 2)
-        c = 'c';
+    	c = 'c';
     else if (file->type == 1)
-        c = 'p';
+    	c = 'p';
     else if (file->type == 10)
-        c = 'l';
+    	c = 'l';
     else if (file->type == 12)
-        c = 's';
+    	c = 's';
     else
     	c = '?';
     ft_putchar(c);
-}
-
-t_file				*print_total(t_file *file, t_op *op)
-{
-	int				total;
-
-	total = 0;
-	while (file != NULL)
-	{
-		if (file->name[0] == '.')
-		{
-			if (op->a)
-				total += file->st_blocks;
-		}
-		else
-			total += file->st_blocks;
-		if (file->next && ft_strcmp(file->path, file->next->path) == 0)
-			file = file->next;
-		else
-			break ;
-	}
-	if (total >= 0)
-	{
-		ft_putstr("total ");
-		ft_putnbr(total);
-		ft_putchar('\n');
-	}
-	return (file);
-}
-
-void				print_major_minor(t_file *file, t_op *op)
-{
-	ft_putspaces(file, op, 4);
-	ft_putnbr(file->major);
-	ft_putstr(",");
-	ft_putspaces(file, op, 5);
-	ft_putnbr(file->minor);
-	ft_putstr(" ");
-}
-
-char				*get_fname(char *entry)
-{
-	char			*fn;
-	int 			i;
-
-	i = ft_strlen(entry) - 1;
-	fn = NULL;
-	if (entry[i] == '/')
-		entry[i] = '\0';
-	if ((fn = ft_strrchr(entry, '/')))
-		return (ft_strdup(fn + 1));
-	else
-		return (ft_strdup(entry));;
 }

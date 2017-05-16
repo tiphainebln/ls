@@ -37,6 +37,7 @@
 # define NAME 0
 # define TIME 1
 # define REVERSE 2
+# define PATH 3
 
 typedef struct 			s_file
 {
@@ -52,7 +53,7 @@ typedef struct 			s_file
 	uid_t				st_uid;
 	blkcnt_t			st_blocks;
 	blksize_t			st_blksize;
-	time_t				mtime;
+	time_t				st_mtimes;
 	char				*id;
 	struct s_file		*next;
 	char 				*grp;
@@ -69,6 +70,7 @@ typedef struct 			s_file
 	int 				error;
 	char 				*errmsg;
 	int 				typereal;
+	int 				first;
 }						t_file;
 
 typedef struct 			s_op
@@ -94,11 +96,6 @@ typedef struct 			s_op
 	char 				*linkname;
 	int 				error;
 }						t_op;
-
-typedef struct 			s_ls
-{
-
-}						t_ls;
 
 void					print_major_minor(t_file *file, t_op *op);
 void					init_tab(int (*tab[13])(void));
@@ -136,7 +133,7 @@ void					write_path(char *path, char *origin, int noarg, int relative);
 int 					same_path_everywhere(t_file *file);
 void					read_link(char *path);
 void					check_rights(t_file *file);
-t_file					*sort(t_file *t_file, t_op *op, int tri);
+t_file					*sort(t_file *file, int tri);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

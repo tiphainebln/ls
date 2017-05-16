@@ -35,6 +35,31 @@ int 		only_contains_hidden(t_file *start)
 	return (1);
 }
 
+t_file		*first_things_first(t_file *file)
+{
+	t_file	*begin;
+	char	*oldpath;
+
+	begin = file;
+	oldpath = NULL;
+	file->first = 1;
+	while (file)
+	{
+		oldpath = ft_strdup(file->path);
+		file = file->next;
+		if (file)
+		{
+			if (ft_strcmp(file->path, oldpath) == 0)
+				file->first = 0;
+			else
+				file->first = 1;
+		}
+		ft_strdel(&oldpath);
+	}
+	file = begin;
+	return (file);
+}
+
 int 		main(int argc, char **argv, char **env)
 {
 	t_op	*o;
@@ -72,19 +97,21 @@ int 		main(int argc, char **argv, char **env)
 	}
 	if (!file)
 		error(file, NOTHINGTODO, o, NULL);
-	if (!o->t)
-		file = sort(file, o, NAME);
-	// else
-	// 	file = sort(file, o, TIME);
-	// if (o->r)
-	// 	file = rev_list(file, o, REVERSE);
+	file = o->begin;
+	file = sort(file, PATH);
+	file = sort(file, NAME);
+	// if (o->t)
+	//	file = sort(file, TIME);
+	if (o->r)
+		file = sort(file, REVERSE);
 	if (o->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, o);
+	file = first_things_first(file);
 	while (file)
 	{
 		if (opt_a(file, o, argv) == 0)
 		{
-			if (ft_strcmp(file->name, ".") && only_contains_hidden(file))
+			if (ft_strcmp(file->name, ".") && only_contains_hidden(file) && ft_strcmp(file->path, oldpath))
 			{
 				if (oldpath)
 					ft_putchar('\n');
@@ -138,12 +165,13 @@ int 		main(int argc, char **argv, char **env)
 /* 
 - data->m_time = structure.st_mtimespec;
 - test dans /dev pourquoi type_rights ne fonctionne pas avec fd ? sur ce meme fd, les minors/majors ne doivent pas s'afficher car 'd'
-- tri normal (alphabetique)
 - decouper le main en petites fonctions -> parse // -> affichage
 - tri par temps
 - tri inverse
 - lien symbolique supprime.
 - lien stnbolique dans un dossier, file->realtype n'est pas set
 http://faculty.salina.k-state.edu/tim/CMST302/study_guide/topic7/bubble.html   -> revoir logique
-ou placer le sort pour que le -R soit effectif ? apres get_sub ? 
+- le tri inverse avec -R ne fontionne pas 
+- affichage de stderr->fd/0 etc.. a decaler par rapport a l'emplacement des majors/minors
+
 */

@@ -112,7 +112,7 @@ t_file					*add_list(struct stat *data, struct dirent *dirent, t_op *op)
 			file->type = dirent->d_type;
 			file->linkname = NULL;
 		}
-		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, "..") && (file->st_mode & S_IRUSR))
 		{
 			file->visited = 0;
 			file->completed = 0;

@@ -71,7 +71,6 @@ t_file				*get_sub(t_file *file, t_op *op, int where)
 					return (file);
 			}
 		}
-
 		else if (file->visited)
 		{
 			while (file && ft_strcmp(file->path, op->current))

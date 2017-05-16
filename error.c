@@ -33,7 +33,7 @@ void		error(t_file *file, int error, t_op *op, char *entry)
 	if (error == USAGE)
 		ft_putendl_fd("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]", 2);
 	else if (error != NOTHINGTODO)
-		perror(entry);
+			perror(entry);
 	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
 		ft_free(file, op, error);
 }
