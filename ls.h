@@ -38,6 +38,7 @@
 # define TIME 1
 # define REVERSE 2
 # define PATH 3
+# define REVPATH 4
 
 typedef struct 			s_file
 {
@@ -45,7 +46,6 @@ typedef struct 			s_file
 	char				*name;
 	off_t				st_size;
 	char				*path;
-	char				*directory;
 	unsigned char		type;
 	nlink_t				st_nlink;
 	mode_t				st_mode;
@@ -54,7 +54,6 @@ typedef struct 			s_file
 	blkcnt_t			st_blocks;
 	blksize_t			st_blksize;
 	time_t				st_mtimes;
-	char				*id;
 	struct s_file		*next;
 	char 				*grp;
 	char 				*uid;
@@ -68,9 +67,9 @@ typedef struct 			s_file
 	char 				*linkname;
 	char 				*displayname;
 	int 				error;
-	char 				*errmsg;
 	int 				typereal;
 	int 				first;
+	char 				*nameasadir;
 }						t_file;
 
 typedef struct 			s_op
@@ -95,6 +94,7 @@ typedef struct 			s_op
 	int 				link;
 	char 				*linkname;
 	int 				error;
+	t_file				*latest;
 }						t_op;
 
 void					print_major_minor(t_file *file, t_op *op);
@@ -104,12 +104,12 @@ t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
 char					*get_fname(char *entry);
 t_file					*print_fname(t_file *file, char *entry);
-void					change_dir(char **old, char *new);
+void					change_dir(char **old, char *new, int free_needed);
 t_op 					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op, int sub);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
-t_file					*store_basic(t_file *file, struct stat *data);
+t_file					*store_basic(t_file *file, struct stat data);
 t_file					*store_groups_uid(t_file *file);
 t_file					*nb_spaces(t_file *file, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op, int where);
@@ -122,18 +122,18 @@ t_file					*print_total(t_file *file, t_op *op);
 t_file					*print_size(t_file *file, t_op *op);
 t_file					*print_links(t_file *file);
 t_file					*long_format(t_file *file, t_op *op, int (*tab[13])(void));
-t_file					*add_file(struct stat *data, t_op *op, char *entry);
+t_file					*add_file(struct stat data, t_op *op, char *entry);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 int 					opt_a(t_file *file, t_op *op, char **argv);
 void					ft_putspaces(t_file *file, t_op *op, int choice);
 t_file					*print_time(t_file *file);
-int						determine_type(struct stat *data);
+int						determine_type(struct stat data);
 char					*get_path(char *entry, t_op *op);
 void					write_path(char *path, char *origin, int noarg, int relative);
 int 					same_path_everywhere(t_file *file);
 void					read_link(char *path);
 void					check_rights(t_file *file);
-t_file					*sort(t_file *file, int tri);
+t_file					*sort(t_file *file, t_op *op, int tri);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

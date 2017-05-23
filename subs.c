@@ -12,11 +12,13 @@
 
 #include "ls.h"
 
-void				change_dir(char **old, char *new)
+void				change_dir(char **old, char *new, int free_needed)
 {
 	if (*old)
 		free(*old);
 	*old = ft_strdup(new);
+	if (free_needed)
+		free(new);
 }
 
 int					ft_second_to_last(char *str)
@@ -43,6 +45,16 @@ int					ft_isitover(t_file *file)
 	return (1);
 }
 
+char 				*father(char *current)
+{
+	char 			*father;
+	char 			*mother;
+
+	father = ft_strsub(current, 0, ft_second_to_last(current));
+	mother = ft_strjoin(father, "/");
+	free(father);
+	return (mother);
+}
 
 t_file				*get_sub(t_file *file, t_op *op, int where)
 {
@@ -62,11 +74,18 @@ t_file				*get_sub(t_file *file, t_op *op, int where)
 				file = curr_dir;
 				if (ft_isitover(file))
 					return (file);
-				while (file && ft_strcmp(ft_strjoin(ft_strjoin(file->path, file->name), "/"), op->current))
+				while (file)
+				{
+					if (file->nameasadir)
+					{
+						if (ft_strcmp(file->nameasadir, op->current) == 0)
+							break ;
+					}
 					file = file->next;
+				}
 				file->completed = 1;
 				if (ft_strcmp(curr_dir->path, op->current))
-					change_dir(&op->current, ft_strjoin(ft_strsub(op->current, 0, ft_second_to_last(op->current)), "/"));
+					change_dir(&op->current, father(op->current), 1);
 				else
 					return (file);
 			}
@@ -79,7 +98,7 @@ t_file				*get_sub(t_file *file, t_op *op, int where)
 		else
 		{
 			file->visited = 1;
-			file = get_directory(ft_strjoin(file->path, file->name), file, op, 1);
+			file = get_directory(file->nameasadir, file, op, 1);
 			file = curr_dir;
 		}
 	}

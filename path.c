@@ -34,10 +34,12 @@ void		write_path(char *path, char *origin, int noarg, int relative)
 			tmp++;
 		if (noarg == 1)
 			ft_putstr("./");
-		ft_putendl(ft_strjoin(&tmp[last_slash], ":"));
+		ft_putstr(&tmp[last_slash]);
 	}
 	else
-		ft_putendl(ft_strjoin(tmp, ":"));
+		ft_putstr(tmp);
+	ft_putendl(":");
+	free(tmp);
 }
 
 int 		same_path_everywhere(t_file *file)

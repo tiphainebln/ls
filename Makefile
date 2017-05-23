@@ -6,7 +6,7 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 09:36:27 by tbouline          #+#    #+#              #
-#    Updated: 2017/04/27 06:03:22 by tbouline         ###   ########.fr        #
+#    Updated: 2017/05/20 06:26:59 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ OBJ = $(SRC:.c=.o)
 
 NAME = ft_ls
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS =-Wall -Wextra -Werror
 
 CC = gcc
 

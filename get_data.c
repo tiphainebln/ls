@@ -12,20 +12,20 @@
 
 #include "ls.h"
 
-t_file				*store_basic(t_file *file, struct stat *data)
+t_file				*store_basic(t_file *file, struct stat data)
 {
-		file->st_size = data->st_size;
-		file->st_nlink = data->st_nlink;
-		file->st_mode = data->st_mode;
-		file->st_gid = data->st_gid;
-		file->st_uid = data->st_uid;
-		file->st_blocks = data->st_blocks;
-		file->st_blksize = data->st_blksize;
-		file->st_mtimes = data->st_mtime;
+		file->st_size = data.st_size;
+		file->st_nlink = data.st_nlink;
+		file->st_mode = data.st_mode;
+		file->st_gid = data.st_gid;
+		file->st_uid = data.st_uid;
+		file->st_blocks = data.st_blocks;
+		file->st_blksize = data.st_blksize;
+		file->st_mtimes = data.st_mtime;
 		if (S_ISBLK(file->st_mode) || S_ISCHR(file->st_mode))
 		{
-			file->major = major(data->st_rdev);
-			file->minor = minor(data->st_rdev);
+			file->major = major(data.st_rdev);
+			file->minor = minor(data.st_rdev);
 		}
 		else
 		{
@@ -41,8 +41,6 @@ t_file				*store_groups_uid(t_file *file)
 	struct group 	*grp;
 	struct passwd	*uid;
 
-	grp = (struct group *)malloc(sizeof(struct group));
-	uid = (struct passwd *)malloc(sizeof(struct passwd));
 	grp = getgrgid(file->st_gid);
 	file->grp = ft_strdup(grp->gr_name);
 	uid = getpwuid(file->st_uid);

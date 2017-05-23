@@ -14,28 +14,55 @@
 
 void 		ft_free(t_file *file, t_op *op, int error)
 {
+	t_file	*tmp;
+
 	if (file)
 	{
-		free(file);
-		file = NULL;
+		while (file)
+		{
+			if (file->nameasadir)
+				free(file->nameasadir);
+			if (file->name)
+				free(file->name);
+			if (file->path)
+				free(file->path);
+			if (file->uid)
+				free(file->uid);
+			if (file->grp)
+				free(file->grp);
+			if (file->displayname)
+				free(file->displayname);
+			if (file->linkname)
+				free(file->linkname);
+			tmp = file;
+			file = file->next;
+			free(tmp);
+		}
 	}
 	if (op)
 	{
+		if (op->origin)
+			free(op->origin);
+		if (op->current)
+			free(op->current);
+		if (op->linkname)
+			free(op->linkname);
 		free(op);
-		op = NULL;
 	}
 	exit(error);
 }
 
 void		error(t_file *file, int error, t_op *op, char *entry)
 {
-	file = op->begin;
 	if (error == USAGE)
 		ft_putendl_fd("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]", 2);
 	else if (error != NOTHINGTODO)
-			perror(entry);
+		perror(entry);
 	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
+	{
+		file = op->begin;
 		ft_free(file, op, error);
+	}
 }
 
 

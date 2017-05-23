@@ -22,14 +22,14 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 		if (entry[0] == '/' || sub)
 		{
 			if (entry[ft_strlen(entry) - 1] == '/')
-				change_dir(&op->current, entry);
+				change_dir(&op->current, entry, 0);
 			else
-				change_dir(&op->current, ft_strjoin(entry, "/"));
+				change_dir(&op->current, ft_strjoin(entry, "/"), 1);
 		}
 		else
 		{
 			op->relative = 1;
-			change_dir(&op->current, ft_strjoin(ft_strjoin(op->origin, entry), "/"));
+			change_dir(&op->current, ft_str3join(op->origin, entry, "/"), 1);
 		}
 		file = read_content(file, fd, op);
 		closedir(fd);
@@ -39,7 +39,10 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 		if (errno == ENOTDIR)
 			file = new_file(file, op, entry);
 		else
+		{
+			file->completed = 1;
 			error(file, PERMISSION, op, entry);
+		}
 	}
 	return (file);
 }
@@ -48,8 +51,6 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 {
 	struct dirent	*dirent;
 
-	if (!(dirent = (struct dirent *)malloc(sizeof(struct dirent))))
-		error(file, MALLOC_ERROR, op, NULL);
 	while (((dirent = readdir(fd)) != NULL))
 	{
 		file = op->begin;

@@ -98,12 +98,17 @@ int 		main(int argc, char **argv, char **env)
 	if (!file)
 		error(file, NOTHINGTODO, o, NULL);
 	file = o->begin;
-	file = sort(file, PATH);
-	file = sort(file, NAME);
-	// if (o->t)
-	//	file = sort(file, TIME);
 	if (o->r)
-		file = sort(file, REVERSE);
+	{
+		file = sort(file, o, REVPATH);
+		file = sort(file, o, REVERSE);
+	}
+	else
+	{
+		file = sort(file, o, PATH);
+		file = sort(file, o, NAME);
+	}
+	o->begin = file;
 	if (o->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, o);
 	file = first_things_first(file);
@@ -159,6 +164,9 @@ int 		main(int argc, char **argv, char **env)
 		ft_putstr("\033[00m");
 		file = file->next;
 	}
+	if (oldpath)
+		ft_strdel(&oldpath);
+	error(file, NOTHINGTODO, o, NULL);
 	return (0);
 }
 
@@ -171,7 +179,6 @@ int 		main(int argc, char **argv, char **env)
 - lien symbolique supprime.
 - lien stnbolique dans un dossier, file->realtype n'est pas set
 http://faculty.salina.k-state.edu/tim/CMST302/study_guide/topic7/bubble.html   -> revoir logique
-- le tri inverse avec -R ne fontionne pas 
 - affichage de stderr->fd/0 etc.. a decaler par rapport a l'emplacement des majors/minors
-
+https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.c
 */
