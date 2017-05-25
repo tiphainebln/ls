@@ -71,7 +71,7 @@ int 			opt_a(t_file *file, t_op *op, char **argv)
 			if (!op->R)
 				return (1);
 			else
-				return (ft_cmppostorigin(op->origin, file->path));
+				return (ft_cmppostorigin(op->origin, file->path, 0));
 		}
 		else if (op->noarg > 1 && ft_strstr(file->path, "/."))
 			return (relative_hiddenry(file, op, argv));
