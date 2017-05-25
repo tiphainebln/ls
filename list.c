@@ -134,6 +134,11 @@ t_file					*add_list(struct stat data, struct dirent *dirent, t_op *op)
 		return (file);
 }
 
+// 7255 7008
+
+// ==39251==    still reachable: 11,801 bytes in 57 blocks
+// ==39251==         suppressed: 22,238 bytes in 190 blocks
+
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 {
 	struct stat 		data;

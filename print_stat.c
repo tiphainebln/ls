@@ -61,13 +61,13 @@ t_file				*print_time(t_file *file)
 	date[6] = '\0';
 	ft_putstr(date);
 	ft_putchar(' ');
-	if (time(NULL) - 15768000 < file->st_mtimes)
-		ft_putstr(hour);
-	else
+	if (time(NULL) - 15768000 >= file->st_mtimes || time(NULL) < file->st_mtimes)
 	{
 		ft_putchar(' ');
 		ft_putstr(year);
 	}
+	else
+		ft_putstr(hour);
 	ft_putchar(' ');
 	return (file);
 }

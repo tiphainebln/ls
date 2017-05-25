@@ -79,6 +79,12 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
 			return (1);
 		return (0);
 	}
+    if (tri == NAME)
+    {
+        if (ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
+            return (1);
+        return (0);
+    }
 	if (tri == REVERSE)
 	{
 		if (ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
@@ -91,17 +97,11 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
 			return (1);
 		return (0);
 	}
-	if (tri == NAME)
-	{
-		if (ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
-			return (1);
-		return (0);
-	 }
 	 // if (tri == TIME)
 		// cmp_time(a, b);
-	 else
-	 	return (0);
+ 	return (0);
 }
+
 
 t_file		*sort(t_file *file, t_op *op, int tri)
 {
