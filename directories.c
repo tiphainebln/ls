@@ -25,6 +25,8 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 				change_dir(&op->current, entry, 0);
 			else
 				change_dir(&op->current, ft_strjoin(entry, "/"), 1);
+			if (sub)
+				op->relative = 1;
 		}
 		else
 		{
@@ -40,8 +42,9 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 			file = new_file(file, op, entry);
 		else
 		{
-			file->completed = 1;
-			error(file, PERMISSION, op, entry);
+			if (sub)
+				file->completed = 1;
+			manage_error(file, PERMISSION, op, entry);
 		}
 	}
 	return (file);
@@ -55,8 +58,6 @@ t_file				*read_content(t_file *file, DIR *fd, t_op *op)
 	{
 		file = op->begin;
 		file = new_list(file, dirent, op);
-		if (op->relative)
-			file->relative = 1;
 	}
 	return (file);
 }

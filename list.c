@@ -68,14 +68,14 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 		buf[len] = '\0';
 		if (lstat(fullpath, &data) == -1)
 		{
-			error(file, ARGUMENT, op, entry);
+			manage_error(file, ARGUMENT, op, entry);
 			return (file);
 		}
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
 	if (len <= 0 && stat(fullpath, &data) == -1)
-		error(file, ARGUMENT, op, entry);
+		manage_error(file, ARGUMENT, op, entry);
 	else if (!file)
 	{
 		file = add_file(data, op, entry);
@@ -114,7 +114,7 @@ t_file					*add_list(struct stat data, struct dirent *dirent, t_op *op)
 			file->type = dirent->d_type;
 			file->linkname = NULL;
 		}
-		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, "..")) // && got_rights(file, op))
+		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		{
 			file->visited = 0;
 			file->completed = 0;
@@ -128,6 +128,8 @@ t_file					*add_list(struct stat data, struct dirent *dirent, t_op *op)
 		}
 		file->noarg = op->noarg;
 		file->relative = 0;
+		if (op->relative)
+			file->relative = 1;
 		file->file = 0;
 		file->error = 0;
 		file->first = 1;
@@ -157,14 +159,14 @@ t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 		buf[len] = '\0';
 		if (lstat(fullname, &data) == -1)
 		{
-			error(file, ARGUMENT, op, dirent->d_name);
+			manage_error(file, ARGUMENT, op, dirent->d_name);
 			return (file);
 		}
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
-	if (len <= 0 && stat(fullname, &data) == -1)
-		error(file, ARGUMENT, op, dirent->d_name);
+	if (len <= 0 && errno != ELOOP && stat(fullname, &data) == -1)
+		manage_error(file, ARGUMENT, op, dirent->d_name);
 	else if (!file)
 	{
 		file = add_list(data, dirent, op);
@@ -216,7 +218,7 @@ t_op	*init(t_op *op, char **env)
 		}
 		op->current = NULL;
 		if (op->origin == NULL)
-			error(NULL, ERROR, op, NULL);
+			manage_error(NULL, ERROR, op, NULL);
 	}
 	return (op);
 }

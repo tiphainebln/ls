@@ -24,8 +24,6 @@ void 		ft_free(t_file *file, t_op *op, int error)
 				free(file->nameasadir);
 			if (file->name)
 				free(file->name);
-			if (file->path)
-				free(file->path);
 			if (file->uid)
 				free(file->uid);
 			if (file->grp)
@@ -52,11 +50,11 @@ void 		ft_free(t_file *file, t_op *op, int error)
 	exit(error);
 }
 
-void		error(t_file *file, int error, t_op *op, char *entry)
+void		manage_error(t_file *file, int error, t_op *op, char *entry)
 {
 	if (error == USAGE)
 		ft_putendl_fd("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]", 2);
-	else if (error != NOTHINGTODO)
+	else if (error != NOTHINGTODO && errno != ELOOP)
 		perror(entry);
 	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
 	{

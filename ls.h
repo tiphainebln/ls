@@ -99,7 +99,7 @@ typedef struct 			s_op
 
 void					print_major_minor(t_file *file, t_op *op);
 void					init_tab(int (*tab[13])(void));
-void					error(t_file *file, int error, t_op *op, char *entry);
+void					manage_error(t_file *file, int error, t_op *op, char *entry);
 t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o);
 char					*get_fname(char *entry);

@@ -21,8 +21,9 @@ void		write_path(char *path, char *origin, int noarg, int relative)
 	last_slash = 0;
 	i = 0;
 	tmp = ft_strdup(path);
-	tmp[ft_strlen(tmp) - 1] = '\0';
-	if (relative)
+	if (tmp[1] != '\0')
+		tmp[ft_strlen(tmp) - 1] = '\0';
+	if (relative || noarg == 1)
 	{
 		while (tmp[i] && origin[i] && origin[i] == tmp[i])
 		{
@@ -39,7 +40,6 @@ void		write_path(char *path, char *origin, int noarg, int relative)
 	else
 		ft_putstr(tmp);
 	ft_putendl(":");
-	free(tmp);
 }
 
 int 		same_path_everywhere(t_file *file)

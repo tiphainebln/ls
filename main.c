@@ -12,11 +12,25 @@
 
 #include "ls.h"
 
+int 		ft_checkhiddendir(char *str)
+{
+	int 	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/' && str[i + 1] && str[i + 1] == '.' && str[i + 2] && str[i + 2] != '.')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int 		only_contains_hidden(t_file *start)
 {
 	char	*path;
 
-	if (ft_strstr(start->path, "/."))
+	if (ft_checkhiddendir(start->path))
 		return (0);
 	path = ft_strdup(start->path);
 	while (start && ft_strcmp(start->path, path) == 0)
@@ -96,7 +110,7 @@ int 		main(int argc, char **argv, char **env)
 			file = get_sub(file, o, o->noarg);
 	}
 	if (!file)
-		error(file, NOTHINGTODO, o, NULL);
+		manage_error(file, NOTHINGTODO, o, NULL);
 	file = o->begin;
 	if (o->r)
 	{
@@ -156,29 +170,32 @@ int 		main(int argc, char **argv, char **env)
 			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
-		tab[file->type]();
+		//tab[file->type]();
 		if (o->l)
 			long_format(file, o, tab);
 		else
 			(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
-		ft_putstr("\033[00m");
+		// ft_putstr("\033[00m");
 		file = file->next;
 	}
 	if (oldpath)
 		ft_strdel(&oldpath);
-	error(file, NOTHINGTODO, o, NULL);
+	manage_error(file, NOTHINGTODO, o, NULL);
 	return (0);
 }
 
 /* 
-- data->m_time = structure.st_mtimespec;
-- test dans /dev pourquoi type_rights ne fonctionne pas avec fd ? sur ce meme fd, les minors/majors ne doivent pas s'afficher car 'd'
-- decouper le main en petites fonctions -> parse // -> affichage
-- tri par temps
-- tri inverse
-- lien symbolique supprime.
-- lien stnbolique dans un dossier, file->realtype n'est pas set
-http://faculty.salina.k-state.edu/tim/CMST302/study_guide/topic7/bubble.html   -> revoir logique
-- affichage de stderr->fd/0 etc.. a decaler par rapport a l'emplacement des majors/minors
-https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.c
+** - data->m_time = structure.st_mtimespec;
+** - test dans /dev pourquoi type_rights ne fonctionne pas avec fd ? 
+** - decouper le main en petites fonctions -> parse // -> affichage
+** - tri par temps
+** - lien symbolique supprime.
+** - lien stnbolique dans un dossier, file->realtype n'est pas set
+** http://faculty.salina.k-state.edu/tim/CMST302/study_guide/topic7/bubble.html   -> revoir logique
+** - affichage de stderr->fd/0 etc.. a decaler par rapport a l'emplacement des majors/minors
+** https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.c
+** - affichage des noms a revoir : des que deux fichiers situes a la racine sont passes en parametres ne pas mettre d'espaces
+** Affichage de deux fois le meme dossier
+** dossiers vides ne se printent pas quand je fais ./ft_ls -Rr TEST abc .. Mais sinon comportement identique. J'ASSURE :)
+** Commencer à réfléchir au fameux maillon d'erreur
 */
