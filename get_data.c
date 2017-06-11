@@ -12,6 +12,22 @@
 
 #include "ls.h"
 
+t_file				*store_lnk(t_file *file, t_op *op, struct stat data)
+{
+	if (op->link)
+	{
+		file->type = 10;
+		file->typereal = determine_type(data);
+		file->linkname = ft_strdup(op->linkname);
+	}
+	else
+	{
+		file->type = determine_type(data);
+		file->linkname = NULL;
+	}
+	return (file);
+}
+
 t_file				*store_basic(t_file *file, struct stat data)
 {
 		file->st_size = data.st_size;

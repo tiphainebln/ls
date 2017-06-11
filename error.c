@@ -12,31 +12,35 @@
 
 # include "ls.h"
 
+void		free_file(t_file *file, t_file *tmp)
+{
+	while (file)
+	{
+		if (file->nameasadir)
+			free(file->nameasadir);
+		if (file->name)
+			free(file->name);
+		if (file->uid)
+			free(file->uid);
+		if (file->grp)
+			free(file->grp);
+		if (file->displayname)
+			free(file->displayname);
+		if (file->linkname)
+			free(file->linkname);
+		tmp = file;
+		file = file->next;
+		free(tmp);
+	}
+}
+
 void 		ft_free(t_file *file, t_op *op, int error)
 {
 	t_file	*tmp;
 
+	tmp = NULL;
 	if (file)
-	{
-		while (file)
-		{
-			if (file->nameasadir)
-				free(file->nameasadir);
-			if (file->name)
-				free(file->name);
-			if (file->uid)
-				free(file->uid);
-			if (file->grp)
-				free(file->grp);
-			if (file->displayname)
-				free(file->displayname);
-			if (file->linkname)
-				free(file->linkname);
-			tmp = file;
-			file = file->next;
-			free(tmp);
-		}
-	}
+		free_file(file, tmp);
 	if (op)
 	{
 		if (op->origin)
@@ -47,14 +51,50 @@ void 		ft_free(t_file *file, t_op *op, int error)
 			free(op->linkname);
 		free(op);
 	}
-	exit(error);
+	exit((error) ? 1 : 0);
+}
+
+t_file					*add_error(char *name, t_op *op)
+{
+	t_file			*file;
+
+	file = (t_file *)malloc(sizeof(t_file));
+	file->name = ft_strdup(name);
+	file->path = ft_strjoin(name, "/");
+	file->st_size = 0;
+	file->type = 0;
+	file->st_nlink = 0;
+	file->st_mode = 0;
+	file->st_gid = 0;
+	file->st_uid = 0;
+	file->st_blocks = 0;
+	file->st_blksize = 0;
+	file->st_mtimes = 0;
+	file->displayname = NULL;
+	file->nameasadir = NULL;
+	file->uid = NULL;
+	file->grp = NULL;
+	file->linkname = NULL;
+	file->noarg = op->noarg;
+	file->relative = 0;
+	file->visited = 1;
+	file->completed = 1;
+	if (op->relative)
+		file->relative = 1;
+	file->file = 0;
+	file->error = ft_str3join(file->name, ": ", op->error);
+	if (op->error)
+		ft_strdel(&op->error);
+	file->first = 1;
+	file->next = NULL;
+	return (file);
 }
 
 void		manage_error(t_file *file, int error, t_op *op, char *entry)
 {
 	if (error == USAGE)
 		ft_putendl_fd("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]", 2);
-	else if (error != NOTHINGTODO && errno != ELOOP)
+	else if (error != NOTHINGTODO && errno != ELOOP && error != PERMISSION)
 		perror(entry);
 	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
 	{

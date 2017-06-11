@@ -21,30 +21,21 @@ t_file					*add_file(struct stat data, t_op *op, char *entry)
 			file->relative = 0;
 		else
 			file->relative = 1;
-		if (op->link)
-		{
-			file->type = 10;
-			file->typereal = determine_type(data);
-			file->linkname = ft_strdup(op->linkname);
-		}
-		else
-		{
-			file->type = determine_type(data);
-			file->linkname = NULL;
-		}
+		file = store_lnk(file, op, data);
 		file->name = get_fname(entry);
 		file->displayname = ft_strdup(entry);
 		file = store_basic(file, data);
 		file = store_groups_uid(file);
-		file->path = get_path(entry, op);
+		file->path = store_path(entry, op);
 		file->completed = 1;
 		file->visited = 1;
 		file = nb_spaces(file, op);
 		file->file = 1;
-		file->error = 0;
+		file->error = NULL;
 		file->noarg = op->noarg;
 		file->first = 1;
 		file->nameasadir = NULL;
+		file->entry = NULL;
 		return (file);
 }
 
@@ -52,40 +43,30 @@ t_file					*new_file(t_file *file, t_op *op, char *entry)
 {
 	struct stat 		data;
 	char 				*fullpath;
-	char 				buf[1024];
-	int 				len;
 
-	op->link = 0;
-	op->error = 0;
+	if (op->linkname)
+		ft_strdel(&op->linkname);
 	if (entry[0] == '/')
 		fullpath = ft_strdup(entry);
 	else
 		fullpath = ft_strjoin(op->origin, entry);
-	if (op->linkname)
-		ft_strdel(&op->linkname);
-	if ((len = readlink(fullpath, buf, 1024)) > 0)
+	data = read_links(file, op, fullpath);
+	if (!file)
 	{
-		buf[len] = '\0';
-		if (lstat(fullpath, &data) == -1)
-		{
-			manage_error(file, ARGUMENT, op, entry);
-			return (file);
-		}
-		op->link = 1;
-		op->linkname = ft_strdup(buf);
-	}
-	if (len <= 0 && stat(fullpath, &data) == -1)
-		manage_error(file, ARGUMENT, op, entry);
-	else if (!file)
-	{
-		file = add_file(data, op, entry);
+		if (op->error)
+			file = add_error(entry, op);
+		else
+			file = add_file(data, op, entry);
 		op->begin = file;
 		op->latest = file;
 	}
 	else
 	{
 		file = op->latest;
-		file->next = add_file(data, op, entry);
+		if (op->error)
+			file->next = add_error(entry, op);
+		else
+			file->next = add_file(data, op, entry);
 		op->latest = file->next;
 	}
 	free(fullpath);
@@ -103,80 +84,42 @@ t_file					*add_list(struct stat data, struct dirent *dirent, t_op *op)
 		file = store_groups_uid(file);
 		file = nb_spaces(file, op);
 		file->displayname = NULL;
-		if (op->link)
-		{
-			file->linkname = ft_strdup(op->linkname);
-			file->type = 10;
-			file->typereal = dirent->d_type;
-		}
-		else
-		{
-			file->type = dirent->d_type;
-			file->linkname = NULL;
-		}
-		if (file->type == DT_DIR && ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
-		{
-			file->visited = 0;
-			file->completed = 0;
-			file->nameasadir = ft_str3join(file->path, file->name, "/");
-		}
-		else
-		{
-			file->completed = 1;
-			file->visited = 1;
-			file->nameasadir = NULL;
-		}
+		file = store_lnk(file, op, data);
+		file = visited_or_completed(file);
 		file->noarg = op->noarg;
-		file->relative = 0;
-		if (op->relative)
-			file->relative = 1;
+		file->relative = op->relative;
 		file->file = 0;
-		file->error = 0;
+		file->error = NULL;
 		file->first = 1;
+		file->entry = ft_strdup(op->entry);
 		return (file);
 }
-
-// 7255 7008
-
-// ==39251==    still reachable: 11,801 bytes in 57 blocks
-// ==39251==         suppressed: 22,238 bytes in 190 blocks
 
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op)
 {
 	struct stat 		data;
-	char				buf[1024];
-	int 				len;
 	char 				*fullname;
 
-	op->link = 0;
-	op->error = 0;
-	len = 0;
 	fullname = ft_strjoin(op->current, dirent->d_name);
 	if (op->linkname)
 		ft_strdel(&op->linkname);
-	if (dirent->d_type == 10 && (len = readlink(fullname, buf, 1024)) > 0)
+	data = read_links(file, op, fullname);
+	if (!file)
 	{
-		buf[len] = '\0';
-		if (lstat(fullname, &data) == -1)
-		{
-			manage_error(file, ARGUMENT, op, dirent->d_name);
-			return (file);
-		}
-		op->link = 1;
-		op->linkname = ft_strdup(buf);
-	}
-	if (len <= 0 && errno != ELOOP && stat(fullname, &data) == -1)
-		manage_error(file, ARGUMENT, op, dirent->d_name);
-	else if (!file)
-	{
-		file = add_list(data, dirent, op);
+		if (op->error)
+			file = add_error(dirent->d_name, op);
+		else
+			file = add_list(data, dirent, op);
 		op->begin = file;
 		op->latest = file;
 	}
 	else
 	{
 		file = op->latest;
-		file->next = add_list(data, dirent, op);
+		if (op->error)
+			file->next = add_error(dirent->d_name, op);
+		else
+			file->next = add_list(data, dirent, op);
 		op->latest = file->next;
 	}
 	free(fullname);
@@ -193,30 +136,15 @@ t_op	*init(t_op *op, char **env)
 	if (op == NULL)
 	{
 		op = (t_op *)malloc(sizeof(t_op));
-		op->a = 0;
-		op->r = 0;
-		op->R = 0;
-		op->l = 0;
-		op->t = 0;
-		op->begin = NULL;
-		op->origin = NULL;
-		op->nbsizespace = 0;
-		op->nblinkspace = 0;
-		op->nbgrpspace = 0;
-		op->nbuidspace = 0;
-		op->nbminorspace = 0;
-		op->nbmajorspace = 0;
-		op->noarg = 1;
-		op->relative = 0;
-		op->linkname = NULL;
-		op->link = 0;
-		op->latest = NULL;
+		op = data_op(op);
 		while (env[++i])
 		{
 			if (ft_strncmp(env[i], "PWD=", 4) == 0)
 				op->origin = ft_strjoin(&env[i][4], "/");
 		}
 		op->current = NULL;
+		op->error = NULL;
+		op->entry = NULL;
 		if (op->origin == NULL)
 			manage_error(NULL, ERROR, op, NULL);
 	}

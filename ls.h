@@ -36,9 +36,11 @@
 
 # define NAME 0
 # define TIME 1
-# define REVERSE 2
+# define REVNAME 2
 # define PATH 3
 # define REVPATH 4
+# define ENTRY 5
+# define REVENTRY 6
 
 typedef struct 			s_file
 {
@@ -66,10 +68,11 @@ typedef struct 			s_file
 	int 				major;
 	char 				*linkname;
 	char 				*displayname;
-	int 				error;
+	char 				*error;
 	int 				typereal;
 	int 				first;
 	char 				*nameasadir;
+	char 				*entry;
 }						t_file;
 
 typedef struct 			s_op
@@ -93,10 +96,12 @@ typedef struct 			s_op
 	int 				args;
 	int 				link;
 	char 				*linkname;
-	int 				error;
+	char				*error;
 	t_file				*latest;
+	char 				*entry;
 }						t_op;
 
+t_file					*add_error(char *name, t_op *op);
 void					print_major_minor(t_file *file, t_op *op);
 void					init_tab(int (*tab[13])(void));
 void					manage_error(t_file *file, int error, t_op *op, char *entry);
@@ -114,6 +119,7 @@ t_file					*store_groups_uid(t_file *file);
 t_file					*nb_spaces(t_file *file, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op, int where);
 int 					only_contains_hidden(t_file *start);
+int 					ft_checkhiddendir(char *str);
 t_file					*print_grp(t_file *file, t_op *op);
 t_file					*print_uid(t_file *file, t_op *op);
 void 					file_type_letter(t_file *file);
@@ -128,12 +134,19 @@ int 					opt_a(t_file *file, t_op *op, char **argv);
 void					ft_putspaces(t_file *file, t_op *op, int choice);
 t_file					*print_time(t_file *file);
 int						determine_type(struct stat data);
-char					*get_path(char *entry, t_op *op);
+char					*store_path(char *entry, t_op *op);
 void					write_path(char *path, char *origin, int noarg, int relative);
 int 					same_path_everywhere(t_file *file);
 void					read_link(char *path);
 void					check_rights(t_file *file);
 t_file					*sort(t_file *file, t_op *op, int tri);
+int						ft_second_to_last(char *str);
+int						ft_isitover(t_file *file);
+t_file					*store_lnk(t_file *file, t_op *op, struct stat data);
+t_file					*visited_or_completed(t_file *file);
+t_op 					*data_op(t_op *op);
+t_file					*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void));
+struct stat				read_links(t_file *file, t_op *op, char *fullpath);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);

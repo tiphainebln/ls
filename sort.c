@@ -31,22 +31,13 @@
 // int			cmp_time(t_file *a, t_file *b)
 // {
 // 	if (a->st_mtimes < b->st_mtimes)
-// 	{
-// 		ft_putendl("aaa");
 // 		return (a->st_mtimes < b->st_mtimes);
-// 	}
 // 	else if (a->st_mtimes == b->st_mtimes)
 // 	{
 // 		if (a->st_mtimes < b->st_mtimes)
-// 		{
-// 			ft_putendl("bbb");
 // 			return (a->st_mtimes < b->st_mtimes);
-// 		}
 // 		else if (a->st_mtimes == b->st_mtimes)
-// 		{
-// 			ft_putendl("ccc");
 // 			return (ft_strcmp(a->name, b->name));
-// 		}
 // 	}
 // 	else
 // 		return (1);
@@ -73,27 +64,49 @@ int 		strfils(char *patha, char *pathb)
 
 int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
 {
-	if (tri == PATH)
-	{
-		if (ft_strcmp(a->path, b->path) > 0)
-			return (1);
-		return (0);
-	}
-    if (tri == NAME)
+    if (tri == ENTRY)
     {
-        if (ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
+        if (a->file)
+            return (1);
+        if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) > 0)
             return (1);
         return (0);
     }
-	if (tri == REVERSE)
+    if (tri == REVENTRY)
+    {
+        if (a->file)
+            return (1);
+        if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) < 0)
+            return (1);
+        return (0);
+    }
+	if (tri == PATH)
 	{
-		if (ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
-			return (1);
-		return (0);
+        if (ft_strcmp(a->path, b->path) > 0)
+            return (1);
+        if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) > 0)
+           return (1);
+        return (0);
 	}
-	if (tri == REVPATH)
+    if (tri == REVPATH)
+    {
+        if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) < 0 && ft_strcmp(a->path, op->origin) && strfils(a->path, b->path) == 0)
+            return (1);
+        return (0);
+    }
+    if (tri == NAME)
+    {
+        if (a->file && b->file && ft_strcmp(a->name, b->name) < 0)
+            return (1);
+        if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
+            return (1);
+        return (0);
+    }
+	if (tri == REVNAME)
 	{
-		if (ft_strcmp(a->path, b->path) < 0 && ft_strcmp(a->path, op->origin) && strfils(a->path, b->path) == 0)
+        if (a->file && b->file && ft_strcmp(a->name, b->name) > 0)
+            return (1);
+		if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
 			return (1);
 		return (0);
 	}

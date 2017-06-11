@@ -12,6 +12,25 @@
 
 #include "ls.h"
 
+char		*store_path(char *entry, t_op *op)
+{
+	int 	i;
+
+	i = ft_strlen(entry);
+	while (i > 0)
+	{
+		if (entry[i - 1] == '/')
+		{
+			entry[i] = '\0';
+			if (entry[0] == '/')
+				return (entry);
+			return (ft_strjoin(op->origin, entry));
+		}
+		i--;
+	}
+	return (ft_strdup(op->origin));
+}
+
 void		write_path(char *path, char *origin, int noarg, int relative)
 {
 	int 		last_slash;

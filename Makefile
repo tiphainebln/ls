@@ -25,13 +25,17 @@ SRC = main.c \
 	  get_data.c \
 	  path.c \
 	  sort.c \
-	  print.c
+	  print.c \
+	  option_a.c \
+	  storage.c \
+	  print_path.c \
+	  check_if_hidden.c
 
 OBJ = $(SRC:.c=.o)
 
 NAME = ft_ls
 
-FLAGS = -ggdb3 -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
 
