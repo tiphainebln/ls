@@ -92,7 +92,6 @@ int 		main(int argc, char **argv, char **env)
 	}
 	if (!file)
 		manage_error(file, NOTHINGTODO, o, NULL);
-	file = o->begin;
 	file = sort_lst(file, o);
 	o->begin = file;
 	if (o->l && same_path_everywhere(file) && file->file == 0)

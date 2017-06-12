@@ -21,6 +21,10 @@ t_file					*add_file(struct stat data, t_op *op, char *entry)
 			file->relative = 0;
 		else
 			file->relative = 1;
+		if (entry)
+			file->directed = 1;
+		else
+			file->directed = 0;
 		file = store_lnk(file, op, data);
 		file->name = get_fname(entry);
 		file->displayname = ft_strdup(entry);
@@ -92,6 +96,7 @@ t_file					*add_list(struct stat data, struct dirent *dirent, t_op *op)
 		file->error = NULL;
 		file->first = 1;
 		file->entry = ft_strdup(op->entry);
+		file->directed = 0;
 		return (file);
 }
 

@@ -42,7 +42,9 @@ void		write_path(char *path, char *origin, int noarg, int relative)
 	tmp = ft_strdup(path);
 	if (tmp[1] != '\0')
 		tmp[ft_strlen(tmp) - 1] = '\0';
-	if (relative || noarg == 1)
+	if (ft_strstr(tmp, "../"))
+			ft_putstr(ft_strstr(tmp, "../"));
+	else if (relative || noarg == 1)
 	{
 		while (tmp[i] && origin[i] && origin[i] == tmp[i])
 		{

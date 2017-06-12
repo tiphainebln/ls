@@ -59,7 +59,10 @@ t_file					*add_error(char *name, t_op *op)
 	t_file			*file;
 
 	file = (t_file *)malloc(sizeof(t_file));
-	file->name = ft_strdup(name);
+	// if (ft_strstr(name, "../"))
+	// 	file->name = ft_strdup(ft_strstr(name, "../"));
+	// else
+		file->name = ft_strdup(name);
 	file->path = ft_strjoin(name, "/");
 	file->st_size = 0;
 	file->type = 0;
@@ -79,6 +82,7 @@ t_file					*add_error(char *name, t_op *op)
 	file->relative = 0;
 	file->visited = 1;
 	file->completed = 1;
+	file->entry = NULL;
 	if (op->relative)
 		file->relative = 1;
 	file->file = 0;

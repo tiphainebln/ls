@@ -68,9 +68,9 @@ t_file			*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void)
 		}
 		else if (file->noarg != oldarg && op->noarg > 2 && file->file == 0)
 			multi_arg(file, op, oldpath);
-		else if (oldpath)
+		else if (oldpath && file->file == 0)
 			directories_as_arg(file, op, oldpath);
-		else if (!same_path_everywhere(file))
+		else if (!same_path_everywhere(file) && file->file == 0)
 			without_recursive(file, op);
 		if (oldpath)
 			ft_strdel(&oldpath);

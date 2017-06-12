@@ -68,7 +68,7 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
     {
         if (a->file)
             return (1);
-        if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) > 0)
+        else if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) > 0)
             return (1);
         return (0);
     }
@@ -76,15 +76,15 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
     {
         if (a->file)
             return (1);
-        if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) < 0)
+        else if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) < 0)
             return (1);
         return (0);
     }
 	if (tri == PATH)
 	{
-        if (ft_strcmp(a->path, b->path) > 0)
+        if (a->file || ft_strcmp(a->path, b->path) > 0)
             return (1);
-        if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) > 0)
+        else if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) > 0)
            return (1);
         return (0);
 	}
@@ -96,9 +96,11 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
     }
     if (tri == NAME)
     {
-        if (a->file && b->file && ft_strcmp(a->name, b->name) < 0)
+        if (a->file && b->file == 0)
             return (1);
-        if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
+        else if (a->file && b->file && ft_strcmp(a->displayname, b->displayname) < 0)
+            return (1);
+        else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
             return (1);
         return (0);
     }
@@ -106,7 +108,7 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
 	{
         if (a->file && b->file && ft_strcmp(a->name, b->name) > 0)
             return (1);
-		if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
+		else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
 			return (1);
 		return (0);
 	}
