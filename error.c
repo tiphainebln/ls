@@ -62,8 +62,8 @@ t_file					*add_error(char *name, t_op *op)
 	// if (ft_strstr(name, "../"))
 	// 	file->name = ft_strdup(ft_strstr(name, "../"));
 	// else
-		file->name = ft_strdup(name);
-	file->path = ft_strjoin(name, "/");
+	file->name = ft_strdup(name);
+	file->path = store_path(name, op);
 	file->st_size = 0;
 	file->type = 0;
 	file->st_nlink = 0;
@@ -79,18 +79,18 @@ t_file					*add_error(char *name, t_op *op)
 	file->grp = NULL;
 	file->linkname = NULL;
 	file->noarg = op->noarg;
-	file->relative = 0;
 	file->visited = 1;
 	file->completed = 1;
-	file->entry = NULL;
-	if (op->relative)
-		file->relative = 1;
+	file->entry = ft_strdup(name);
+	file->relative = op->relative;
 	file->file = 0;
+	file->sub = op->sub;
 	file->error = ft_str3join(file->name, ": ", op->error);
 	if (op->error)
 		ft_strdel(&op->error);
 	file->first = 1;
 	file->next = NULL;
+	file->file_error = 1;
 	return (file);
 }
 

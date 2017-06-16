@@ -42,17 +42,69 @@ t_file		*sort_lst(t_file *file, t_op *op)
 	file = op->begin;
 	if (op->r)
 	{
-		file = sort(file, op, REVENTRY);
-		file = sort(file, op, REVPATH);
-		file = sort(file, op, REVNAME);
+		file = sort(file, REVPATH);
+		file = sort(file, REVNAME);
 	}
 	else
 	{
-		file = sort(file, op, ENTRY);
-		file = sort(file, op, PATH);
-		file = sort(file, op, NAME);
+		file = sort(file, PATH);
+		file = sort(file, NAME);
 	}
 	return (file);
+}
+
+int 		ft_issort(char **av, t_op *op)
+{
+	int i;
+	int j;
+
+	i = 1;
+	j = 2;
+	while (av[j])
+	{
+		if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
+								||
+			(op->r == 1 && ft_strcmp(av[i], av[j]) < 0))
+			return (0);
+		i++;
+		j++;
+	}
+	return (1);
+}
+
+char		**ft_sort_ascii_string(char **av, t_op *op)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	while (ft_issort(av, op) == 0)
+	{
+		i = 1;
+		j = 2;
+		while (av[j])
+		{
+			if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
+									||
+				(op->r == 1 && ft_strcmp(av[i], av[j]) < 0))
+			{
+				tmp = av[i];
+				av[i] = av[j];
+				av[j] = tmp;
+			}
+			j++;
+			i++;
+		}
+	}
+	return (av);
+}
+
+char 		**sort_entry(char **entries, t_op *op)
+{
+	char 	**wordlist;
+
+	wordlist = ft_sort_ascii_string(entries, op);
+	return (wordlist);
 }
 
 int 		main(int argc, char **argv, char **env)
@@ -73,15 +125,17 @@ int 		main(int argc, char **argv, char **env)
 	file = NULL;
 	oldpath = NULL;
 	oldarg = 1;
-	while (argv[++i])
+	o->order = sort_entry(argv, o);
+	while (o->order[i])
 	{
-		if (argv[i][0] != '-')
+		if (o->order[i][0] != '-')
 		{
 			o->noarg++;
-			file = get_directory(argv[i], file, o, 0);
+			file = get_directory(o->order[i], file, o, 0);
 		}
-		if (argv[i][0] != '-' && o->R)
+		if (o->order[i][0] != '-' && o->R)
 		 	file = get_sub(file, o, o->noarg);
+		i++;
 	}
 	file = o->begin;
 	if (o->noarg == 1)
@@ -122,4 +176,5 @@ int 		main(int argc, char **argv, char **env)
 ** [1]    38401 segmentation fault  ./ft_ls -Rr ! Makefile auteur ~/chmod.c auteur TEST auteur TEST ! !
 ** fix l'affichage du path
 ** tri en reverse a finir : ./ft_ls -Rr Makefile !  auteur ~/chmod.c auteur TEST auteur TEST !
+** ls -R1 abc f ! d ! Makefile norights -----> les maillons d'erreurs doivent etre tries 
 */

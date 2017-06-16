@@ -14,33 +14,31 @@
 
 t_file					*add_file(struct stat data, t_op *op, char *entry)
 {
-		t_file			*file;
+	t_file			*file;
 
-		file = (t_file *)malloc(sizeof(t_file));
-		if (entry[0] == '/')
-			file->relative = 0;
-		else
-			file->relative = 1;
-		if (entry)
-			file->directed = 1;
-		else
-			file->directed = 0;
-		file = store_lnk(file, op, data);
-		file->name = get_fname(entry);
-		file->displayname = ft_strdup(entry);
-		file = store_basic(file, data);
-		file = store_groups_uid(file);
-		file->path = store_path(entry, op);
-		file->completed = 1;
-		file->visited = 1;
-		file = nb_spaces(file, op);
-		file->file = 1;
-		file->error = NULL;
-		file->noarg = op->noarg;
-		file->first = 1;
-		file->nameasadir = NULL;
-		file->entry = NULL;
-		return (file);
+	file = (t_file *)malloc(sizeof(t_file));
+	if (entry[0] == '/')
+		file->relative = 0;
+	else
+		file->relative = 1;
+	file = store_lnk(file, op, data);
+	file->name = get_fname(entry);
+	file->displayname = ft_strdup(entry);
+	file = store_basic(file, data);
+	file = store_groups_uid(file);
+	file->path = store_path(entry, op);
+	file->completed = 1;
+	file->visited = 1;
+	file = nb_spaces(file, op);
+	file->file = 1;
+	file->error = NULL;
+	file->noarg = op->noarg;
+	file->first = 1;
+	file->nameasadir = NULL;
+	file->entry = ft_strdup(entry);
+	file->file_error = 0;
+	file->sub = op->sub;
+	return (file);
 }
 
 t_file					*new_file(t_file *file, t_op *op, char *entry)
@@ -96,7 +94,8 @@ t_file					*add_list(struct stat data, struct dirent *dirent, t_op *op)
 		file->error = NULL;
 		file->first = 1;
 		file->entry = ft_strdup(op->entry);
-		file->directed = 0;
+		file->file_error = 0;
+		file->sub = op->sub;
 		return (file);
 }
 

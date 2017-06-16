@@ -62,7 +62,6 @@ typedef struct 			s_file
 	int 				visited;
 	int 				relative;
 	int 				file;
-	int 				directed;
 	int 				noarg;
 	int 				minor;
 	int 				major;
@@ -73,6 +72,8 @@ typedef struct 			s_file
 	int 				first;
 	char 				*nameasadir;
 	char 				*entry;
+	int 				file_error;
+	int 				sub;
 }						t_file;
 
 typedef struct 			s_op
@@ -99,6 +100,8 @@ typedef struct 			s_op
 	char				*error;
 	t_file				*latest;
 	char 				*entry;
+	int 				sub;
+	char 				**order;
 }						t_op;
 
 t_file					*add_error(char *name, t_op *op);
@@ -139,7 +142,7 @@ void					write_path(char *path, char *origin, int noarg, int relative);
 int 					same_path_everywhere(t_file *file);
 void					read_link(char *path);
 void					check_rights(t_file *file);
-t_file					*sort(t_file *file, t_op *op, int tri);
+t_file					*sort(t_file *file, int tri);
 int						ft_second_to_last(char *str);
 int						ft_isitover(t_file *file);
 t_file					*store_lnk(t_file *file, t_op *op, struct stat data);

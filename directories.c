@@ -36,6 +36,7 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 
 	op->relative = 0;
 	op->entry = ft_strdup(entry);
+	op->sub = sub;
 	if (((fd = opendir(entry))) != NULL)
 	{
 		relative_or_absolute(op, sub, entry);

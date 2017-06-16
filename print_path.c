@@ -14,9 +14,14 @@
 
 void		without_recursive(t_file *file, t_op *op)
 {
+	if (file->error)
+	{
+		ft_putstr(file->name);
+		ft_putendl(":");
+	}
 	if (!op->R || (op->noarg > 2 && file->file == 0))
 		write_path(file->path, op->origin, op->noarg, file->relative);
-	if (op->l && file->file == 0)
+	if (op->l && file->file == 0 && file->error == NULL)
 		print_total(file, op);
 }
 
@@ -25,9 +30,14 @@ void		directories_as_arg(t_file *file, t_op *op, char *oldpath)
 	if (ft_strcmp(file->path, oldpath))
 	{
 		ft_putchar('\n');
-		if (file->file == 0)
+		if (file->error)
+		{
+			ft_putstr(file->name);
+			ft_putendl(":");
+		}
+		else if (file->file == 0)
 			write_path(file->path, op->origin, op->noarg, file->relative);
-		if (op->l && file->file == 0)
+		if (op->l && file->file == 0 && file->error == NULL)
 			print_total(file, op);
 	}
 }
@@ -36,8 +46,14 @@ void		multi_arg(t_file *file, t_op *op, char *oldpath)
 {
 	if (oldpath)
 		ft_putchar('\n');
+	if (file->error)
+	{
+		ft_putstr(file->name);
+		ft_putendl(":");
+	}
+	else
 	write_path(file->path, op->origin, op->noarg, file->relative);
-	if (op->l)
+	if (op->l && file->file == 0 && file->error == NULL)
 		print_total(file, op);
 }
 
@@ -46,7 +62,13 @@ t_file			*empty_directory(t_file *file, char *oldpath, t_op *op)
 	if (oldpath && ft_strcmp(file->name, ".") && only_contains_hidden(file) && ft_strcmp(file->path, oldpath))
 	{
 		ft_putchar('\n');
-		write_path(file->path, op->origin, op->noarg, file->relative);
+		if (file->error)
+		{
+			ft_putstr(file->name);
+			ft_putendl(":");
+		}
+		else
+			write_path(file->path, op->origin, op->noarg, file->relative);
 	}
 	file = file->next;
 	return (file);
@@ -77,7 +99,7 @@ t_file			*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void)
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
 		if (file->error)
-		 	ft_putendl(file->error);
+		 	ft_putendl_fd(file->error, 2);
 		else if (op->l)
 			long_format(file, op, tab);
 		else

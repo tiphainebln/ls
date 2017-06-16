@@ -62,35 +62,21 @@ int 		strfils(char *patha, char *pathb)
 	return (0);
 }
 
-int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
+int			cmp_links(t_file *a, t_file *b, int tri)
 {
-    if (tri == ENTRY)
-    {
-        if (a->file)
-            return (1);
-        else if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) > 0)
-            return (1);
-        return (0);
-    }
-    if (tri == REVENTRY)
-    {
-        if (a->file)
-            return (1);
-        else if (a->noarg == b->noarg && a->entry && b->entry && ft_strcmp(a->entry, b->entry) < 0)
-            return (1);
-        return (0);
-    }
 	if (tri == PATH)
 	{
-        if (a->file || ft_strcmp(a->path, b->path) > 0)
+        if (a->file || b->file)
+            return (a->file);
+        else if ((a->noarg == b->noarg) && ft_strcmp(a->path, b->path) > 0)
             return (1);
-        else if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) > 0)
-           return (1);
         return (0);
 	}
     if (tri == REVPATH)
     {
-        if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) < 0 && ft_strcmp(a->path, op->origin) && strfils(a->path, b->path) == 0)
+        if (a->file || b->file)
+            return (a->file);
+        else if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) < 0 && strfils(a->path, b->path) == 0)
             return (1);
         return (0);
     }
@@ -106,7 +92,9 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
     }
 	if (tri == REVNAME)
 	{
-        if (a->file && b->file && ft_strcmp(a->name, b->name) > 0)
+        if (a->file && b->file == 0)
+            return (1);
+        else if (a->file && b->file && ft_strcmp(a->displayname, b->displayname) > 0)
             return (1);
 		else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
 			return (1);
@@ -118,7 +106,7 @@ int			cmp_links(t_file *a, t_file *b, int tri, t_op *op)
 }
 
 
-t_file		*sort(t_file *file, t_op *op, int tri)
+t_file		*sort(t_file *file, int tri)
 {
     t_file *p, *q, *e, *tail;
     int insize, nmerges, psize, qsize, i;
@@ -172,7 +160,7 @@ t_file		*sort(t_file *file, t_op *op, int tri)
 		            p = p->next;
 		            psize--;
 		        }
-                else if (cmp_links(p,q,tri,op))
+                else if (cmp_links(p,q,tri))
                 {
         		    /* First element of p is lower (or same);
         		     * e must come from p. */
