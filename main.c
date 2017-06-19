@@ -84,6 +84,7 @@ char		**ft_sort_ascii_string(char **av, t_op *op)
 		j = 2;
 		while (av[j])
 		{
+
 			if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
 									||
 				(op->r == 1 && ft_strcmp(av[i], av[j]) < 0))
@@ -117,7 +118,7 @@ int 		main(int argc, char **argv, char **env)
 	int 	oldarg;
 
 	init_tab(tab);
-	i = 0;
+	i = 1;
 	o = NULL;
 	o = init(o, env);
 	if (argc > 1)
@@ -177,4 +178,5 @@ int 		main(int argc, char **argv, char **env)
 ** fix l'affichage du path
 ** tri en reverse a finir : ./ft_ls -Rr Makefile !  auteur ~/chmod.c auteur TEST auteur TEST !
 ** ls -R1 abc f ! d ! Makefile norights -----> les maillons d'erreurs doivent etre tries 
+** [1]    68805 segmentation fault  ./ft_ls -R
 */

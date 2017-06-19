@@ -96,12 +96,16 @@ t_file					*add_error(char *name, t_op *op)
 
 void		manage_error(t_file *file, int error, t_op *op, char *entry)
 {
-	if (error == USAGE)
-		ft_putendl_fd("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]", 2);
-	else if (error != NOTHINGTODO && errno != ELOOP && error != PERMISSION)
+	if (error != NOTHINGTODO && errno != ELOOP && error != PERMISSION && error != OPTION)
 		perror(entry);
 	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
 	{
+		if (error == OPTION)
+		{
+			ft_putstr_fd("ls: illegal option --", 2);
+			ft_putendl_fd(entry, 2);
+			ft_putendl_fd("usage: ls [-Rralt] [file ...]", 2);
+		}
 		file = op->begin;
 		ft_free(file, op, error);
 	}

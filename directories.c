@@ -51,19 +51,27 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 		{
 			if (sub)
 				file->completed = 1;
+			if (errno == ENOENT)
+				manage_error(file, ERROR, op, entry);
 			manage_error(file, PERMISSION, op, entry);
 			op->error = ft_strdup(strerror(errno));
 			if (!file)
 			{
-				file = add_error(entry, op);
-				op->begin = file;
-				op->latest = file;
+				if (errno != ENOENT)
+				{
+					file = add_error(entry, op);
+					op->begin = file;
+					op->latest = file;
+				}
 			}
 			else
 			{
-				file = op->latest;
-				file->next = add_error(entry, op);
-				op->latest = file->next;
+				if (errno != ENOENT)
+				{
+					file = op->latest;
+					file->next = add_error(entry, op);
+					op->latest = file->next;
+				}
 			}
 		}
 	}

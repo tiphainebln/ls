@@ -149,6 +149,7 @@ t_op	*init(t_op *op, char **env)
 		op->current = NULL;
 		op->error = NULL;
 		op->entry = NULL;
+		op->order = NULL;
 		if (op->origin == NULL)
 			manage_error(NULL, ERROR, op, NULL);
 	}
