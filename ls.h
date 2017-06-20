@@ -102,6 +102,7 @@ typedef struct 			s_op
 	char 				*entry;
 	int 				sub;
 	char 				**order;
+	int 				error_happened;
 }						t_op;
 
 t_file					*add_error(char *name, t_op *op);

@@ -81,6 +81,8 @@ t_file			*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void)
 
 	oldpath = NULL;
 	oldarg = 1;
+	if (errno == ENOENT)
+		file->error = op->error;
 	while (file)
 	{
 		if (opt_a(file, op, argv) == 0)
@@ -98,8 +100,6 @@ t_file			*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void)
 			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
-		if (errno == ENOENT)
-			file->error = op->error;
 		if (file->error)
 		 	ft_putendl_fd(file->error, 2);
 		else if (op->l)

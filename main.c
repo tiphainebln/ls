@@ -122,19 +122,22 @@ int 		main(int argc, char **argv, char **env)
 	o = NULL;
 	o = init(o, env);
 	if (argc > 1)
+	{
 		o = options(argv, o);
+		o->order = sort_entry(argv, o);
+	}
 	file = NULL;
 	oldpath = NULL;
 	oldarg = 1;
-	o->order = sort_entry(argv, o);
-	while (o->order[i])
+	while (o->order && o->order[i])
 	{
+		o->error_happened = 0;
 		if (o->order[i][0] != '-')
 		{
 			o->noarg++;
 			file = get_directory(o->order[i], file, o, 0);
 		}
-		if (o->order[i][0] != '-' && o->R)
+		if (o->order[i][0] != '-' && o->R && o->error_happened == 0)
 		 	file = get_sub(file, o, o->noarg);
 		i++;
 	}
@@ -178,5 +181,6 @@ int 		main(int argc, char **argv, char **env)
 ** fix l'affichage du path
 ** tri en reverse a finir : ./ft_ls -Rr Makefile !  auteur ~/chmod.c auteur TEST auteur TEST !
 ** ls -R1 abc f ! d ! Makefile norights -----> les maillons d'erreurs doivent etre tries 
-** [1]    68805 segmentation fault  ./ft_ls -R
+** probleme avec la gestion d'erreur surement liee a relative_hiddenry, lorsque plusieurs fichiers sont passes en parametre entre meles de fichiers errones, l'affichage fait n'importe quoi
+** ./ft_ls -r auteur Makefile sorttest norights truc truc fdsjfsf
 */

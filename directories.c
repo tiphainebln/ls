@@ -45,6 +45,7 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 	}
 	else
 	{
+		op->error_happened = 1;
 		if (errno == ENOTDIR)
 			file = new_file(file, op, entry);
 		else
@@ -53,24 +54,20 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 				file->completed = 1;
 			if (errno == ENOENT)
 				manage_error(file, ERROR, op, entry);
-			manage_error(file, PERMISSION, op, entry);
-			op->error = ft_strdup(strerror(errno));
-			if (!file)
-			{
-				if (errno != ENOENT)
-				{
-					file = add_error(entry, op);
-					op->begin = file;
-					op->latest = file;
-				}
-			}
 			else
 			{
-				if (errno != ENOENT)
+				op->error = ft_strdup(strerror(errno));
+				if (!file)
 				{
-					file = op->latest;
-					file->next = add_error(entry, op);
-					op->latest = file->next;
+						file = add_error(entry, op);
+						op->begin = file;
+						op->latest = file;
+				}
+				else
+				{
+						file = op->latest;
+						file->next = add_error(entry, op);
+						op->latest = file->next;
 				}
 			}
 		}
