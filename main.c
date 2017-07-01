@@ -37,77 +37,6 @@ t_file		*first_things_first(t_file *file)
 	return (file);
 }
 
-t_file		*sort_lst(t_file *file, t_op *op)
-{
-	file = op->begin;
-	if (op->r)
-	{
-		file = sort(file, REVPATH);
-		file = sort(file, REVNAME);
-	}
-	else
-	{
-		file = sort(file, PATH);
-		file = sort(file, NAME);
-	}
-	return (file);
-}
-
-int 		ft_issort(char **av, t_op *op)
-{
-	int i;
-	int j;
-
-	i = 1;
-	j = 2;
-	while (av[j])
-	{
-		if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
-								||
-			(op->r == 1 && ft_strcmp(av[i], av[j]) < 0))
-			return (0);
-		i++;
-		j++;
-	}
-	return (1);
-}
-
-char		**ft_sort_ascii_string(char **av, t_op *op)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-
-	while (ft_issort(av, op) == 0)
-	{
-		i = 1;
-		j = 2;
-		while (av[j])
-		{
-
-			if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
-									||
-				(op->r == 1 && ft_strcmp(av[i], av[j]) < 0))
-			{
-				tmp = av[i];
-				av[i] = av[j];
-				av[j] = tmp;
-			}
-			j++;
-			i++;
-		}
-	}
-	return (av);
-}
-
-char 		**sort_entry(char **entries, t_op *op)
-{
-	char 	**wordlist;
-
-	wordlist = ft_sort_ascii_string(entries, op);
-	return (wordlist);
-}
-
 int 		main(int argc, char **argv, char **env)
 {
 	t_op	*o;
@@ -138,7 +67,7 @@ int 		main(int argc, char **argv, char **env)
 			file = get_directory(o->order[i], file, o, 0);
 		}
 		if (o->order[i][0] != '-' && o->R && o->error_happened == 0)
-		 	file = get_sub(file, o, o->noarg);
+		 	file = get_sub(file, o, o->noarg, NULL);
 		i++;
 	}
 	file = o->begin;
@@ -146,10 +75,12 @@ int 		main(int argc, char **argv, char **env)
 	{
 		file = get_directory(o->origin, file, o, 0);
 		if (o->R)
-			file = get_sub(file, o, o->noarg);
+			file = get_sub(file, o, o->noarg, NULL);
 	}
 	if (!file)
 		manage_error(file, NOTHINGTODO, o, NULL);
+	//if (o->t)
+		//o->order = sort_t_entry(argv, o);
 	file = sort_lst(file, o);
 	o->begin = file;
 	if (o->l && same_path_everywhere(file) && file->file == 0)
@@ -166,21 +97,13 @@ int 		main(int argc, char **argv, char **env)
 ** - data->m_time = structure.st_mtimespec;
 ** - decouper le main en petites fonctions -> parse // -> affichage
 ** - tri par temps
-** - lien symbolique supprime.
-** - lien stnbolique dans un dossier, file->realtype n'est pas set
 ** http://faculty.salina.k-state.edu/tim/CMST302/study_guide/topic7/bubble.html   -> revoir logique
 ** - affichage de stderr->fd/0 etc.. a decaler par rapport a l'emplacement des majors/minors
 ** https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.c
-** dossiers vides ne se printent pas quand je fais ./ft_ls -Rr TEST abc .. Mais sinon comportement identique. J'ASSURE :)
-** Commencer à réfléchir au fameux maillon d'erreur
-** ADD FILE A COMPLETER
-** couleurs -> identiques au ls ? 
-** ./ft_ls -R sorttest TESTDIR ----> le tri se fait dans l'ordre des arguments passes en parametre
-** ➜  ft_ls git:(master) ✗ ./ft_ls -Rr ! Makefile auteur ~/chmod.c auteur TEST auteur TEST ! !
-** [1]    38401 segmentation fault  ./ft_ls -Rr ! Makefile auteur ~/chmod.c auteur TEST auteur TEST ! !
-** fix l'affichage du path
-** tri en reverse a finir : ./ft_ls -Rr Makefile !  auteur ~/chmod.c auteur TEST auteur TEST !
-** ls -R1 abc f ! d ! Makefile norights -----> les maillons d'erreurs doivent etre tries 
-** probleme avec la gestion d'erreur surement liee a relative_hiddenry, lorsque plusieurs fichiers sont passes en parametre entre meles de fichiers errones, l'affichage fait n'importe quoi
-** ./ft_ls -r auteur Makefile sorttest norights truc truc fdsjfsf
+** espacements entre groupes et size, groupes et minor/major et minor/major a gerer
+** arborescence a revoir !!! 
+** bien relire et comprendre le tri a fusion, schematisé comment il impacte la liste chainee, renommer les variables de façon comprehensible :)
+** ./ft_ls Rt !!!!!
+** le tri par entry par temps est a faire differement : apres les get_dir, faire une nouvelle fonction de tri par entry pour le temps :)
+** a partir de la, le tri avec -Rt devrait marcher :))
 */

@@ -6,11 +6,36 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 00:17:32 by tbouline          #+#    #+#             */
-/*   Updated: 2017/02/28 00:17:34 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/06/24 05:45:29 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
+
+t_file				*not_openable(t_file *file, t_op *op, int sub, char *entry)
+{
+	if (sub)
+		file->completed = 1;
+	if (errno == ENOENT)
+		manage_error(file, ERROR, op, entry);
+	else
+	{
+		op->error = ft_strdup(strerror(errno));
+		if (!file)
+		{
+			file = add_error(entry, op);
+			op->begin = file;
+			op->latest = file;
+		}
+		else
+		{
+			file = op->latest;
+			file->next = add_error(entry, op);
+			op->latest = file->next;
+		}
+	}
+	return (file);
+}
 
 void				relative_or_absolute(t_op *op, int sub, char *entry)
 {
@@ -26,13 +51,13 @@ void				relative_or_absolute(t_op *op, int sub, char *entry)
 	else
 	{
 		op->relative = 1;
-		change_dir(&op->current, ft_str3join(op->origin, entry, "/"), 1);
+		change_dir(&op->current, str3join(op->origin, entry, "/"), 1);
 	}
 }
 
 t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 {
-	DIR 			*fd;
+	DIR				*fd;
 
 	op->relative = 0;
 	op->entry = ft_strdup(entry);
@@ -49,28 +74,7 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 		if (errno == ENOTDIR)
 			file = new_file(file, op, entry);
 		else
-		{
-			if (sub)
-				file->completed = 1;
-			if (errno == ENOENT)
-				manage_error(file, ERROR, op, entry);
-			else
-			{
-				op->error = ft_strdup(strerror(errno));
-				if (!file)
-				{
-						file = add_error(entry, op);
-						op->begin = file;
-						op->latest = file;
-				}
-				else
-				{
-						file = op->latest;
-						file->next = add_error(entry, op);
-						op->latest = file->next;
-				}
-			}
-		}
+			not_openable(file, op, sub, entry);
 	}
 	if (op->entry)
 		ft_strdel(&op->entry);

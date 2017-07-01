@@ -41,6 +41,7 @@
 # define REVPATH 4
 # define ENTRY 5
 # define REVENTRY 6
+# define REVTIME 7
 
 typedef struct 			s_file
 {
@@ -118,10 +119,11 @@ t_op 					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op, int sub);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
+t_file					*new_file(t_file *file, t_op *op, char *entry);
 t_file					*store_basic(t_file *file, struct stat data);
 t_file					*store_groups_uid(t_file *file);
 t_file					*nb_spaces(t_file *file, t_op *op);
-t_file					*get_sub(t_file *file, t_op *op, int where);
+t_file					*get_sub(t_file *file, t_op *op, int where, t_file *curr_dir);
 int 					only_contains_hidden(t_file *start);
 int 					ft_checkhiddendir(char *str);
 t_file					*print_grp(t_file *file, t_op *op);
@@ -151,6 +153,10 @@ t_file					*visited_or_completed(t_file *file);
 t_op 					*data_op(t_op *op);
 t_file					*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void));
 struct stat				read_links(t_file *file, t_op *op, char *fullpath);
+char 					**sort_entry(char **entries, t_op *op);
+char					**ft_sort_ascii_string(char **av, t_op *op);
+int 					ft_issort(char **av, t_op *op);
+t_file					*sort_lst(t_file *file, t_op *op);
 int						ft_putblk(void);
 int 					ft_putchr(void);
 int 					ft_putdir(void);
@@ -159,4 +165,10 @@ int 					ft_putlnk(void);
 int 					ft_putreg(void);
 int						ft_putsoc(void);
 int 					ft_putwat(void);
+char 					*father(char *current);
+int						cmp_list(t_file *a, t_file *b, int tri);
+int 					strfils(char *patha, char *pathb);
+char 					**sort_t_entry(char **entries, t_op *op);
+char					**ft_sort_time(char **av, t_op *op);
+
 #endif

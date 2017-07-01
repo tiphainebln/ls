@@ -6,13 +6,13 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/28 04:20:33 by tbouline          #+#    #+#             */
-/*   Updated: 2017/03/28 04:20:35 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/06/24 05:41:56 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-void	init_tab(int (*tab[13])(void))
+void		init_tab(int (*tab[13])(void))
 {
 	tab[6] = &ft_putblk;
 	tab[2] = &ft_putchr;
@@ -30,13 +30,13 @@ int			ft_putblk(void)
 	return (0);
 }
 
-int 		ft_putchr(void)
+int			ft_putchr(void)
 {
 	ft_putstr("\033[31m");
 	return (0);
 }
 
-int 		ft_putdir(void)
+int			ft_putdir(void)
 {
 	ft_putstr("\033[33m");
 	return (0);

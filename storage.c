@@ -70,7 +70,7 @@ t_file		*visited_or_completed(t_file *file)
 	{
 		file->visited = 0;
 		file->completed = 0;
-		file->nameasadir = ft_str3join(file->path, file->name, "/");
+		file->nameasadir = str3join(file->path, file->name, "/");
 	}
 	else
 	{

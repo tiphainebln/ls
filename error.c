@@ -12,7 +12,7 @@
 
 # include "ls.h"
 
-void		free_file(t_file *file, t_file *tmp)
+void			free_file(t_file *file, t_file *tmp)
 {
 	while (file)
 	{
@@ -34,7 +34,7 @@ void		free_file(t_file *file, t_file *tmp)
 	}
 }
 
-void 		ft_free(t_file *file, t_op *op, int error)
+void			ft_free(t_file *file, t_op *op, int error)
 {
 	t_file	*tmp;
 
@@ -54,9 +54,9 @@ void 		ft_free(t_file *file, t_op *op, int error)
 	exit((error) ? 1 : 0);
 }
 
-t_file					*add_error(char *name, t_op *op)
+t_file			*add_error(char *name, t_op *op)
 {
-	t_file			*file;
+	t_file		*file;
 
 	file = (t_file *)malloc(sizeof(t_file));
 	// if (ft_strstr(name, "../"))
@@ -85,7 +85,7 @@ t_file					*add_error(char *name, t_op *op)
 	file->relative = op->relative;
 	file->file = 0;
 	file->sub = op->sub;
-	file->error = ft_str3join(file->name, ": ", op->error);
+	file->error = str3join(file->name, ": ", op->error);
 	if (op->error)
 		ft_strdel(&op->error);
 	file->first = 1;
@@ -94,9 +94,10 @@ t_file					*add_error(char *name, t_op *op)
 	return (file);
 }
 
-void		manage_error(t_file *file, int error, t_op *op, char *entry)
+void			manage_error(t_file *file, int error, t_op *op, char *entry)
 {
-	if (error != NOTHINGTODO && errno != ELOOP && error != PERMISSION && error != OPTION)
+	if (error != NOTHINGTODO && errno != ELOOP && error != PERMISSION \
+		&& error != OPTION)
 		perror(entry);
 	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
 	{
@@ -110,25 +111,3 @@ void		manage_error(t_file *file, int error, t_op *op, char *entry)
 		ft_free(file, op, error);
 	}
 }
-
-
-/*
-a tester :
-ls /etc ; ls -l /etc
-ls -l /dev;
-ls 9 8 7 5 4 4 4 5 662123 4 6 2;
-ls 9 5 4 8 7 1 3 + plusieurs fichier
-ls plusieurs fichiers 8 4 2 34 6 4
-mkdir testdir; chmod 000 testdir; ls -l testdir
-ls -lat -> ou se trouve "." et ".." ? Pourquoi?
-ls -lratR -> comprenez vous la raison de l'ordre de chaque lignes?
-- permission denied - essaye de lire un fichier sans avoir les droits d'acces
-- No such file or directory - si le dossier/fichier n'existe pas
-- cd /dev etre sur que le ls peut s'effectuer correctement dans n'importe quelle circonstances (majeurs/mineurs des devices dans /dev)
-
-ls: illegal option -- z
-usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]
-			ft_putstr("ls: illegal option -- ");
-			ft_putchar(argv[i]);
-			ft_putstr("\nusage: ls [-Ralrt] [file ...]\n");
-*/

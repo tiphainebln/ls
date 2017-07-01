@@ -13,7 +13,7 @@
 SRC = main.c \
 	  options.c \
 	  error.c \
-	  list.c \
+	  add_list.c \
 	  directories.c \
 	  print_rights.c \
 	  print_stat.c \
@@ -29,7 +29,12 @@ SRC = main.c \
 	  option_a.c \
 	  storage.c \
 	  print_path.c \
-	  check_if_hidden.c
+	  check_if_hidden.c \
+	  subs_tools.c \
+	  sort_entries.c \
+	  sort_list.c \
+	  add_file.c \
+	  cmp_list.c \
 
 OBJ = $(SRC:.c=.o)
 
