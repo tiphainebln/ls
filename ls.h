@@ -42,6 +42,7 @@
 # define ENTRY 5
 # define REVENTRY 6
 # define REVTIME 7
+# define PATHTIME 8
 
 typedef struct 			s_file
 {
@@ -104,6 +105,7 @@ typedef struct 			s_op
 	int 				sub;
 	char 				**order;
 	int 				error_happened;
+	char 				**epured;
 }						t_op;
 
 t_file					*add_error(char *name, t_op *op);

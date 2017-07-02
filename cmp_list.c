@@ -32,17 +32,15 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 			return (a->file);
 		else if ((a->noarg == b->noarg) && ft_strcmp(a->path, b->path) > 0)
 			return (1);
-		return (0);
 	}
-    if (tri == REVPATH)
+    else if (tri == REVPATH)
     {
     	if (a->file || b->file)
 			return (a->file);
 		else if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) < 0 && strfils(a->path, b->path) == 0)
 			return (1);
-		return (0);
     }
-    if (tri == NAME)
+    else if (tri == NAME)
 	{
 		if (a->file && b->file == 0)
 			return (1);
@@ -50,9 +48,8 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 			return (1);
 		else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
 			return (1);
-		return (0);
 	}
-	if (tri == REVNAME)
+	else if (tri == REVNAME)
 	{
 		if (a->file && b->file == 0)
 			return (1);
@@ -60,33 +57,47 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 			return (1);
 		else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
 			return (1);
-		return (0);
 	}
-	 if (tri == TIME)
+	// else if (tri == PATHTIME)
+	// {
+	// 	if (a->file || b->file)
+	// 		return (a->file);
+	// 	else if ((a->noarg == b->noarg) && a->st_mtimes > b->st_mtimes)
+	// 		return (1);
+	// }
+	else if (tri == TIME)
      {
-     	if (a->file || b->file)
-			return (a->file);
+     	if (a->file && b->file == 0)
+			return (1);
         else if (a->noarg == b->noarg && a->st_mtimes > b->st_mtimes && ft_strcmp(a->path, b->path) == 0)
             return (1);
-        else if (a->st_mtimes == b->st_mtimes)
+        else if (a->noarg == b->noarg && a->st_mtimes == b->st_mtimes)
         {
             if (ft_strcmp(a->name, b->name) < 0)
                 return (1);
         }
-        return (0);
      }
-     //st_mtimes_tv_nsec
-   //    if (tri == REVTIME)
-   //   {
-   //   	if (a->file || b->file)
-			// return (a->file);
-   //      if (a->noarg == b->noarg && a->st_mtimes < b->st_mtimes)
-   //          return (1);
-   //      else if (a->st_mtimes == b->st_mtimes)
-   //      {
-   //          if (ft_strcmp(a->name, b->name) < 0)
-   //              return (1);
-   //      }
-   //   }
+     //st_mtime.tv_nsec
+     // struct stat first / ss second
+    else if (tri == REVTIME)
+    {
+    	if (a->file ^ b->file)
+			return (a->file);
+        if (a->noarg == b->noarg && a->st_mtimes < b->st_mtimes && ft_strcmp(a->path, b->path) == 0)
+            return (1);
+        else if (a->noarg == b->noarg && a->st_mtimes == b->st_mtimes)
+        {
+            if (ft_strcmp(a->name, b->name) < 0)
+                return (1);
+        }
+    }
+
+    //	POUR LE TRI PAR PATH TIME, IL FAUT STOCKER LE TIMESTAMP DES DOSSIERS QUELQUEPART. UN EQUIVALENT DE FILE->PATH QUI SERAIT PLUTOT FILE->FOLDERTIME
+    //	POUR CE FAIRE, STOCKER LE STAT OBTENU PAR LE "." DU DIT DOSSIER ME SEMBLE INTELLIGENT.
+    //
+
+
+
+
 	return (0);
 }

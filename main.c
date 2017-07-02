@@ -37,6 +37,36 @@ t_file		*first_things_first(t_file *file)
 	return (file);
 }
 
+char 		**epur_args(char **argv)
+{
+	char 	**epured;
+	int 	i;
+	int 	size;
+
+	i = 0;
+	size = 0;
+	while (argv[i])
+	{
+		if (argv[i][0] != '-')
+			size++;
+		i++;
+	}
+	epured = (char **)malloc(sizeof(char *) * (size + 1));
+	i = 0;
+	size = 0;
+	while (argv[i])
+	{
+		if (argv[i][0] != '-')
+		{
+			epured[size] = ft_strdup(argv[i]);
+			size++;
+		}
+		i++; 
+	}
+	epured[size] = NULL;
+	return (epured);
+}
+
 int 		main(int argc, char **argv, char **env)
 {
 	t_op	*o;
@@ -53,7 +83,13 @@ int 		main(int argc, char **argv, char **env)
 	if (argc > 1)
 	{
 		o = options(argv, o);
-		o->order = sort_entry(argv, o);
+		o->epured = epur_args(argv);
+		if (o->t)
+			o->order = sort_t_entry(o->epured, o);
+		else
+			o->order = sort_entry(o->epured, o);
+		for (int j = 0; o->epured[j]; j++)
+			ft_putendl(o->epured[j]);
 	}
 	file = NULL;
 	oldpath = NULL;
@@ -79,8 +115,6 @@ int 		main(int argc, char **argv, char **env)
 	}
 	if (!file)
 		manage_error(file, NOTHINGTODO, o, NULL);
-	//if (o->t)
-		//o->order = sort_t_entry(argv, o);
 	file = sort_lst(file, o);
 	o->begin = file;
 	if (o->l && same_path_everywhere(file) && file->file == 0)

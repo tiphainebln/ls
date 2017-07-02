@@ -30,8 +30,6 @@ t_file				*store_lnk(t_file *file, t_op *op, struct stat data)
 
 t_file				*store_basic(t_file *file, struct stat data)
 {
-	struct timespec ts;
-
 	file->st_size = data.st_size;
 	file->st_nlink = data.st_nlink;
 	file->st_mode = data.st_mode;
@@ -39,8 +37,7 @@ t_file				*store_basic(t_file *file, struct stat data)
 	file->st_uid = data.st_uid;
 	file->st_blocks = data.st_blocks;
 	file->st_blksize = data.st_blksize;
-	file->st_mtimes = data.st_mtime;
-	file->st_mtimes_tv_nsec = ts.tv_nsec;
+	file->st_mtimes = data.st_mtimespec.tv_sec;
 	if (S_ISBLK(file->st_mode) || S_ISCHR(file->st_mode))
 	{
 		file->major = major(data.st_rdev);

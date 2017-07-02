@@ -35,6 +35,7 @@ SRC = main.c \
 	  sort_list.c \
 	  add_file.c \
 	  cmp_list.c \
+	  sort_t_entries.c
 
 OBJ = $(SRC:.c=.o)
 

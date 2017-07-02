@@ -67,7 +67,7 @@ void				ft_putnbr(int n);
 int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
-char				*ft_str3join(char const *s1, char const *s2, char const *s3);
+char				*str3join(char const *s1, char const *s2, char const *s3);
 char				*ft_strjoin(char const *s1, char const *s2);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(const char *s, int fd);

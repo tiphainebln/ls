@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char	*ft_str3join(char const *s1, char const *s2, char const *s3)
+char	*str3join(char const *s1, char const *s2, char const *s3)
 {
 	char	*str;
 	int		i;
