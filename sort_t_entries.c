@@ -22,11 +22,9 @@ char 			**sort_t_entry(char **entries, t_op *op)
 
 struct stat 	get_stat(char *av, t_op *op)
 {
-	int 			i;
 	char 			*fullpath;
 	struct stat 	this;
 
-	i = 0;
 	fullpath = NULL;
 	if (av[0] == '/')
 		fullpath = ft_strdup(av);
@@ -44,8 +42,8 @@ int 			ft_issorttime(char **av, t_op *op)
 	struct stat data;
 	struct stat log;
 
-	i = 1;
-	j = 2;
+	i = 0;
+	j = 1;
 	while (av[j])
 	{
 		data = get_stat(av[i], op);
@@ -74,8 +72,8 @@ char			**ft_sort_time(char **av, t_op *op)
 
 	while (ft_issorttime(av, op) == 0)
 	{
-		i = 1;
-		j = 2;
+		i = 0;
+		j = 1;
 		while (av[j])
 		{
 			data = get_stat(av[i], op);

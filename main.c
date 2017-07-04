@@ -43,7 +43,7 @@ char 		**epur_args(char **argv)
 	int 	i;
 	int 	size;
 
-	i = 0;
+	i = 1;
 	size = 0;
 	while (argv[i])
 	{
@@ -52,7 +52,7 @@ char 		**epur_args(char **argv)
 		i++;
 	}
 	epured = (char **)malloc(sizeof(char *) * (size + 1));
-	i = 0;
+	i = 1;
 	size = 0;
 	while (argv[i])
 	{
@@ -63,6 +63,7 @@ char 		**epur_args(char **argv)
 		}
 		i++; 
 	}
+	i = 0;
 	epured[size] = NULL;
 	return (epured);
 }
@@ -84,13 +85,15 @@ int 		main(int argc, char **argv, char **env)
 	{
 		o = options(argv, o);
 		o->epured = epur_args(argv);
-		if (o->t)
+		i = 0;
+		while (o->epured[i])
+			ft_putendl(o->epured[i++]);
+		if (o->t && *o->epured)
 			o->order = sort_t_entry(o->epured, o);
-		else
+		else if (*o->epured)
 			o->order = sort_entry(o->epured, o);
-		for (int j = 0; o->epured[j]; j++)
-			ft_putendl(o->epured[j]);
 	}
+	i = 1;
 	file = NULL;
 	oldpath = NULL;
 	oldarg = 1;

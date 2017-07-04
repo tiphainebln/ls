@@ -77,8 +77,6 @@ int			cmp_list(t_file *a, t_file *b, int tri)
                 return (1);
         }
      }
-     //st_mtime.tv_nsec
-     // struct stat first / ss second
     else if (tri == REVTIME)
     {
     	if (a->file ^ b->file)
