@@ -58,6 +58,7 @@ typedef struct 			s_file
 	blkcnt_t			st_blocks;
 	blksize_t			st_blksize;
 	time_t				st_mtimes;
+	time_t				foldertime;
 	struct s_file		*next;
 	char 				*grp;
 	char 				*uid;

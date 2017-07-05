@@ -30,7 +30,7 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 	{
 		if (a->file || b->file)
 			return (a->file);
-		else if ((a->noarg == b->noarg) && ft_strcmp(a->path, b->path) > 0)
+		else if (a->noarg == b->noarg && ft_strcmp(a->path, b->path) > 0)
 			return (1);
 	}
     else if (tri == REVPATH)
@@ -58,23 +58,25 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 		else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) > 0 && ft_strcmp(a->path, b->path) == 0)
 			return (1);
 	}
-	// else if (tri == PATHTIME)
-	// {
-	// 	if (a->file || b->file)
-	// 		return (a->file);
-	// 	else if ((a->noarg == b->noarg) && a->st_mtimes > b->st_mtimes)
-	// 		return (1);
-	// }
+	else if (tri == PATHTIME)
+	{
+		if (a->file || b->file)
+			return (a->file);
+		else if (a->noarg == b->noarg && a->foldertime > b->foldertime && strfils(a->path, b->path) == 0)
+			return (1);
+	}
 	else if (tri == TIME)
      {
      	if (a->file && b->file == 0)
 			return (1);
-        else if (a->noarg == b->noarg && a->st_mtimes > b->st_mtimes && ft_strcmp(a->path, b->path) == 0)
-            return (1);
-        else if (a->noarg == b->noarg && a->st_mtimes == b->st_mtimes)
+        else if (a->noarg == b->noarg && a->foldertime == b->foldertime && strfils(a->path, b->path) == 0)
         {
-            if (ft_strcmp(a->name, b->name) < 0)
-                return (1);
+         	if (a->st_mtimes > b->st_mtimes)
+         		return (1);
+         	else if (a->st_mtimes == b->st_mtimes && a->file && b->file && ft_strcmp(a->displayname, b->displayname) < 0)
+         		return (1);
+         	else if (a->st_mtimes == b->st_mtimes && ft_strcmp(a->name, b->name) < 0)
+         		return (1);
         }
      }
     else if (tri == REVTIME)
@@ -85,14 +87,13 @@ int			cmp_list(t_file *a, t_file *b, int tri)
             return (1);
         else if (a->noarg == b->noarg && a->st_mtimes == b->st_mtimes)
         {
-            if (ft_strcmp(a->name, b->name) < 0)
+            if (ft_strcmp(a->name, b->name) > 0)
                 return (1);
         }
     }
 
     //	POUR LE TRI PAR PATH TIME, IL FAUT STOCKER LE TIMESTAMP DES DOSSIERS QUELQUEPART. UN EQUIVALENT DE FILE->PATH QUI SERAIT PLUTOT FILE->FOLDERTIME
     //	POUR CE FAIRE, STOCKER LE STAT OBTENU PAR LE "." DU DIT DOSSIER ME SEMBLE INTELLIGENT.
-    //
 
 
 

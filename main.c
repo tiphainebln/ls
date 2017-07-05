@@ -68,6 +68,45 @@ char 		**epur_args(char **argv)
 	return (epured);
 }
 
+time_t 	get_time(char *path, char *name, t_op *op)
+{
+	char 			*fullpath;
+	struct stat 	this;
+
+	fullpath = NULL;
+	fullpath = ft_strjoin(path, name);
+	this = read_links(NULL, op, fullpath);
+	ft_strdel(&fullpath);
+	return (this.st_mtimespec.tv_sec);
+}
+
+t_file		*inject_time(t_file *file, t_op *op)
+{
+	time_t 	time;
+	time_t 	oldtime;
+	char 	*oldpath;
+
+	time = 0;
+	oldpath = NULL;
+	while (file)
+	{
+		oldtime = time;
+		if (oldpath)
+		{
+			if (ft_strcmp(file->path, oldpath))
+				time = get_time(file->path, file->name, op);
+		}
+		else
+			time = get_time(file->path, file->name, op);
+		if (oldtime != time || !oldpath)
+			oldpath = ft_strdup(file->path);
+		file->foldertime = time;
+		file = file->next;
+	}
+	file = op->begin;
+	return (file);
+}
+
 int 		main(int argc, char **argv, char **env)
 {
 	t_op	*o;
@@ -116,6 +155,7 @@ int 		main(int argc, char **argv, char **env)
 		if (o->R)
 			file = get_sub(file, o, o->noarg, NULL);
 	}
+	file = inject_time(file, o);
 	if (!file)
 		manage_error(file, NOTHINGTODO, o, NULL);
 	file = sort_lst(file, o);
@@ -143,4 +183,5 @@ int 		main(int argc, char **argv, char **env)
 ** ./ft_ls Rt !!!!!
 ** le tri par entry par temps est a faire differement : apres les get_dir, faire une nouvelle fonction de tri par entry pour le temps :)
 ** a partir de la, le tri avec -Rt devrait marcher :))
+** -rt a faire + path -t
 */
