@@ -42,11 +42,13 @@ t_op		*get_options(char *argv, t_op *o)
 			o->R++;
 		else if (argv[j] == 'l' && o->l == 0)
 			o->l++;
+		else if (argv[j] == 'd' && o->d == 0)
+			o->d++;
 		else
 			manage_error(NULL, OPTION, o, argv);
 		j++;
 	}
-	if (!o->a && !o->t && !o->r && !o->R && !o->l)
+	if (!o->d && !o->a && !o->t && !o->r && !o->R && !o->l)
 		manage_error(NULL, OPTION, o, argv);
 	return (o);
 }

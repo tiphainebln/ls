@@ -30,7 +30,7 @@ struct stat 	get_stat(char *av, t_op *op)
 		fullpath = ft_strdup(av);
 	else
 		fullpath = ft_strjoin(op->origin, av);
-	this = read_links(NULL, op, fullpath);
+	this = read_links(NULL, op, fullpath, 0);
 	ft_strdel(&fullpath);
 	return (this);
 }
@@ -70,10 +70,10 @@ char			**ft_sort_time(char **av, t_op *op)
 	struct stat data;
 	struct stat log;
 
+	i = 0;
+	j = 1;
 	while (ft_issorttime(av, op) == 0)
 	{
-		i = 0;
-		j = 1;
 		while (av[j])
 		{
 			data = get_stat(av[i], op);

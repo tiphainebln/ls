@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-struct stat		read_links(t_file *file, t_op *op, char *fullpath)
+struct stat		read_links(t_file *file, t_op *op, char *fullpath, int verbose)
 {
 	int			len;
 	char		buf[1024];
@@ -25,7 +25,7 @@ struct stat		read_links(t_file *file, t_op *op, char *fullpath)
 	if ((len = readlink(fullpath, buf, 1024)) > 0)
 	{
 		buf[len] = '\0';
-		if (lstat(fullpath, &data) == -1)
+		if (lstat(fullpath, &data) == -1 && verbose == 1)
 		{
 			manage_error(file, ARGUMENT, op, NULL);
 			op->error = ft_strdup(strerror(errno));
@@ -33,7 +33,7 @@ struct stat		read_links(t_file *file, t_op *op, char *fullpath)
 		op->link = 1;
 		op->linkname = ft_strdup(buf);
 	}
-	if (len <= 0 && errno != ELOOP && stat(fullpath, &data) == -1)
+	if (len <= 0 && errno != ELOOP && stat(fullpath, &data) == -1 && verbose == 1)
 	{
 		manage_error(file, ARGUMENT, op, NULL);
 		op->error = ft_strdup(strerror(errno));
@@ -48,6 +48,7 @@ t_op 		*data_op(t_op *op)
 	op->R = 0;
 	op->l = 0;
 	op->t = 0;
+	op->d = 0;
 	op->begin = NULL;
 	op->origin = NULL;
 	op->nbsizespace = 0;

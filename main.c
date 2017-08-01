@@ -75,7 +75,7 @@ time_t 	get_time(char *path, char *name, t_op *op)
 
 	fullpath = NULL;
 	fullpath = ft_strjoin(path, name);
-	this = read_links(NULL, op, fullpath);
+	this = read_links(NULL, op, fullpath, 0);
 	ft_strdel(&fullpath);
 	return (this.st_mtimespec.tv_sec);
 }
@@ -88,6 +88,7 @@ t_file		*inject_time(t_file *file, t_op *op)
 
 	time = 0;
 	oldpath = NULL;
+	file = op->begin;
 	while (file)
 	{
 		oldtime = time;
@@ -117,22 +118,18 @@ int 		main(int argc, char **argv, char **env)
 	int 	oldarg;
 
 	init_tab(tab);
-	i = 1;
+	i = 0;
 	o = NULL;
 	o = init(o, env);
 	if (argc > 1)
 	{
 		o = options(argv, o);
 		o->epured = epur_args(argv);
-		i = 0;
-		while (o->epured[i])
-			ft_putendl(o->epured[i++]);
 		if (o->t && *o->epured)
 			o->order = sort_t_entry(o->epured, o);
 		else if (*o->epured)
 			o->order = sort_entry(o->epured, o);
 	}
-	i = 1;
 	file = NULL;
 	oldpath = NULL;
 	oldarg = 1;
@@ -163,7 +160,8 @@ int 		main(int argc, char **argv, char **env)
 	if (o->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, o);
 	file = first_things_first(file);
-	display_path(file, o, argv, tab);
+	if (o->d == 0)
+		display_path(file, o, o->order, tab);
 	if (oldpath)
 		ft_strdel(&oldpath);
 	manage_error(file, NOTHINGTODO, o, NULL);
@@ -184,4 +182,5 @@ int 		main(int argc, char **argv, char **env)
 ** le tri par entry par temps est a faire differement : apres les get_dir, faire une nouvelle fonction de tri par entry pour le temps :)
 ** a partir de la, le tri avec -Rt devrait marcher :))
 ** -rt a faire + path -t
+** ft_ls auteur -> segfault voir sort_entries.c. surement dans issort argv[j]
 */

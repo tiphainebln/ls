@@ -56,7 +56,7 @@ t_file				*new_list(t_file *file, struct dirent *dirent, t_op *op)
 	fullname = ft_strjoin(op->current, dirent->d_name);
 	if (op->linkname)
 		ft_strdel(&op->linkname);
-	data = read_links(file, op, fullname);
+	data = read_links(file, op, fullname, 1);
 	if (!file)
 		file = begin(file, op, data, dirent);
 	else

@@ -25,8 +25,8 @@ int 		ft_issort(char **av, t_op *op)
 	int i;
 	int j;
 
-	i = 1;
-	j = 2;
+	i = 0;
+	j = 1;
 	while (av[j])
 	{
 		if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
@@ -47,8 +47,8 @@ char		**ft_sort_ascii_string(char **av, t_op *op)
 
 	while (ft_issort(av, op) == 0)
 	{
-		i = 1;
-		j = 2;
+		i = 0;
+		j = 1;
 		while (av[j])
 		{
 			if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)

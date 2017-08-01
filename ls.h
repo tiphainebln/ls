@@ -86,6 +86,7 @@ typedef struct 			s_op
 	unsigned int		r;
 	unsigned int		R;
 	unsigned int		l;
+	unsigned int 		d;
 	t_file				*begin;
 	char				*origin;
 	char				*current;
@@ -155,7 +156,7 @@ t_file					*store_lnk(t_file *file, t_op *op, struct stat data);
 t_file					*visited_or_completed(t_file *file);
 t_op 					*data_op(t_op *op);
 t_file					*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void));
-struct stat				read_links(t_file *file, t_op *op, char *fullpath);
+struct stat				read_links(t_file *file, t_op *op, char *fullpath, int verbose);
 char 					**sort_entry(char **entries, t_op *op);
 char					**ft_sort_ascii_string(char **av, t_op *op);
 int 					ft_issort(char **av, t_op *op);

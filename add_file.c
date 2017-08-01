@@ -34,7 +34,7 @@ t_file			*new_file(t_file *file, t_op *op, char *entry)
 		fullpath = ft_strdup(entry);
 	else
 		fullpath = ft_strjoin(op->origin, entry);
-	data = read_links(file, op, fullpath);
+	data = read_links(file, op, fullpath, 1);
 	if (!file)
 		file = firstNode(file, op, entry, data);
 	else

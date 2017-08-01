@@ -69,7 +69,7 @@ int			cmp_list(t_file *a, t_file *b, int tri)
      {
      	if (a->file && b->file == 0)
 			return (1);
-        else if (a->noarg == b->noarg && a->foldertime == b->foldertime && strfils(a->path, b->path) == 0)
+        else if (a->noarg == b->noarg && a->foldertime == b->foldertime)
         {
          	if (a->st_mtimes > b->st_mtimes)
          		return (1);
@@ -94,9 +94,5 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 
     //	POUR LE TRI PAR PATH TIME, IL FAUT STOCKER LE TIMESTAMP DES DOSSIERS QUELQUEPART. UN EQUIVALENT DE FILE->PATH QUI SERAIT PLUTOT FILE->FOLDERTIME
     //	POUR CE FAIRE, STOCKER LE STAT OBTENU PAR LE "." DU DIT DOSSIER ME SEMBLE INTELLIGENT.
-
-
-
-
 	return (0);
 }

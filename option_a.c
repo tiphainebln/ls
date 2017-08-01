@@ -39,12 +39,10 @@ int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 	int 	j;
 	char	*fullpath;
 
-	i = 1;
+	i = 0;
 	j = 1;
 	while (argv[i])
 	{
-		if (argv[i][0] != '-')
-			j++;
 		if (j == file->noarg)
 			break ;
 		i++;
