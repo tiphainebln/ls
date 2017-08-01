@@ -34,15 +34,14 @@
 # define PERMISSION 6
 # define NOTHINGTODO 0
 
-# define NAME 0
-# define TIME 1
+# define NAME 1
 # define REVNAME 2
 # define PATH 3
 # define REVPATH 4
-# define ENTRY 5
-# define REVENTRY 6
-# define REVTIME 7
-# define PATHTIME 8
+# define PATHTIME 5
+# define REVPATHTIME 6
+# define TIME 7
+# define REVTIME 8
 
 typedef struct 			s_file
 {
