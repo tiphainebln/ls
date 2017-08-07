@@ -23,7 +23,10 @@ t_file		*sort_lst(t_file *file, t_op *op)
 	else if (op->t)
 	{
 		if (op->r)
+		{
 			file = sort(file, REVTIME);
+			file = sort(file, REVPATHTIME);
+		}
 		file = sort(file, PATHTIME);
 		file = sort(file, TIME);
 	}

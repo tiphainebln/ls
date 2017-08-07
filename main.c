@@ -178,9 +178,30 @@ int 		main(int argc, char **argv, char **env)
 ** espacements entre groupes et size, groupes et minor/major et minor/major a gerer
 ** arborescence a revoir !!! 
 ** bien relire et comprendre le tri a fusion, schematisé comment il impacte la liste chainee, renommer les variables de façon comprehensible :)
-** ./ft_ls Rt !!!!!
 ** le tri par entry par temps est a faire differement : apres les get_dir, faire une nouvelle fonction de tri par entry pour le temps :)
 ** a partir de la, le tri avec -Rt devrait marcher :))
 ** -rt a faire + path -t
-** ft_ls auteur -> segfault voir sort_entries.c. surement dans issort argv[j]
+** ** ./ft_ls Rt ne fonctionne pas
+** 05/08 -rt réparé, entry rt a faire fontionner maintenant.
+
+
+FUNCT 1 ====> ESPACEMENTS ENTRE GROUPE/SIZE, GROUPE/MAJORMINORS, MINOR/MAJOR A GERER QUAND CHANGEMENT DE DOSSIERS
+piste 1 = creer une liste chainée qui contiendra les espaces de chaque elements.
+piste 2 = lorsque le path change, on recupere le plus grand nombre d'espaces du dossier et on l'applique a l'ensemble des espaces des elements du dossier.
+
+FUNCT 2 =====> FONTIONS REVPATHTIME A FAIRE
+piste 1 = lorsque le -R est acitvé le tri se fait bien en distinguant les différents paths mais ne sont pas dans le bon ordre, pourquoi ?
+piste 2 = 
+
+FUNCT 3 =====> SORT TIME ENTRIES A CORRIGER
+piste 1 = lorsque -rt [arguments] boucle infinie ? pourquoi ?
+
+BONUS   ======>  ****  trier toute l'arborescence   ****
+				- priorités a get_data et storage, leurs donner un sens et bien separer ->o et ->file
+		======>   ****  bien relire et comprendre le tri ****
+				- https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
+		======>   ****   option couleur   ****
+				- répliquer ls
 */
+
+

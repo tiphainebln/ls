@@ -68,7 +68,7 @@ int 		pathtimesort(t_file *a, t_file *b)
 {
 	if (a->file || b->file)
 		return (a->file);
-	else if (a->noarg == b->noarg && a->foldertime > b->foldertime && strfils(a->path, b->path) == 0)
+	else if (a->noarg == b->noarg && a->foldertime < b->foldertime && ft_strcmp(a->path, b->path) > 0 && strfils(a->path, b->path) == 0)
 		return (1);
 	return (0);
 }
@@ -105,12 +105,11 @@ int 		revtimesort(t_file *a, t_file *b)
 
 int 		revpathtimesort(t_file *a, t_file *b)
 {
-	if (a)
-		return (0);
-	else if (REVPATHTIME && b)
-		return (0);
-	else
-		return (378);
+	if (a->file ^ b->file)
+		return (a->file);
+	else if (a->noarg == b->noarg && a->foldertime < b->foldertime && strfils(a->path, b->path) == 0 && ft_strcmp(a->path, b->path) == 0)
+		return (1);
+	return (0);
 }
 
 int			cmp_list(t_file *a, t_file *b, int tri)
@@ -123,14 +122,14 @@ int			cmp_list(t_file *a, t_file *b, int tri)
     	return (namesort(a, b));
 	else if (tri == REVNAME)
 		return (revnamesort(a, b));
-	else if (tri == PATHTIME)
-		return (pathtimesort(a, b));
-	else if (tri == REVPATHTIME)
-		return (revpathtimesort(a, b));
 	else if (tri == TIME)
 		return (timesort(a, b));
     else if (tri == REVTIME)
     	return (revtimesort(a, b));
+    else if (tri == PATHTIME)
+		return (pathtimesort(a, b));
+    else if (tri == REVPATHTIME)
+		return (revpathtimesort(a, b));
     else
     	return (0);
     //	POUR LE TRI PAR PATH TIME, IL FAUT STOCKER LE TIMESTAMP DES DOSSIERS QUELQUEPART. UN EQUIVALENT DE FILE->PATH QUI SERAIT PLUTOT FILE->FOLDERTIME
