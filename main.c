@@ -189,12 +189,13 @@ FUNCT 1 ====> ESPACEMENTS ENTRE GROUPE/SIZE, GROUPE/MAJORMINORS, MINOR/MAJOR A G
 piste 1 = creer une liste chainée qui contiendra les espaces de chaque elements.
 piste 2 = lorsque le path change, on recupere le plus grand nombre d'espaces du dossier et on l'applique a l'ensemble des espaces des elements du dossier.
 
-FUNCT 2 =====> FONTIONS REVPATHTIME A FAIRE
+FUNCT 2 =====> FONTIONS PATHTIME ET REVPATHTIME A FAIRE
 piste 1 = lorsque le -R est acitvé le tri se fait bien en distinguant les différents paths mais ne sont pas dans le bon ordre, pourquoi ?
 piste 2 = 
 
 FUNCT 3 =====> SORT TIME ENTRIES A CORRIGER
 piste 1 = lorsque -rt [arguments] boucle infinie ? pourquoi ?
+piste 2 = lorsque filenorights est passé en parametre boucle infinie
 
 BONUS   ======>  ****  trier toute l'arborescence   ****
 				- priorités a get_data et storage, leurs donner un sens et bien separer ->o et ->file
