@@ -15,19 +15,18 @@ SRC = main.c \
 	  error.c \
 	  add_list.c \
 	  directories.c \
-	  print_rights.c \
+	  rights_and_types.c \
 	  print_stat.c \
-	  display.c \
+	  display_ls.c \
 	  color.c \
 	  color2.c \
 	  subs.c \
-	  tools.c \
+	  determine_types.c \
 	  get_data.c \
 	  path.c \
 	  sort.c \
-	  print.c \
+	  print_total_and_major.c \
 	  option_a.c \
-	  storage.c \
 	  print_path.c \
 	  check_if_hidden.c \
 	  subs_tools.c \
@@ -35,7 +34,12 @@ SRC = main.c \
 	  sort_list.c \
 	  add_file.c \
 	  cmp_list.c \
-	  sort_t_entries.c
+	  sort_t_entries.c \
+	  struct_op.c \
+	  store_links.c \
+	  get_spaces.c \
+	  manage_arguments.c \
+	  time_management.c
 
 OBJ = $(SRC:.c=.o)
 

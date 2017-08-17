@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ls.h"
+#include "ls.h"
 
 void			free_file(t_file *file, t_file *tmp)
 {
@@ -54,25 +54,8 @@ void			ft_free(t_file *file, t_op *op, int error)
 	exit((error) ? 1 : 0);
 }
 
-t_file			*add_error(char *name, t_op *op)
+t_file			*more_errors(t_file *file, char *name, t_op *op)
 {
-	t_file		*file;
-
-	file = (t_file *)malloc(sizeof(t_file));
-	// if (ft_strstr(name, "../"))
-	// 	file->name = ft_strdup(ft_strstr(name, "../"));
-	// else
-	file->name = ft_strdup(name);
-	file->path = store_path(name, op);
-	file->st_size = 0;
-	file->type = 0;
-	file->st_nlink = 0;
-	file->st_mode = 0;
-	file->st_gid = 0;
-	file->st_uid = 0;
-	file->st_blocks = 0;
-	file->st_blksize = 0;
-	file->st_mtimes = 0;
 	file->displayname = NULL;
 	file->nameasadir = NULL;
 	file->uid = NULL;
@@ -86,6 +69,26 @@ t_file			*add_error(char *name, t_op *op)
 	file->file = 0;
 	file->sub = op->sub;
 	file->error = str3join(file->name, ": ", op->error);
+	return (file);
+}
+
+t_file			*add_error(char *name, t_op *op)
+{
+	t_file		*file;
+
+	file = (t_file *)malloc(sizeof(t_file));
+	file->name = ft_strdup(name);
+	file->path = store_path(name, op);
+	file->st_size = 0;
+	file->type = 0;
+	file->st_nlink = 0;
+	file->st_mode = 0;
+	file->st_gid = 0;
+	file->st_uid = 0;
+	file->st_blocks = 0;
+	file->st_blksize = 0;
+	file->st_mtimes = 0;
+	file = more_errors(file, name, op);
 	if (op->error)
 		ft_strdel(&op->error);
 	file->first = 1;

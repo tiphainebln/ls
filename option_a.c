@@ -12,9 +12,9 @@
 
 #include "ls.h"
 
-int 			ft_cmppostorigin(char *origin, char *path, int free_needed)
+int				ft_cmppostorigin(char *origin, char *path, int free_needed)
 {
-	int 		i;
+	int			i;
 
 	i = 0;
 	while (origin[i] && path[i] && origin[i] == path[i])
@@ -35,9 +35,9 @@ int 			ft_cmppostorigin(char *origin, char *path, int free_needed)
 
 int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 {
-	int 	i;
-	int 	j;
-	char	*fullpath;
+	int			i;
+	int			j;
+	char		*fullpath;
 
 	i = 0;
 	j = 1;
@@ -47,6 +47,7 @@ int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 			break ;
 		i++;
 	}
+	i = 0;
 	if (argv[i][0] == '/')
 		return (ft_cmppostorigin(argv[i], file->path, 0));
 	else
@@ -54,7 +55,7 @@ int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 		fullpath = ft_strjoin(op->origin, argv[i]);
 		return (ft_cmppostorigin(fullpath, file->path, 1));
 	}
-} 
+}
 
 int 			opt_a(t_file *file, t_op *op, char **argv)
 {

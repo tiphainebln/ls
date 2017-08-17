@@ -12,9 +12,9 @@
 
 #include "ls.h"
 
-t_file				*add_list(struct stat data, struct dirent *dirent, t_op *op)
+t_file	*add_list(struct stat data, struct dirent *dirent, t_op *op)
 {
-	t_file			*file;
+	t_file	*file;
 
 	file = (t_file *)malloc(sizeof(t_file));
 	file->name = ft_strdup(dirent->d_name);
@@ -36,7 +36,7 @@ t_file				*add_list(struct stat data, struct dirent *dirent, t_op *op)
 	return (file);
 }
 
-t_file				*begin(t_file *file, t_op *op, struct stat data, struct dirent *dirent)
+t_file	*begin(t_file *file, t_op *op, struct stat data, struct dirent *dirent)
 {
 	if (op->error)
 		file = add_error(dirent->d_name, op);
@@ -47,11 +47,10 @@ t_file				*begin(t_file *file, t_op *op, struct stat data, struct dirent *dirent
 	return (file);
 }
 
-
-t_file				*new_list(t_file *file, struct dirent *dirent, t_op *op)
+t_file	*new_list(t_file *file, struct dirent *dirent, t_op *op)
 {
-	struct stat		data;
-	char			*fullname;
+	struct stat	data;
+	char		*fullname;
 
 	fullname = ft_strjoin(op->current, dirent->d_name);
 	if (op->linkname)
@@ -70,28 +69,4 @@ t_file				*new_list(t_file *file, struct dirent *dirent, t_op *op)
 	}
 	free(fullname);
 	return (file);
-}
-
-t_op				*init(t_op *op, char **env)
-{
-	int 			i;
-
-	i = -1;
-	if (op == NULL)
-	{
-		op = (t_op *)malloc(sizeof(t_op));
-		op = data_op(op);
-		while (env[++i])
-		{
-			if (ft_strncmp(env[i], "PWD=", 4) == 0)
-				op->origin = ft_strjoin(&env[i][4], "/");
-		}
-		op->current = NULL;
-		op->error = NULL;
-		op->entry = NULL;
-		op->order = NULL;
-		if (op->origin == NULL)
-			manage_error(NULL, ERROR, op, NULL);
-	}
-	return (op);
 }

@@ -19,7 +19,7 @@ t_op		*options(char **argv, t_op *o)
 	i = -1;
 	while (argv[++i])
 	{
-		if (argv[i][0] == '-')
+		if (argv[i][0] == '-' && argv[i][1] && argv[i][1] != '-')
 			o = get_options(argv[i], o);
 	}
 	return (o);
@@ -44,11 +44,13 @@ t_op		*get_options(char *argv, t_op *o)
 			o->l++;
 		else if (argv[j] == 'd' && o->d == 0)
 			o->d++;
+		else if (argv[j] == '1' && o->un == 0)
+			o->un++;
 		else
 			manage_error(NULL, OPTION, o, argv);
 		j++;
 	}
-	if (!o->d && !o->a && !o->t && !o->r && !o->R && !o->l)
+	if (!o->d && !o->a && !o->t && !o->r && !o->R && !o->l && !o->un)
 		manage_error(NULL, OPTION, o, argv);
 	return (o);
 }

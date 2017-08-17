@@ -12,20 +12,19 @@
 
 #include "ls.h"
 
-t_file				*store_lnk(t_file *file, t_op *op, struct stat data)
+char				*get_fname(char *entry)
 {
-	if (op->link)
-	{
-		file->type = 10;
-		file->typereal = determine_type(data);
-		file->linkname = ft_strdup(op->linkname);
-	}
+	char			*fn;
+	int				i;
+
+	i = ft_strlen(entry) - 1;
+	fn = NULL;
+	if (entry[i] == '/')
+		entry[i] = '\0';
+	if ((fn = ft_strrchr(entry, '/')))
+		return (ft_strdup(fn + 1));
 	else
-	{
-		file->type = determine_type(data);
-		file->linkname = NULL;
-	}
-	return (file);
+		return (ft_strdup(entry));
 }
 
 t_file				*store_basic(t_file *file, struct stat data)
@@ -64,37 +63,20 @@ t_file				*store_groups_uid(t_file *file)
 	return (file);
 }
 
-int					valuemax(int size, t_op *op, char *name, int origin)
+t_file				*visited_or_completed(t_file *file)
 {
-	if (name[0] == '.')
+	if (file->type == DT_DIR && ft_strcmp(file->name, ".") && \
+		ft_strcmp(file->name, ".."))
 	{
-		if (op->a)
-			return (size);
-		else
-			return (origin);
+		file->visited = 0;
+		file->completed = 0;
+		file->nameasadir = str3join(file->path, file->name, "/");
 	}
-	return (size);
-}
-
-t_file				*nb_spaces(t_file *file, t_op *op)
-{
-	if (op->nbuidspace < ft_strlen(file->uid))
-		op->nbuidspace = valuemax(ft_strlen(file->uid), op, \
-			file->name, op->nbuidspace);
-	if (op->nbgrpspace < ft_strlen(file->grp))
-		op->nbgrpspace = valuemax(ft_strlen(file->grp), op, \
-			file->name, op->nbgrpspace);
-	if (op->nblinkspace < ft_intlen(file->st_nlink))
-		op->nblinkspace = valuemax(ft_intlen(file->st_nlink), op, \
-			file->name, op->nblinkspace);
-	if (op->nbsizespace < ft_intlen(file->st_size))
-		op->nbsizespace = valuemax(ft_intlen(file->st_size), op, \
-			file->name, op->nbsizespace);
-	if (file->major != -1 && op->nbmajorspace < ft_intlen(file->major))
-		op->nbmajorspace = valuemax(ft_intlen(file->major), op, \
-			file->name, op->nbmajorspace);
-	if (file->minor != -1 && op->nbminorspace < ft_intlen(file->minor))
-		op->nbminorspace = valuemax(ft_intlen(file->minor), op, \
-			file->name, op->nbminorspace);
+	else
+	{
+		file->completed = 1;
+		file->visited = 1;
+		file->nameasadir = NULL;
+	}
 	return (file);
 }

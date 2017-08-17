@@ -68,13 +68,12 @@ int 		pathtimesort(t_file *a, t_file *b)
 {
 	if (a->file || b->file)
 		return (a->file);
-	else if (a->file == 0 && b->file == 0 && a->foldertime < b->foldertime && strfils(a->path, b->path) == 0)
+	else if (a->noarg == b->noarg && a->foldertime < b->foldertime && ft_strcmp(a->path, b->path) < 0 && strfils(a->path, b->path) == 0)
 		return (1);
-	// else if (a->noarg == b->noarg && a->foldertime < b->foldertime && ft_strcmp(a->path, b->path) == 0)
-	// 	return (1);
+	// else if (ft_strcmp(a->path, b->path) < 0 && strfils(a->path, b->path) == 0 && a->foldertime < b->foldertime)
+ //     		return (1);
 	return (0);
 }
-// POURQUOI CERTAINS SOUS DOSSIERS (ABC/LOL) SE MELANGENT AVEC LE RESTE ? 
 
 int 		timesort(t_file *a, t_file *b)
 {
@@ -86,21 +85,24 @@ int 		timesort(t_file *a, t_file *b)
      		return (1);
      	else if (a->st_mtimes == b->st_mtimes && a->file && b->file && ft_strcmp(a->displayname, b->displayname) < 0)
      		return (1);
-     	else if (a->st_mtimes == b->st_mtimes && ft_strcmp(a->name, b->name) < 0)
-     		return (1);
+     	// else if (a->st_mtimes == b->st_mtimes && ft_strcmp(a->name, b->name) < 0 && strfils(a->path, b->path) == 0)
+     	// 	return (1);
     }
     return (0);
 }
+// >>>> ABC/LOL !!!.
+// >>>> LES MAJUSCULES(TEST & WILAY).
+// >>>> ./abc/lol en trop, 2 ./titi en trop, ./subtest/sub2 en trop. 
 
 int 		revtimesort(t_file *a, t_file *b)
 {
 	if (a->file ^ b->file)
 		return (a->file);
-    if (a->noarg == b->noarg && a->st_mtimes < b->st_mtimes && ft_strcmp(a->path, b->path) == 0)
+    if (a->file && b->file && a->st_mtimes < b->st_mtimes)
         return (1);
-    else if (a->noarg == b->noarg && a->st_mtimes == b->st_mtimes)
+    else if (a->noarg == b->noarg && a->foldertime == b->foldertime)
     {
-        if (ft_strcmp(a->name, b->name) > 0)
+        if (a->st_mtimes < b->st_mtimes)
             return (1);
     }
     return (0);
@@ -108,9 +110,9 @@ int 		revtimesort(t_file *a, t_file *b)
 
 int 		revpathtimesort(t_file *a, t_file *b)
 {
-	if (a->file ^ b->file)
+	if (a->file || b->file)
 		return (a->file);
-	else if (a->noarg == b->noarg && a->foldertime < b->foldertime && strfils(a->path, b->path) == 0 && ft_strcmp(a->path, b->path) == 0)
+	else if (a->noarg == b->noarg && a->foldertime > b->foldertime && ft_strcmp(a->path, b->path) > 0 && strfils(a->path, b->path) == 0)
 		return (1);
 	return (0);
 }
@@ -135,6 +137,4 @@ int			cmp_list(t_file *a, t_file *b, int tri)
 		return (revpathtimesort(a, b));
     else
     	return (0);
-    //	POUR LE TRI PAR PATH TIME, IL FAUT STOCKER LE TIMESTAMP DES DOSSIERS QUELQUEPART. UN EQUIVALENT DE FILE->PATH QUI SERAIT PLUTOT FILE->FOLDERTIME
-    //	POUR CE FAIRE, STOCKER LE STAT OBTENU PAR LE "." DU DIT DOSSIER ME SEMBLE INTELLIGENT.
 }

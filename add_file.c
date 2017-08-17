@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-t_file			*firstNode(t_file *file, t_op *op, char *entry, struct stat data)
+t_file		*first_Node(t_file *file, t_op *op, char *entry, struct stat data)
 {
 	if (op->error)
 		file = add_error(entry, op);
@@ -23,10 +23,10 @@ t_file			*firstNode(t_file *file, t_op *op, char *entry, struct stat data)
 	return (file);
 }
 
-t_file			*new_file(t_file *file, t_op *op, char *entry)
+t_file		*new_file(t_file *file, t_op *op, char *entry)
 {
-	struct stat		data;
-	char			*fullpath;
+	struct stat	data;
+	char		*fullpath;
 
 	if (op->linkname)
 		ft_strdel(&op->linkname);
@@ -36,7 +36,7 @@ t_file			*new_file(t_file *file, t_op *op, char *entry)
 		fullpath = ft_strjoin(op->origin, entry);
 	data = read_links(file, op, fullpath, 1);
 	if (!file)
-		file = firstNode(file, op, entry, data);
+		file = first_Node(file, op, entry, data);
 	else
 	{
 		file = op->latest;
@@ -50,9 +50,9 @@ t_file			*new_file(t_file *file, t_op *op, char *entry)
 	return (file);
 }
 
-t_file			*add_file(struct stat data, t_op *op, char *entry)
+t_file		*add_file(struct stat data, t_op *op, char *entry)
 {
-	t_file		*file;
+	t_file	*file;
 
 	file = (t_file *)malloc(sizeof(t_file));
 	if (entry[0] == '/')

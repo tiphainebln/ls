@@ -57,9 +57,10 @@ void		multi_arg(t_file *file, t_op *op, char *oldpath)
 		print_total(file, op);
 }
 
-t_file			*empty_directory(t_file *file, char *oldpath, t_op *op)
+t_file		*empty_directory(t_file *file, char *oldpath, t_op *op)
 {
-	if (oldpath && ft_strcmp(file->name, ".") && only_contains_hidden(file) && ft_strcmp(file->path, oldpath))
+	if (oldpath && ft_strcmp(file->name, ".") && only_contains_hidden(file) \
+		&& ft_strcmp(file->path, oldpath))
 	{
 		ft_putchar('\n');
 		if (file->error)
@@ -74,10 +75,10 @@ t_file			*empty_directory(t_file *file, char *oldpath, t_op *op)
 	return (file);
 }
 
-t_file			*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void))
+t_file		*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void))
 {
 	char	*oldpath;
-	int 	oldarg;
+	int		oldarg;
 
 	oldpath = NULL;
 	oldarg = 1;
@@ -100,17 +101,7 @@ t_file			*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void)
 			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
-		// ft_putnbr(file->foldertime);
-		// ft_putchar(' ');
-		if (file->error)
-		 	ft_putendl_fd(file->error, 2);
-		else if (op->l)
-			long_format(file, op, tab);
-		else
-			(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
-		//tab[file->type]();
-		// ft_putstr("\033[00m");
-		file = file->next;
+		file = display_standard(file, op, tab);
 	}
 	return (file);
 }

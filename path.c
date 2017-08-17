@@ -14,7 +14,7 @@
 
 char		*store_path(char *entry, t_op *op)
 {
-	int 	i;
+	int		i;
 
 	i = ft_strlen(entry);
 	while (i > 0)
@@ -33,16 +33,16 @@ char		*store_path(char *entry, t_op *op)
 
 void		write_path(char *path, char *origin, int noarg, int relative)
 {
-	int 		last_slash;
-	int 		i;
-	char		*tmp;
+	int		last_slash;
+	int		i;
+	char	*tmp;
 
 	last_slash = 0;
 	i = 0;
 	tmp = ft_strdup(path);
 	if (tmp[1] != '\0')
 	{
-		while(tmp[ft_strlen(tmp) - 1] == '/')
+		while (tmp[ft_strlen(tmp) - 1] == '/')
 			tmp[ft_strlen(tmp) - 1] = '\0';
 	}
 	if (ft_strstr(tmp, "../"))
@@ -66,7 +66,7 @@ void		write_path(char *path, char *origin, int noarg, int relative)
 	ft_putendl(":");
 }
 
-int 		same_path_everywhere(t_file *file)
+int			same_path_everywhere(t_file *file)
 {
 	while (file->next)
 	{

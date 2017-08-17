@@ -44,7 +44,7 @@ int 			ft_issorttime(char **av, t_op *op)
 
 	i = 0;
 	j = 1;
-	while (av[j])
+	while (av[i] && av[j])
 	{
 		data = get_stat(av[i], op);
 		log = get_stat(av[j], op);
@@ -70,10 +70,10 @@ char			**ft_sort_time(char **av, t_op *op)
 	struct stat data;
 	struct stat log;
 
-	i = 0;
-	j = 1;
 	while (ft_issorttime(av, op) == 0)
 	{
+		i = 0;
+		j = 1;
 		while (av[j])
 		{
 			data = get_stat(av[i], op);
