@@ -21,7 +21,6 @@ t_file	*add_list(struct stat data, struct dirent *dirent, t_op *op)
 	file = store_basic(file, data);
 	file->path = ft_strdup(op->current);
 	file = store_groups_uid(file);
-	file = nb_spaces(file, op);
 	file->displayname = NULL;
 	file = store_lnk(file, op, data);
 	file = visited_or_completed(file);
@@ -29,6 +28,7 @@ t_file	*add_list(struct stat data, struct dirent *dirent, t_op *op)
 	file->relative = op->relative;
 	file->file = 0;
 	file->error = NULL;
+	file->errorname = NULL;
 	file->first = 1;
 	file->entry = ft_strdup(op->entry);
 	file->file_error = 0;

@@ -28,6 +28,8 @@ void			free_file(t_file *file, t_file *tmp)
 			free(file->displayname);
 		if (file->linkname)
 			free(file->linkname);
+		if (file->errorname)
+			free(file->errorname);
 		tmp = file;
 		file = file->next;
 		free(tmp);
@@ -68,7 +70,8 @@ t_file			*more_errors(t_file *file, char *name, t_op *op)
 	file->relative = op->relative;
 	file->file = 0;
 	file->sub = op->sub;
-	file->error = str3join(file->name, ": ", op->error);
+	file->errorname = get_fname(name);
+	file->error = str3join(file->errorname, ": ", op->error);
 	return (file);
 }
 

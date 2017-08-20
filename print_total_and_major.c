@@ -40,12 +40,12 @@ t_file				*print_total(t_file *file, t_op *op)
 	return (file);
 }
 
-void				print_major_minor(t_file *file, t_op *op)
+void				print_major_minor(t_file *file)
 {
-	ft_putspaces(file, op, 4);
+	ft_putspaces(file, 4);
 	ft_putnbr(file->major);
 	ft_putstr(",");
-	ft_putspaces(file, op, 5);
+	ft_putspaces(file, 5);
 	ft_putnbr(file->minor);
 	ft_putstr(" ");
 }

@@ -67,7 +67,6 @@ t_file		*add_file(struct stat data, t_op *op, char *entry)
 	file->path = store_path(entry, op);
 	file->completed = 1;
 	file->visited = 1;
-	file = nb_spaces(file, op);
 	file->file = 1;
 	file->error = NULL;
 	file->noarg = op->noarg;
@@ -76,5 +75,6 @@ t_file		*add_file(struct stat data, t_op *op, char *entry)
 	file->entry = ft_strdup(entry);
 	file->file_error = 0;
 	file->sub = op->sub;
+	file->errorname = NULL;
 	return (file);
 }

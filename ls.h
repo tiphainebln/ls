@@ -76,6 +76,13 @@ typedef struct			s_file
 	char				*entry;
 	int					file_error;
 	int					sub;
+	char 				*errorname;
+	int					nblinkspace;
+	int					nbsizespace;
+	size_t				nbgrpspace;
+	size_t				nbuidspace;
+	int					nbminorspace;
+	int					nbmajorspace;
 }						t_file;
 
 typedef struct			s_op
@@ -111,7 +118,7 @@ typedef struct			s_op
 }						t_op;
 
 t_file					*add_error(char *name, t_op *op);
-void					print_major_minor(t_file *file, t_op *op);
+void					print_major_minor(t_file *file);
 void					init_tab(int (*tab[13])(void));
 void					manage_error(t_file *file, int error, t_op *op, char *entry);
 t_op					*init(t_op *op, char **env);
@@ -126,22 +133,21 @@ t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 t_file					*store_basic(t_file *file, struct stat data);
 t_file					*store_groups_uid(t_file *file);
-t_file					*nb_spaces(t_file *file, t_op *op);
+t_op					*nb_spaces(t_file *file, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op, int where, t_file *curr_dir);
 int						only_contains_hidden(t_file *start);
 int						ft_checkhiddendir(char *str);
-t_file					*print_grp(t_file *file, t_op *op);
-t_file					*print_uid(t_file *file, t_op *op);
+t_file					*print_grp(t_file *file);
+t_file					*print_uid(t_file *file);
 void					file_type_letter(t_file *file);
-int						print_rights(t_file *file, t_op *op);
+int						print_rights(t_file *file);
 t_file					*print_total(t_file *file, t_op *op);
-t_file					*print_size(t_file *file, t_op *op);
+t_file					*print_size(t_file *file);
 t_file					*print_links(t_file *file);
-t_file					*long_format(t_file *file, t_op *op, int (*tab[13])(void));
 t_file					*add_file(struct stat data, t_op *op, char *entry);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 int						opt_a(t_file *file, t_op *op, char **argv);
-void					ft_putspaces(t_file *file, t_op *op, int choice);
+void					ft_putspaces(t_file *file, int choice);
 t_file					*print_time(t_file *file);
 int						determine_type(struct stat data);
 char					*store_path(char *entry, t_op *op);
@@ -179,5 +185,7 @@ char					**epur_args(char **argv);
 time_t					get_time(char *path, char *name, t_op *op);
 t_file					*inject_time(t_file *file, t_op *op);
 t_file					*display_standard(t_file *file, t_op *op, int (*tab[13])(void));
+struct stat 			get_stat(char *av, t_op *op);
+t_file 					*space_central(t_file *file, t_op *op);
 
 #endif

@@ -12,17 +12,17 @@
 
 #include "ls.h"
 
-t_file		*print_grp(t_file *file, t_op *op)
+t_file		*print_grp(t_file *file)
 {
 	ft_putstr(file->grp);
-	ft_putspaces(file, op, 2);
+	ft_putspaces(file, 2);
 	return (file);
 }
 
-t_file		*print_uid(t_file *file, t_op *op)
+t_file		*print_uid(t_file *file)
 {
 	ft_putstr(file->uid);
-	ft_putspaces(file, op, 3);
+	ft_putspaces(file, 3);
 	return (file);
 }
 
@@ -33,9 +33,9 @@ t_file		*print_links(t_file *file)
 	return (file);
 }
 
-t_file		*print_size(t_file *file, t_op *op)
+t_file		*print_size(t_file *file)
 {
-	ft_putspaces(file, op, 1);
+	ft_putspaces(file, 1);
 	ft_putnbr(file->st_size);
 	ft_putchar(' ');
 	return (file);

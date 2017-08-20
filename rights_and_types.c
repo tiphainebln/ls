@@ -57,7 +57,7 @@ void		get_stickybit(t_file *file)
 	ft_putchar(c);
 }
 
-int				print_rights(t_file *file, t_op *op)
+int				print_rights(t_file *file)
 {
 	ft_putchar((file->st_mode & S_IRUSR) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWUSR) ? 'w' : '-');
@@ -68,9 +68,8 @@ int				print_rights(t_file *file, t_op *op)
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
 	get_stickybit(file);
-	ft_putspaces(file, op, 0);
+	ft_putspaces(file, 0);
 	return (0);
-
 }
  
 void 			file_type_letter(t_file *file)

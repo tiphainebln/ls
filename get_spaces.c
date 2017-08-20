@@ -24,8 +24,9 @@ int				valuemax(int size, t_op *op, char *name, int origin)
 	return (size);
 }
 
-t_file			*nb_spaces(t_file *file, t_op *op)
+t_op			*nb_spaces(t_file *file, t_op *op)
 {
+	ft_putendl("wait");
 	if (op->nbuidspace < ft_strlen(file->uid))
 		op->nbuidspace = valuemax(ft_strlen(file->uid), op, \
 			file->name, op->nbuidspace);
@@ -44,26 +45,72 @@ t_file			*nb_spaces(t_file *file, t_op *op)
 	if (file->minor != -1 && op->nbminorspace < ft_intlen(file->minor))
 		op->nbminorspace = valuemax(ft_intlen(file->minor), op, \
 			file->name, op->nbminorspace);
+	ft_putendl("why");
+	return (op);
+}
+
+t_file		*store_space(t_file *file, t_op *op)
+{
+	file->nbuidspace = op->nbuidspace;
+	file->nbgrpspace = op->nbgrpspace;
+	file->nblinkspace = op->nblinkspace;
+	file->nbsizespace = op->nbsizespace;
+	file->nbmajorspace = op->nbmajorspace;
+	file->nbminorspace = op->nbminorspace;
 	return (file);
 }
 
-void			ft_putspaces(t_file *file, t_op *op, int choice)
+t_file		*space_central(t_file *file, t_op *op)
+{
+	t_file	*tmp;
+	char 	*current_path;
+	
+	while (file)
+	{
+		tmp = file;
+		current_path = ft_strdup(file->path);
+		op->nbuidspace = 0;
+		op->nbgrpspace = 0;
+		op->nblinkspace = 0;
+		op->nbsizespace = 0;
+		op->nbmajorspace = 0;
+		op->nbminorspace = 0;
+		while (file && file->error == 0 && ft_strcmp(file->path, current_path) == 0)
+		{
+			op = nb_spaces(file, op);
+			file = file->next;
+		}
+		file = tmp;
+		while (file && file->error == 0 && ft_strcmp(file->path, current_path) == 0)
+		{
+			file = store_space(file, op);
+			file = file->next;
+		}
+		while (file && ft_strcmp(file->path, current_path) == 0)
+			file = file->next;
+		ft_strdel(&current_path);
+	}
+	file = op->begin;
+	return (file);
+}
+
+void			ft_putspaces(t_file *file, int choice)
 {
 	int space;
 
 	space = 0;
 	if (choice == 1)
-		space = op->nbsizespace - ft_intlen(file->st_size);
+		space = file->nbsizespace - ft_intlen(file->st_size);
 	else if (choice == 2)
-		space = op->nbgrpspace - ft_strlen(file->grp);
+		space = file->nbgrpspace - ft_strlen(file->grp);
 	else if (choice == 3)
-		space = op->nbuidspace - ft_strlen(file->uid);
+		space = file->nbuidspace - ft_strlen(file->uid);
 	else if (choice == 4)
-		space = op->nbmajorspace - ft_intlen(file->major);
+		space = file->nbmajorspace - ft_intlen(file->major);
 	else if (choice == 5)
-		space = op->nbminorspace - ft_intlen(file->minor);
+		space = file->nbminorspace - ft_intlen(file->minor);
 	else
-		space = op->nblinkspace - ft_intlen(file->st_nlink);
+		space = file->nblinkspace - ft_intlen(file->st_nlink);
 	if (choice != 2)
 		ft_putstr("  ");
 	while (--space >= 0)

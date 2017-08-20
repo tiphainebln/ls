@@ -30,12 +30,7 @@ void		directories_as_arg(t_file *file, t_op *op, char *oldpath)
 	if (ft_strcmp(file->path, oldpath))
 	{
 		ft_putchar('\n');
-		if (file->error)
-		{
-			ft_putstr(file->name);
-			ft_putendl(":");
-		}
-		else if (file->file == 0)
+		if (file->file == 0)
 			write_path(file->path, op->origin, op->noarg, file->relative);
 		if (op->l && file->file == 0 && file->error == NULL)
 			print_total(file, op);

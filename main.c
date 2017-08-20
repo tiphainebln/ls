@@ -72,6 +72,7 @@ int 		main(int argc, char **argv, char **env)
 			file = get_sub(file, o, o->noarg, NULL);
 	}
 	file = inject_time(file, o);
+	file = space_central(file, o);
 	if (!file)
 		manage_error(file, NOTHINGTODO, o, NULL);
 	file = sort_lst(file, o);
@@ -87,7 +88,7 @@ int 		main(int argc, char **argv, char **env)
 	return (0);
 }
 
-/* 
+ /*
 ** - data->m_time = structure.st_mtimespec;
 ** - decouper le main en petites fonctions -> parse // -> affichage
 ** - tri par temps
@@ -113,6 +114,8 @@ DONE =
 FUNCT 1 ====> ESPACEMENTS ENTRE GROUPE/SIZE, GROUPE/MAJORMINORS, MINOR/MAJOR A GERER QUAND CHANGEMENT DE DOSSIERS
 piste 1 = creer une liste chainée qui contiendra les espaces de chaque elements.
 piste 2 = lorsque le path change, on recupere le plus grand nombre d'espaces du dossier et on l'applique a l'ensemble des espaces des elements du dossier.
+piste 3 = while (on est sur le meme dossier)
+		  on applique les espaces --->>> utiliser oldpath??
 
 FUNCT 2 =====> FONTIONS PATHTIME ET REVPATHTIME A FAIRE
 piste 1 = encore quelques ajustements a faire : pas de doublons, les sous-dossiers doivent etre de pair avec leur dossier d'origine
@@ -123,8 +126,10 @@ edit : les majuscules doivent toujours etre devant !!!
 
 FUNCT 4 =====> FONTION REVTIME !!!
 
-FUNCT 5 ======> ./ft_ls -r auteur Makefile ../chmod.c 
+petits trucs a corriger : 
 
+---> ./ft_ls -r auteur Makefile ../chmod.c 
+---> - -- --- passes en parametre
 
 BONUS   ======>  ****  trier toute l'arborescence   ****
 				- priorités a get_data et storage, leurs donner un sens et bien separer ->o et ->file
@@ -132,6 +137,5 @@ BONUS   ======>  ****  trier toute l'arborescence   ****
 				- https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
 		======>   ****   option couleur   ****
 				- répliquer ls
+
 */
-
-
