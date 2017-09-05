@@ -52,12 +52,36 @@ void		multi_arg(t_file *file, t_op *op, char *oldpath)
 		print_total(file, op);
 }
 
+int 		everything_feels_empty(t_file *file)
+{
+	while (file)
+	{
+		if (file->name[0] != '.')
+			return (0);
+		file = file->next;
+	}
+	return (1);
+}
+
 t_file		*empty_directory(t_file *file, char *oldpath, t_op *op)
 {
 	if (oldpath && ft_strcmp(file->name, ".") && only_contains_hidden(file) \
 		&& ft_strcmp(file->path, oldpath))
 	{
 		ft_putchar('\n');
+		if (file->error)
+		{
+			ft_putstr(file->name);
+			ft_putendl(":");
+		}
+		else
+			write_path(file->path, op->origin, op->noarg, file->relative);
+	}
+	else if (ft_strcmp(file->name, ".") && everything_feels_empty(file))
+	{
+		if (op->doubledash == 1)
+			ft_putchar('\n');
+		op->doubledash = 1;
 		if (file->error)
 		{
 			ft_putstr(file->name);

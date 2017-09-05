@@ -79,14 +79,17 @@ int 		timesort(t_file *a, t_file *b)
 {
  	if (a->file && b->file == 0)
 		return (1);
+	else if (a->st_mtimes == b->st_mtimes && a->foldertime == b->foldertime)
+	{
+		if (a->file && b->file && ft_strcmp(a->displayname, b->displayname) < 0)
+			return (1);
+		else if (a->noarg == b->noarg && ft_strcmp(a->name, b->name) < 0 && ft_strcmp(a->path, b->path) == 0)
+			return (1);
+	}
     else if (a->noarg == b->noarg && a->foldertime == b->foldertime)
     {
      	if (a->st_mtimes > b->st_mtimes)
      		return (1);
-     	else if (a->st_mtimes == b->st_mtimes && a->file && b->file && ft_strcmp(a->displayname, b->displayname) < 0)
-     		return (1);
-     	// else if (a->st_mtimes == b->st_mtimes && ft_strcmp(a->name, b->name) < 0 && strfils(a->path, b->path) == 0)
-     	// 	return (1);
     }
     return (0);
 }

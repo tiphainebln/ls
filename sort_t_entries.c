@@ -12,14 +12,6 @@
 
 #include "ls.h"
 
-char 			**sort_t_entry(char **entries, t_op *op)
-{
-	char	**wordlist;
-
-	wordlist = ft_sort_time(entries, op);
-	return (wordlist);
-}
-
 struct stat 	get_stat(char *av, t_op *op)
 {
 	char 			*fullpath;
@@ -95,4 +87,12 @@ char			**ft_sort_time(char **av, t_op *op)
 		}
 	}
 	return (av);
+}
+
+char 			**sort_t_entry(char **entries, t_op *op)
+{
+	char	**wordlist;
+
+	wordlist = ft_sort_time(entries, op);
+	return (wordlist);
 }

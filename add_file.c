@@ -68,6 +68,8 @@ t_file		*add_file(struct stat data, t_op *op, char *entry)
 	file->completed = 1;
 	file->visited = 1;
 	file->file = 1;
+	// ft_putstr("file = 1 : ");
+	// ft_putendl(file->name);
 	file->error = NULL;
 	file->noarg = op->noarg;
 	file->first = 1;

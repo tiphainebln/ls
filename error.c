@@ -102,10 +102,12 @@ t_file			*add_error(char *name, t_op *op)
 
 void			manage_error(t_file *file, int error, t_op *op, char *entry)
 {
-	if (error != NOTHINGTODO && errno != ELOOP && error != PERMISSION \
-		&& error != OPTION)
+	if (error != NOTHINGTODO && errno != ELOOP)
+	{
+		ft_putstr_fd("ls: ", 2);
 		perror(entry);
-	if (error == OPTION || error == MALLOC_ERROR || error == NOTHINGTODO)
+	}
+	if (error == OPTION || error == NOTHINGTODO)
 	{
 		if (error == OPTION)
 		{

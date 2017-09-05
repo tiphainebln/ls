@@ -12,19 +12,6 @@
 
 #include "ls.h"
 
-t_op		*options(char **argv, t_op *o)
-{
-	int	i;
-
-	i = -1;
-	while (argv[++i])
-	{
-		if (argv[i][0] == '-' && argv[i][1] && argv[i][1] != '-')
-			o = get_options(argv[i], o);
-	}
-	return (o);
-}
-
 t_op		*get_options(char *argv, t_op *o)
 {
 	int		j;
@@ -52,5 +39,20 @@ t_op		*get_options(char *argv, t_op *o)
 	}
 	if (!o->d && !o->a && !o->t && !o->r && !o->R && !o->l && !o->un)
 		manage_error(NULL, OPTION, o, argv);
+	return (o);
+}
+
+t_op		*options(char **argv, t_op *o, t_file *file)
+{
+	int	i;
+
+	i = -1;
+	while (argv[++i])
+	{
+		if (i == 0 && argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && !argv[i][2])
+			continue ;
+		else if (argv[i][0] == '-' && argv[i][1] && argv[i][1] != '-' && does_it_exist(argv[i], o, file) == 0)
+			o = get_options(argv[i], o);
+	}
 	return (o);
 }

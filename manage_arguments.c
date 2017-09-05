@@ -12,18 +12,21 @@
 
 #include "ls.h"
 
-int			no_option(char **argv, int size, int i)
+int			nb_option(char **argv, int size, int i, t_op *op, t_file *file)
 {
 	while (argv[i])
 	{
-		if (argv[i][0] != '-' || !argv[i][1])
+		if (argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && !argv[i][2] && i == 1)
+			op->doubledash = 0;
+		else if (argv[i][0] != '-' || !argv[i][1] || does_it_exist(argv[i], op, file) == 1)
 			size++;
 		i++;
 	}
-	return(size);
+	op->doubledash = 0;
+	return (size);
 }
 
-char		**epur_args(char **argv)
+char		**epur_args(char **argv, t_op *op, t_file *file)
 {
 	char 	**epured;
 	int 	i;
@@ -31,13 +34,16 @@ char		**epur_args(char **argv)
 
 	i = 1;
 	size = 0;
-	size = no_option(argv, size, i);
+	size = nb_option(argv, size, i, op, file);
 	epured = (char **)malloc(sizeof(char *) * (size + 1));
 	i = 1;
 	size = 0;
+	op->error_epur = 1;
 	while (argv[i])
 	{
-		if (argv[i][0] != '-' || !argv[i][1])
+		if (argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && !argv[i][2] && i == 1)
+			op->doubledash = 0;
+		else if (argv[i][0] != '-' || !argv[i][1] || does_it_exist(argv[i], op, file) == 1)
 		{
 			epured[size] = ft_strdup(argv[i]);
 			size++;
@@ -49,10 +55,10 @@ char		**epur_args(char **argv)
 	return (epured);
 }
 
-t_op		*epure_and_sort(char **argv, t_op *op)
+t_op		*epur_and_sort(char **argv, t_op *op, t_file *file)
 {
-	op = options(argv, op);
-	op->epured = epur_args(argv);
+	op = options(argv, op, file);
+	op->epured = epur_args(argv, op, file);
 	if (op->t && *op->epured)
 		op->order = sort_t_entry(op->epured, op);
 	else if (*op->epured)

@@ -39,7 +39,8 @@ SRC = main.c \
 	  store_links.c \
 	  get_spaces.c \
 	  manage_arguments.c \
-	  time_management.c
+	  time_management.c \
+	  verification_option.c
 
 OBJ = $(SRC:.c=.o)
 

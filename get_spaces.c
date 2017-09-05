@@ -26,7 +26,6 @@ int				valuemax(int size, t_op *op, char *name, int origin)
 
 t_op			*nb_spaces(t_file *file, t_op *op)
 {
-	ft_putendl("wait");
 	if (op->nbuidspace < ft_strlen(file->uid))
 		op->nbuidspace = valuemax(ft_strlen(file->uid), op, \
 			file->name, op->nbuidspace);
@@ -45,7 +44,6 @@ t_op			*nb_spaces(t_file *file, t_op *op)
 	if (file->minor != -1 && op->nbminorspace < ft_intlen(file->minor))
 		op->nbminorspace = valuemax(ft_intlen(file->minor), op, \
 			file->name, op->nbminorspace);
-	ft_putendl("why");
 	return (op);
 }
 

@@ -34,6 +34,7 @@ t_op		*data_op(t_op *op)
 	op->linkname = NULL;
 	op->link = 0;
 	op->latest = NULL;
+	op->error_epur = 0;
 	return (op);
 }
 
@@ -55,6 +56,7 @@ t_op		*init(t_op *op, char **env)
 		op->error = NULL;
 		op->entry = NULL;
 		op->order = NULL;
+		op->doubledash = 0;
 		if (op->origin == NULL)
 			manage_error(NULL, ERROR, op, NULL);
 	}

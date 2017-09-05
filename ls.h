@@ -30,8 +30,7 @@
 # define OPTION 2
 # define ARGUMENT 3
 # define ERROR 4
-# define MALLOC_ERROR 5
-# define PERMISSION 6
+# define PERMISSION 5
 # define NOTHINGTODO 0
 
 # define NAME 1
@@ -115,6 +114,8 @@ typedef struct			s_op
 	char				**order;
 	int					error_happened;
 	char				**epured;
+	int 				doubledash;
+	int 				error_epur;
 }						t_op;
 
 t_file					*add_error(char *name, t_op *op);
@@ -122,18 +123,16 @@ void					print_major_minor(t_file *file);
 void					init_tab(int (*tab[13])(void));
 void					manage_error(t_file *file, int error, t_op *op, char *entry);
 t_op					*init(t_op *op, char **env);
-t_op					*options(char **argv, t_op *o);
+t_op					*options(char **argv, t_op *o, t_file *file);
 char					*get_fname(char *entry);
 t_file					*print_fname(t_file *file, char *entry);
 void					change_dir(char **old, char *new, int free_needed);
-t_op					*get_options(char *argv, t_op *o);
 t_file					*get_directory(char *argv, t_file *file, t_op *op, int sub);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
 t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 t_file					*store_basic(t_file *file, struct stat data);
 t_file					*store_groups_uid(t_file *file);
-t_op					*nb_spaces(t_file *file, t_op *op);
 t_file					*get_sub(t_file *file, t_op *op, int where, t_file *curr_dir);
 int						only_contains_hidden(t_file *start);
 int						ft_checkhiddendir(char *str);
@@ -164,8 +163,6 @@ t_op					*data_op(t_op *op);
 t_file					*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void));
 struct stat				read_links(t_file *file, t_op *op, char *fullpath, int verbose);
 char					**sort_entry(char **entries, t_op *op);
-char					**ft_sort_ascii_string(char **av, t_op *op);
-int						ft_issort(char **av, t_op *op);
 t_file					*sort_lst(t_file *file, t_op *op);
 int						ft_putblk(void);
 int						ft_putchr(void);
@@ -179,13 +176,19 @@ char					*father(char *current);
 int						cmp_list(t_file *a, t_file *b, int tri);
 int						strfils(char *patha, char *pathb);
 char					**sort_t_entry(char **entries, t_op *op);
-char					**ft_sort_time(char **av, t_op *op);
-t_op					*epure_and_sort(char **argv, t_op *op);
-char					**epur_args(char **argv);
+t_op					*epur_and_sort(char **argv, t_op *op, t_file *file);
 time_t					get_time(char *path, char *name, t_op *op);
 t_file					*inject_time(t_file *file, t_op *op);
 t_file					*display_standard(t_file *file, t_op *op, int (*tab[13])(void));
-struct stat 			get_stat(char *av, t_op *op);
 t_file 					*space_central(t_file *file, t_op *op);
+int						does_it_exist(char *argv, t_op *op, t_file *file);
+struct stat 			get_stat(char *av, t_op *op);
+char					**ft_sort_time(char **av, t_op *op);
+int						ft_issort(char **av, t_op *op);
+char					**ft_sort_ascii_string(char **av, t_op *op);
+t_op					*nb_spaces(t_file *file, t_op *op);
+t_op					*get_options(char *argv, t_op *o);
+
+
 
 #endif

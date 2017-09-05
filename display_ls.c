@@ -15,14 +15,14 @@
 t_file			*long_format(t_file *file, int (*tab[13])(void))
 {
 	file_type_letter(file);
-	print_rights(file); // spaces
+	print_rights(file);
 	print_links(file);
-	print_uid(file); // spaces
-	print_grp(file); // spaces
+	print_uid(file);
+	print_grp(file);
 	if (file->minor == -1)
-		print_size(file); // spaces
+		print_size(file);
 	else
-		print_major_minor(file); // spaces
+		print_major_minor(file);
 	print_time(file);
 	(file->file) ? ft_putstr(file->displayname) : ft_putstr(file->name);
 	if (file->linkname != NULL)

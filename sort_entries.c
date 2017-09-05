@@ -12,14 +12,6 @@
 
 #include "ls.h"
 
-char 		**sort_entry(char **entries, t_op *op)
-{
-	char 	**wordlist;
-
-	wordlist = ft_sort_ascii_string(entries, op);
-	return (wordlist);
-}
-
 int 		ft_issort(char **av, t_op *op)
 {
 	int i;
@@ -64,4 +56,12 @@ char		**ft_sort_ascii_string(char **av, t_op *op)
 		}
 	}
 	return (av);
+}
+
+char 		**sort_entry(char **entries, t_op *op)
+{
+	char 	**wordlist;
+
+	wordlist = ft_sort_ascii_string(entries, op);
+	return (wordlist);
 }

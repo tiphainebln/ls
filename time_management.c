@@ -63,7 +63,6 @@ t_file				*print_time(t_file *file)
 	year = ft_strrchr(strtime, ':') + 4;
 	hour = ft_strrchr(strtime, ':') - 5;
 	year[4] = '\0';
-
 	hour[5] = '\0';
 	date = ft_strchr(strtime, ':') - 9;
 	date[6] = '\0';
@@ -72,7 +71,10 @@ t_file				*print_time(t_file *file)
 	if (time(NULL) - 15768000 >= file->st_mtimes || time(NULL) < file->st_mtimes)
 	{
 		ft_putchar(' ');
-		ft_putstr(year);
+		if (year[0] == ' ')
+			ft_putstr("10000");
+		else
+			ft_putstr(year);
 	}
 	else
 		ft_putstr(hour);
