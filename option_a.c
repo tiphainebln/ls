@@ -36,18 +36,11 @@ int				ft_cmppostorigin(char *origin, char *path, int free_needed)
 int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 {
 	int			i;
-	int			j;
 	char		*fullpath;
 
 	i = 0;
-	j = 1;
-	while (argv[i])
-	{
-		if (j == file->noarg)
-			break ;
+	while (i != file->noarg - 2)
 		i++;
-	}
-	i = 0;
 	if (argv[i][0] == '/')
 		return (ft_cmppostorigin(argv[i], file->path, 0));
 	else

@@ -56,7 +56,7 @@ int 		everything_feels_empty(t_file *file)
 {
 	while (file)
 	{
-		if (file->name[0] != '.')
+		if (file->name[0] != '.' || file->name[1] != '.')
 			return (0);
 		file = file->next;
 	}

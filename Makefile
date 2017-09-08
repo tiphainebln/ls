@@ -6,7 +6,7 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 09:36:27 by tbouline          #+#    #+#              #
-#    Updated: 2017/05/25 04:31:50 by tbouline         ###   ########.fr        #
+#    Updated: 2017/09/07 19:17:33 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,24 +48,24 @@ NAME = ft_ls
 
 FLAGS = -Wall -Wextra -Werror
 
-CC = gcc
+CC = @gcc
 
 HEADER = ls.h
 
 OP = -c -I $(HEADER)
 
 all: $(OBJ) $(HEADER)
-	make -C libft/
+	@make -C libft/
 	$(CC) $(FLAGS) $(OP) $(SRC)
 	$(CC) -o $(NAME) $(OBJ) libft/libft.a
 
 clean:
-	make -C libft/ clean
-	/bin/rm -f $(OBJ)
+	@make -C libft/ clean
+	@/bin/rm -f $(OBJ)
 
 fclean: clean
-	make -C libft/ fclean
-	rm -f $(NAME)
+	@make -C libft/ fclean
+	@rm -f $(NAME)
 
 re: fclean all
 

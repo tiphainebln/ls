@@ -6,7 +6,7 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/06 17:18:00 by tbouline          #+#    #+#              #
-#    Updated: 2017/01/22 06:21:29 by tbouline         ###   ########.fr        #
+#    Updated: 2017/09/07 19:16:50 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -154,15 +154,15 @@ OP = -c -I $(HEADER)
 all: $(NAME)
 
 $(NAME) :
-	gcc $(FLAG) $(OP) $(ARG)
-	/usr/bin/ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@gcc $(FLAG) $(OP) $(ARG)
+	@/usr/bin/ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
 
 clean:
-	/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ)
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re: fclean all
 
