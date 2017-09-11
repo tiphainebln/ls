@@ -33,6 +33,7 @@ t_file	*add_list(struct stat data, struct dirent *dirent, t_op *op)
 	file->entry = ft_strdup(op->entry);
 	file->file_error = 0;
 	file->sub = op->sub;
+	file->directorytime = 0;
 	return (file);
 }
 

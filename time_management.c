@@ -24,6 +24,29 @@ time_t 	get_time(char *path, char *name, t_op *op)
 	return (this.st_mtimespec.tv_sec);
 }
 
+t_file		*emperor_time(t_file *file, t_op *op)
+{
+	time_t 	time;
+	char	*oldpath;
+
+	time = 0;
+	oldpath = NULL;
+	while (file)
+	{
+		if (file->name[0] == '.' && file->name[1] == '\0')
+			time = get_time(file->path, file->name, op);
+		oldpath = ft_strdup(file->path);
+		while (file && ft_strcmp(oldpath, file->path) == 0)
+		{
+			file->directorytime = time;
+			file = file->next;
+		}
+		ft_strdel(&oldpath);
+	}
+	file = op->begin;
+	return (file);
+}
+
 t_file		*inject_time(t_file *file, t_op *op)
 {
 	time_t 	time;
@@ -49,6 +72,7 @@ t_file		*inject_time(t_file *file, t_op *op)
 		file = file->next;
 	}
 	file = op->begin;
+	file = emperor_time(file, op);
 	return (file);
 }
 

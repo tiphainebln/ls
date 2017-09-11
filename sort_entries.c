@@ -16,11 +16,14 @@ int 		ft_issort(char **av, t_op *op)
 {
 	int i;
 	int j;
+	struct stat data;
 
 	i = 0;
 	j = 1;
+	data = get_stat(av[i], op);
 	while (av[j])
 	{
+		data = get_stat(av[j], op);
 		if ((op->r == 0 && ft_strcmp(av[i], av[j]) > 0)
 								||
 			(op->r == 1 && ft_strcmp(av[i], av[j]) < 0))

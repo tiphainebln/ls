@@ -113,10 +113,6 @@ petits trucs a corriger :
 ---> ./ft_ls -r auteur Makefile ../chmod.c 
 	./ft_ls -1 -- - dir ---> IL RESTE L'OUTPUT DE ./FT_LS - a gerer sinon done :)))
 
-
-./ft_ls - abc -- -- --
-
-!!!
 VOIR TESTS
 
 BONUS   ======>  ****  trier toute l'arborescence   ****

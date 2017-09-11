@@ -78,5 +78,6 @@ t_file		*add_file(struct stat data, t_op *op, char *entry)
 	file->file_error = 0;
 	file->sub = op->sub;
 	file->errorname = NULL;
+	file->directorytime = 0;
 	return (file);
 }

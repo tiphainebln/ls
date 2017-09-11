@@ -27,8 +27,11 @@ t_file		*sort_lst(t_file *file, t_op *op)
 			file = sort(file, REVPATHTIME);
 			file = sort(file, REVTIME);
 		}
-		file = sort(file, PATHTIME);
-		file = sort(file, TIME);
+		else
+		{
+			file = sort(file, PATHTIME);
+			file = sort(file, TIME);
+		}
 	}
 	else
 	{

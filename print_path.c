@@ -87,7 +87,7 @@ t_file		*empty_directory(t_file *file, char *oldpath, t_op *op)
 			ft_putstr(file->name);
 			ft_putendl(":");
 		}
-		else
+		else if (!op->r && !op->t)
 			write_path(file->path, op->origin, op->noarg, file->relative);
 	}
 	file = file->next;

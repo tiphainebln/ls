@@ -23,7 +23,7 @@ char		*store_path(char *entry, t_op *op)
 		{
 			entry[i] = '\0';
 			if (entry[0] == '/')
-				return (entry);
+				return (ft_strdup(entry));
 			return (ft_strjoin(op->origin, entry));
 		}
 		i--;

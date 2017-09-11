@@ -78,10 +78,16 @@ t_file			*more_errors(t_file *file, char *name, t_op *op)
 t_file			*add_error(char *name, t_op *op)
 {
 	t_file		*file;
+	char 		*tmp;
 
 	file = (t_file *)malloc(sizeof(t_file));
 	file->name = ft_strdup(name);
-	file->path = store_path(name, op);
+	tmp = store_path(name, op);
+	if (tmp[ft_strlen(tmp) - 1] != '/')
+		file->path = ft_strjoin(tmp, "/");
+	else
+		file->path = ft_strdup(tmp);
+	ft_strdel(&tmp);
 	file->st_size = 0;
 	file->type = 0;
 	file->st_nlink = 0;
@@ -97,12 +103,13 @@ t_file			*add_error(char *name, t_op *op)
 	file->first = 1;
 	file->next = NULL;
 	file->file_error = 1;
+	file->directorytime = 0;
 	return (file);
 }
 
 void			manage_error(t_file *file, int error, t_op *op, char *entry)
 {
-	if (error != NOTHINGTODO && errno != ELOOP)
+	if (error != NOTHINGTODO && errno != ELOOP && error != OPTION)
 	{
 		ft_putstr_fd("ls: ", 2);
 		perror(entry);

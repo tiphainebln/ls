@@ -82,6 +82,7 @@ typedef struct			s_file
 	size_t				nbuidspace;
 	int					nbminorspace;
 	int					nbmajorspace;
+	int 				directorytime;
 }						t_file;
 
 typedef struct			s_op
@@ -188,7 +189,7 @@ int						ft_issort(char **av, t_op *op);
 char					**ft_sort_ascii_string(char **av, t_op *op);
 t_op					*nb_spaces(t_file *file, t_op *op);
 t_op					*get_options(char *argv, t_op *o);
-
+struct stat 			get_stat(char *av, t_op *op);
 
 
 #endif
