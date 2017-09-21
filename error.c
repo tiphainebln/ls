@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 03:52:34 by tbouline          #+#    #+#             */
-/*   Updated: 2017/02/23 03:52:39 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/15 15:50:37 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,19 @@ t_file			*more_errors(t_file *file, char *name, t_op *op)
 	file->sub = op->sub;
 	file->errorname = get_fname(name);
 	file->error = str3join(file->errorname, ": ", op->error);
+	if (op->error)
+		ft_strdel(&op->error);
+	file->first = 1;
+	file->next = NULL;
+	file->file_error = 1;
+	file->directorytime = 0;
 	return (file);
 }
 
 t_file			*add_error(char *name, t_op *op)
 {
 	t_file		*file;
-	char 		*tmp;
+	char		*tmp;
 
 	file = (t_file *)malloc(sizeof(t_file));
 	file->name = ft_strdup(name);
@@ -98,31 +104,25 @@ t_file			*add_error(char *name, t_op *op)
 	file->st_blksize = 0;
 	file->st_mtimes = 0;
 	file = more_errors(file, name, op);
-	if (op->error)
-		ft_strdel(&op->error);
-	file->first = 1;
-	file->next = NULL;
-	file->file_error = 1;
-	file->directorytime = 0;
 	return (file);
 }
 
-void			manage_error(t_file *file, int error, t_op *op, char *entry)
+void			manage_error(t_file *f, int error, t_op *op, char *av)
 {
 	if (error != NOTHINGTODO && errno != ELOOP && error != OPTION)
 	{
 		ft_putstr_fd("ls: ", 2);
-		perror(entry);
+		perror(av);
 	}
 	if (error == OPTION || error == NOTHINGTODO)
 	{
 		if (error == OPTION)
 		{
 			ft_putstr_fd("ls: illegal option --", 2);
-			ft_putendl_fd(entry, 2);
+			ft_putendl_fd(av, 2);
 			ft_putendl_fd("usage: ls [-Rralt] [file ...]", 2);
 		}
-		file = op->begin;
-		ft_free(file, op, error);
+		f = op->begin;
+		ft_free(f, op, error);
 	}
 }

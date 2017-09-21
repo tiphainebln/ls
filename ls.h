@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 03:53:11 by tbouline          #+#    #+#             */
-/*   Updated: 2017/08/15 20:42:44 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/18 11:33:25 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <grp.h>
 # include <errno.h>
 # include "libft/libft.h"
+# include <sys/xattr.h>
+# include <sys/acl.h>
 
 # define USAGE 1
 # define OPTION 2
@@ -75,14 +77,15 @@ typedef struct			s_file
 	char				*entry;
 	int					file_error;
 	int					sub;
-	char 				*errorname;
+	char				*errorname;
 	int					nblinkspace;
 	int					nbsizespace;
 	size_t				nbgrpspace;
 	size_t				nbuidspace;
 	int					nbminorspace;
 	int					nbmajorspace;
-	int 				directorytime;
+	int					directorytime;
+	int					link;
 }						t_file;
 
 typedef struct			s_op
@@ -94,6 +97,7 @@ typedef struct			s_op
 	unsigned int		l;
 	unsigned int		d;
 	unsigned int		un;
+	unsigned int		G;
 	t_file				*begin;
 	char				*origin;
 	char				*current;
@@ -115,31 +119,31 @@ typedef struct			s_op
 	char				**order;
 	int					error_happened;
 	char				**epured;
-	int 				doubledash;
-	int 				error_epur;
+	int					doubledash;
+	int					error_epur;
 }						t_op;
 
 t_file					*add_error(char *name, t_op *op);
 void					print_major_minor(t_file *file);
 void					init_tab(int (*tab[13])(void));
-void					manage_error(t_file *file, int error, t_op *op, char *entry);
+void					manage_error(t_file *f, int error, t_op *op, char *av);
 t_op					*init(t_op *op, char **env);
 t_op					*options(char **argv, t_op *o, t_file *file);
 char					*get_fname(char *entry);
 t_file					*print_fname(t_file *file, char *entry);
 void					change_dir(char **old, char *new, int free_needed);
-t_file					*get_directory(char *argv, t_file *file, t_op *op, int sub);
+t_file					*get_directory(char *av, t_file *f, t_op *op, int sub);
 t_file					*read_content(t_file *file, DIR *ret, t_op *op);
-t_file					*new_list(t_file *file, struct dirent *dirent, t_op *op);
+t_file					*new_list(t_file *file, struct dirent *drt, t_op *op);
 t_file					*new_file(t_file *file, t_op *op, char *entry);
 t_file					*store_basic(t_file *file, struct stat data);
 t_file					*store_groups_uid(t_file *file);
-t_file					*get_sub(t_file *file, t_op *op, int where, t_file *curr_dir);
+t_file					*get_sub(t_file *f, t_op *op, int w, t_file *cd);
 int						only_contains_hidden(t_file *start);
 int						ft_checkhiddendir(char *str);
 t_file					*print_grp(t_file *file);
 t_file					*print_uid(t_file *file);
-void					file_type_letter(t_file *file);
+void					print_type_letter(t_file *file);
 int						print_rights(t_file *file);
 t_file					*print_total(t_file *file, t_op *op);
 t_file					*print_size(t_file *file);
@@ -151,8 +155,8 @@ void					ft_putspaces(t_file *file, int choice);
 t_file					*print_time(t_file *file);
 int						determine_type(struct stat data);
 char					*store_path(char *entry, t_op *op);
-void					write_path(char *path, char *origin, int noarg, int relative);
-int						same_path_everywhere(t_file *file);
+void					write_path(char *path, char *orgn, int noarg, int rltv);
+int						same_path_everywhere(t_file *file, t_op *op);
 void					read_link(char *path);
 void					check_rights(t_file *file);
 t_file					*sort(t_file *file, int tri);
@@ -161,8 +165,8 @@ int						ft_isitover(t_file *file);
 t_file					*store_lnk(t_file *file, t_op *op, struct stat data);
 t_file					*visited_or_completed(t_file *file);
 t_op					*data_op(t_op *op);
-t_file					*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void));
-struct stat				read_links(t_file *file, t_op *op, char *fullpath, int verbose);
+t_file					*display_path(t_file *f, t_op *op, char **a, int (*tab[13])());
+struct stat				read_links(t_file *f, t_op *op, char *fp, int v);
 char					**sort_entry(char **entries, t_op *op);
 t_file					*sort_lst(t_file *file, t_op *op);
 int						ft_putblk(void);
@@ -181,15 +185,17 @@ t_op					*epur_and_sort(char **argv, t_op *op, t_file *file);
 time_t					get_time(char *path, char *name, t_op *op);
 t_file					*inject_time(t_file *file, t_op *op);
 t_file					*display_standard(t_file *file, t_op *op, int (*tab[13])(void));
-t_file 					*space_central(t_file *file, t_op *op);
+t_file					*space_central(t_file *file, t_op *op);
 int						does_it_exist(char *argv, t_op *op, t_file *file);
-struct stat 			get_stat(char *av, t_op *op);
+struct stat				get_stat(char *av, t_op *op);
 char					**ft_sort_time(char **av, t_op *op);
 int						ft_issort(char **av, t_op *op);
 char					**ft_sort_ascii_string(char **av, t_op *op);
 t_op					*nb_spaces(t_file *file, t_op *op);
 t_op					*get_options(char *argv, t_op *o);
-struct stat 			get_stat(char *av, t_op *op);
-
+void					print_attributes_acl(t_file *file);
+t_file					*store_space(t_file *file, t_op *op);
+t_op					*init_space(t_op *op);
+t_file					*empty_directory(t_file *file, char *oldpath, t_op *op);
 
 #endif

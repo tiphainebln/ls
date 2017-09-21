@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 03:52:50 by tbouline          #+#    #+#             */
-/*   Updated: 2017/02/23 03:52:54 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/16 20:23:29 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,54 +37,54 @@ t_file		*first_things_first(t_file *file)
 	return (file);
 }
 
-int 		main(int argc, char **argv, char **env)
+int			main(int argc, char **argv, char **env)
 {
-	t_op	*o;
+	t_op	*op;
 	t_file	*file;
-	int 	i;
-	int 	(*tab[13])(void);
+	int		i;
+	int		(*tab[13])(void);
 	char	*oldpath;
-	int 	oldarg;
+	int		oldarg;
 
 	init_tab(tab);
 	i = 0;
-	o = NULL;
+	op = NULL;
 	file = NULL;
-	o = init(o, env);
+	op = init(op, env);
 	if (argc > 1)
-		epur_and_sort(argv, o, file);
+		epur_and_sort(argv, op, file);
 	oldpath = NULL;
 	oldarg = 1;
-	while (o->order && o->order[i])
+	while (op->order && op->order[i])
 	{
-		o->error_happened = 0;
-		o->noarg++;
-		file = get_directory(o->order[i], file, o, 0);
-		if (o->R && o->error_happened == 0)
-		 	file = get_sub(file, o, o->noarg, NULL);
+		op->error_happened = 0;
+		op->noarg++;
+		file = get_directory(op->order[i], file, op, 0);
+		if (op->R && op->error_happened == 0)
+			file = get_sub(file, op, op->noarg, NULL);
 		i++;
 	}
-	file = o->begin;
-	if (o->noarg == 1)
+	file = op->begin;
+	if (op->noarg == 1)
 	{
-		file = get_directory(o->origin, file, o, 0);
-		if (o->R)
-			file = get_sub(file, o, o->noarg, NULL);
+		file = get_directory(op->origin, file, op, 0);
+		if (op->R)
+			file = get_sub(file, op, op->noarg, NULL);
 	}
-	file = inject_time(file, o);
-	file = space_central(file, o);
+	file = inject_time(file, op);
+	file = space_central(file, op);
 	if (!file)
-		manage_error(file, NOTHINGTODO, o, NULL);
-	file = sort_lst(file, o);
-	o->begin = file;
-	if (o->l && same_path_everywhere(file) && file->file == 0)
-		print_total(file, o);
+		manage_error(file, NOTHINGTODO, op, NULL);
+	file = sort_lst(file, op);
+	op->begin = file;
+	if (op->l && same_path_everywhere(file, op) && file->file == 0)
+		print_total(file, op);
 	file = first_things_first(file);
-	if (o->d == 0)
-		display_path(file, o, o->order, tab);
+	if (op->d == 0)
+		display_path(file, op, op->order, tab);
 	if (oldpath)
 		ft_strdel(&oldpath);
-	manage_error(file, NOTHINGTODO, o, NULL);
+	manage_error(file, NOTHINGTODO, op, NULL);
 	return (0);
 }
 
@@ -119,6 +119,7 @@ BONUS   ======>  ****  trier toute l'arborescence   ****
 		======>   ****  bien relire et comprendre le tri ****
 				- https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
 		======>   ****   option couleur   ****
+		http://www.linuxforums.org/forum/linux-programming-scripting/88-color-console.html
 				- répliquer ls
 
 */

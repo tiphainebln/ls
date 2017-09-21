@@ -6,15 +6,15 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/13 15:19:57 by tbouline          #+#    #+#             */
-/*   Updated: 2017/08/13 15:19:59 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/15 15:50:01 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-t_file			*long_format(t_file *file, int (*tab[13])(void))
+t_file			*long_format(t_file *file, int (*tab[13])(void), t_op *op)
 {
-	file_type_letter(file);
+	print_type_letter(file);
 	print_rights(file);
 	print_links(file);
 	print_uid(file);
@@ -32,10 +32,8 @@ t_file			*long_format(t_file *file, int (*tab[13])(void))
 		ft_putstr(file->linkname);
 	}
 	ft_putchar('\n');
-	/*
-	**if (file->next)
-	**ft_putstr("\033[00m");
-	*/
+	if (op->G && file->next)
+		ft_putstr("\033[00m");
 	return (file);
 }
 
@@ -47,13 +45,14 @@ t_file			*display_standard(t_file *file, t_op *op, int (*tab[13])(void))
 		ft_putendl_fd(file->error, 2);
 	}
 	else if (op->l)
-		long_format(file, tab);
+		long_format(file, tab, op);
 	else
 		(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
-	/*
-	**tab[file->type]();
-	**ft_putstr("\033[00m");
-	*/
+	if (op->G)
+	{
+		tab[file->type]();
+		ft_putstr("\033[00m");
+	}
 	file = file->next;
 	return (file);
 }

@@ -54,7 +54,5 @@ struct stat		read_links(t_file *file, t_op *op, char *fullpath, int verbose)
 		manage_error(file, ARGUMENT, op, NULL);
 		op->error = ft_strdup(strerror(errno));
 	}
-	if (S_ISLNK(data.st_mode))
-			op->link = 1;
 	return (data);
 }

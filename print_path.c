@@ -39,7 +39,7 @@ void		directories_as_arg(t_file *file, t_op *op, char *oldpath)
 
 void		multi_arg(t_file *file, t_op *op, char *oldpath)
 {
-	if (oldpath)
+	if (oldpath || op->doubledash)
 		ft_putchar('\n');
 	if (file->error)
 	{
@@ -47,65 +47,25 @@ void		multi_arg(t_file *file, t_op *op, char *oldpath)
 		ft_putendl(":");
 	}
 	else
-	write_path(file->path, op->origin, op->noarg, file->relative);
+		write_path(file->path, op->origin, op->noarg, file->relative);
 	if (op->l && file->file == 0 && file->error == NULL)
 		print_total(file, op);
 }
 
-int 		everything_feels_empty(t_file *file)
-{
-	while (file)
-	{
-		if (file->name[0] != '.' || file->name[1] != '.')
-			return (0);
-		file = file->next;
-	}
-	return (1);
-}
-
-t_file		*empty_directory(t_file *file, char *oldpath, t_op *op)
-{
-	if (oldpath && ft_strcmp(file->name, ".") && only_contains_hidden(file) \
-		&& ft_strcmp(file->path, oldpath))
-	{
-		ft_putchar('\n');
-		if (file->error)
-		{
-			ft_putstr(file->name);
-			ft_putendl(":");
-		}
-		else
-			write_path(file->path, op->origin, op->noarg, file->relative);
-	}
-	else if (ft_strcmp(file->name, ".") && everything_feels_empty(file))
-	{
-		if (op->doubledash == 1)
-			ft_putchar('\n');
-		op->doubledash = 1;
-		if (file->error)
-		{
-			ft_putstr(file->name);
-			ft_putendl(":");
-		}
-		else if (!op->r && !op->t)
-			write_path(file->path, op->origin, op->noarg, file->relative);
-	}
-	file = file->next;
-	return (file);
-}
-
-t_file		*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void))
+t_file		*display_path(t_file *file, t_op *op, char **av, int (*tab[13])())
 {
 	char	*oldpath;
 	int		oldarg;
+	int		i;
 
 	oldpath = NULL;
 	oldarg = 1;
+	i = 0;
 	if (errno == ENOENT)
 		file->error = op->error;
 	while (file)
 	{
-		if (opt_a(file, op, argv) == 0)
+		if (opt_a(file, op, av) == 0)
 		{
 			file = empty_directory(file, oldpath, op);
 			continue ;
@@ -114,7 +74,7 @@ t_file		*display_path(t_file *file, t_op *op, char **argv, int (*tab[13])(void))
 			multi_arg(file, op, oldpath);
 		else if (oldpath && file->file == 0)
 			directories_as_arg(file, op, oldpath);
-		else if (!same_path_everywhere(file) && file->file == 0)
+		else if (!same_path_everywhere(file, op) && file->file == 0)
 			without_recursive(file, op);
 		if (oldpath)
 			ft_strdel(&oldpath);

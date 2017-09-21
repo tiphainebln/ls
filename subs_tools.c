@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 23:06:51 by tbouline          #+#    #+#             */
-/*   Updated: 2017/06/21 23:07:03 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/18 12:59:39 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int					ft_isitover(t_file *file)
 	return (1);
 }
 
-char 				*father(char *current)
+char				*father(char *current)
 {
-	char 			*father;
-	char 			*mother;
+	char			*father;
+	char			*mother;
 
 	father = ft_strsub(current, 0, ft_second_to_last(current));
 	mother = ft_strjoin(father, "/");

@@ -6,24 +6,24 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/24 05:21:39 by tbouline          #+#    #+#             */
-/*   Updated: 2017/06/24 05:42:42 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/15 15:41:32 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-t_file		*first_Node(t_file *file, t_op *op, char *entry, struct stat data)
+t_file			*first_node(t_file *file, t_op *op, char *av, struct stat data)
 {
 	if (op->error)
-		file = add_error(entry, op);
+		file = add_error(av, op);
 	else
-		file = add_file(data, op, entry);
+		file = add_file(data, op, av);
 	op->begin = file;
 	op->latest = file;
 	return (file);
 }
 
-t_file		*new_file(t_file *file, t_op *op, char *entry)
+t_file			*new_file(t_file *file, t_op *op, char *entry)
 {
 	struct stat	data;
 	char		*fullpath;
@@ -36,7 +36,7 @@ t_file		*new_file(t_file *file, t_op *op, char *entry)
 		fullpath = ft_strjoin(op->origin, entry);
 	data = read_links(file, op, fullpath, 1);
 	if (!file)
-		file = first_Node(file, op, entry, data);
+		file = first_node(file, op, entry, data);
 	else
 	{
 		file = op->latest;
@@ -50,9 +50,27 @@ t_file		*new_file(t_file *file, t_op *op, char *entry)
 	return (file);
 }
 
-t_file		*add_file(struct stat data, t_op *op, char *entry)
+t_file			*add_more(t_file *file, t_op *op, char *entry)
 {
-	t_file	*file;
+	file->completed = 1;
+	file->visited = 1;
+	file->file = 1;
+	file->error = NULL;
+	file->noarg = op->noarg;
+	file->first = 1;
+	file->nameasadir = NULL;
+	file->entry = ft_strdup(entry);
+	file->file_error = 0;
+	file->sub = op->sub;
+	file->errorname = NULL;
+	file->directorytime = 0;
+	file->link = op->link;
+	return (file);
+}
+
+t_file			*add_file(struct stat data, t_op *op, char *entry)
+{
+	t_file		*file;
 
 	file = (t_file *)malloc(sizeof(t_file));
 	if (entry[0] == '/')
@@ -65,19 +83,6 @@ t_file		*add_file(struct stat data, t_op *op, char *entry)
 	file = store_basic(file, data);
 	file = store_groups_uid(file);
 	file->path = store_path(entry, op);
-	file->completed = 1;
-	file->visited = 1;
-	file->file = 1;
-	// ft_putstr("file = 1 : ");
-	// ft_putendl(file->name);
-	file->error = NULL;
-	file->noarg = op->noarg;
-	file->first = 1;
-	file->nameasadir = NULL;
-	file->entry = ft_strdup(entry);
-	file->file_error = 0;
-	file->sub = op->sub;
-	file->errorname = NULL;
-	file->directorytime = 0;
+	file = add_more(file, op, entry);
 	return (file);
 }

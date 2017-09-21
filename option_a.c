@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 23:27:24 by tbouline          #+#    #+#             */
-/*   Updated: 2017/06/01 23:27:27 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/15 15:53:23 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int				ft_cmppostorigin(char *origin, char *path, int free_needed)
 	return (1);
 }
 
-int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
+int				relative_hiddenry(t_file *file, t_op *op, char **argv)
 {
 	int			i;
 	char		*fullpath;
@@ -50,7 +50,7 @@ int 			relative_hiddenry(t_file *file, t_op *op, char **argv)
 	}
 }
 
-int 			opt_a(t_file *file, t_op *op, char **argv)
+int				opt_a(t_file *file, t_op *op, char **argv)
 {
 	if (op->a)
 		return (1);

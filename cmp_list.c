@@ -98,9 +98,8 @@ int 		pathtimesort(t_file *a, t_file *b)
 			// ft_putendl("lexicographie\n");
 			return (1);
 		}
-		return (1);
 	}
-	else if (a->noarg == b->noarg && a->foldertime == b->foldertime && strfils(a->path, b->path) == 0)
+	else if (a->noarg == b->noarg && a->foldertime == b->foldertime && strfils(a->path, b->path) == 0 && ft_strcmp(a->path, b->path) == 0)
 	{
 		if (a->directorytime < b->directorytime)
 			return (1);

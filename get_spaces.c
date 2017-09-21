@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:55:17 by tbouline          #+#    #+#             */
-/*   Updated: 2017/08/10 15:55:19 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/15 15:52:19 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,46 +47,30 @@ t_op			*nb_spaces(t_file *file, t_op *op)
 	return (op);
 }
 
-t_file		*store_space(t_file *file, t_op *op)
+t_file			*space_central(t_file *file, t_op *op)
 {
-	file->nbuidspace = op->nbuidspace;
-	file->nbgrpspace = op->nbgrpspace;
-	file->nblinkspace = op->nblinkspace;
-	file->nbsizespace = op->nbsizespace;
-	file->nbmajorspace = op->nbmajorspace;
-	file->nbminorspace = op->nbminorspace;
-	return (file);
-}
+	t_file		*tmp;
+	char		*curr_p;
 
-t_file		*space_central(t_file *file, t_op *op)
-{
-	t_file	*tmp;
-	char 	*current_path;
-	
 	while (file)
 	{
 		tmp = file;
-		current_path = ft_strdup(file->path);
-		op->nbuidspace = 0;
-		op->nbgrpspace = 0;
-		op->nblinkspace = 0;
-		op->nbsizespace = 0;
-		op->nbmajorspace = 0;
-		op->nbminorspace = 0;
-		while (file && file->error == 0 && ft_strcmp(file->path, current_path) == 0)
+		curr_p = ft_strdup(file->path);
+		op = init_space(op);
+		while (file && file->error == 0 && ft_strcmp(file->path, curr_p) == 0)
 		{
 			op = nb_spaces(file, op);
 			file = file->next;
 		}
 		file = tmp;
-		while (file && file->error == 0 && ft_strcmp(file->path, current_path) == 0)
+		while (file && file->error == 0 && ft_strcmp(file->path, curr_p) == 0)
 		{
 			file = store_space(file, op);
 			file = file->next;
 		}
-		while (file && ft_strcmp(file->path, current_path) == 0)
+		while (file && ft_strcmp(file->path, curr_p) == 0)
 			file = file->next;
-		ft_strdel(&current_path);
+		ft_strdel(&curr_p);
 	}
 	file = op->begin;
 	return (file);
@@ -94,7 +78,7 @@ t_file		*space_central(t_file *file, t_op *op)
 
 void			ft_putspaces(t_file *file, int choice)
 {
-	int space;
+	int				space;
 
 	space = 0;
 	if (choice == 1)

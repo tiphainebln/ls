@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 15:47:27 by tbouline          #+#    #+#             */
-/*   Updated: 2017/08/10 15:47:29 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/18 13:00:21 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_op		*data_op(t_op *op)
 	op->t = 0;
 	op->d = 0;
 	op->un = 0;
+	op->G = 0;
 	op->begin = NULL;
 	op->origin = NULL;
 	op->nbsizespace = 0;
@@ -40,7 +41,7 @@ t_op		*data_op(t_op *op)
 
 t_op		*init(t_op *op, char **env)
 {
-	int 	i;
+	int		i;
 
 	i = -1;
 	if (op == NULL)

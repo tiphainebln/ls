@@ -57,7 +57,7 @@ void		get_stickybit(t_file *file)
 	ft_putchar(c);
 }
 
-int				print_rights(t_file *file)
+int			print_rights(t_file *file)
 {
 	ft_putchar((file->st_mode & S_IRUSR) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWUSR) ? 'w' : '-');
@@ -68,29 +68,7 @@ int				print_rights(t_file *file)
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
 	get_stickybit(file);
+	print_attributes_acl(file);
 	ft_putspaces(file, 0);
 	return (0);
-}
- 
-void 			file_type_letter(t_file *file)
-{
-    char  	  c;
-
-    if (file->type == 8)
-    	c = '-';
-    else if (file->type == 4)
-    	c = 'd';
-    else if (file->type == 6)
-    	c = 'b';
-    else if (file->type == 2)
-    	c = 'c';
-    else if (file->type == 1)
-    	c = 'p';
-    else if (file->type == 10)
-    	c = 'l';
-    else if (file->type == 12)
-    	c = 's';
-    else
-    	c = '?';
-    ft_putchar(c);
 }

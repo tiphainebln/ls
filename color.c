@@ -26,13 +26,13 @@ void		init_tab(int (*tab[13])(void))
 
 int			ft_putblk(void)
 {
-	ft_putstr("\033[32m");
+	ft_putstr("\033[34m");
 	return (0);
 }
 
 int			ft_putchr(void)
 {
-	ft_putstr("\033[31m");
+	ft_putstr("\033[34m");
 	return (0);
 }
 

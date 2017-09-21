@@ -40,7 +40,10 @@ SRC = main.c \
 	  get_spaces.c \
 	  manage_arguments.c \
 	  time_management.c \
-	  verification_option.c
+	  verification_option.c \
+	  acl_attr.c \
+	  store_spaces.c \
+	  empty_directory.c
 
 OBJ = $(SRC:.c=.o)
 

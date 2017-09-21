@@ -6,16 +6,16 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 05:10:37 by tbouline          #+#    #+#             */
-/*   Updated: 2017/06/27 05:10:47 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/18 13:42:59 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-struct stat 	get_stat(char *av, t_op *op)
+struct stat		get_stat(char *av, t_op *op)
 {
-	char 			*fullpath;
-	struct stat 	this;
+	char 		*fullpath;
+	struct stat this;
 
 	fullpath = NULL;
 	if (av[0] == '/')
@@ -27,12 +27,12 @@ struct stat 	get_stat(char *av, t_op *op)
 	return (this);
 }
 
-int 			ft_issorttime(char **av, t_op *op)
+int				ft_issorttime(char **av, t_op *op)
 {
-	int i;
-	int j;
-	struct stat data;
-	struct stat log;
+	int			i;
+	int			j;
+	struct stat	data;
+	struct stat	log;
 
 	i = 0;
 	j = 1;
@@ -40,13 +40,13 @@ int 			ft_issorttime(char **av, t_op *op)
 	{
 		data = get_stat(av[i], op);
 		log = get_stat(av[j], op);
-		if ((op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec > log.st_mtimespec.tv_sec)
-								||
-			(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec < log.st_mtimespec.tv_sec)
-								||
-			(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec == log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) < 0)
-								||
-			(op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec == log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) > 0))
+		if ((op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec > \
+			log.st_mtimespec.tv_sec) || (op->t == 1 && op->r == 1 && \
+			data.st_mtimespec.tv_sec < log.st_mtimespec.tv_sec) || \
+			(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec == \
+			 log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) < 0) || \
+			(op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec == \
+			 log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) > 0))
 			return (0);
 		i++;
 		j++;
@@ -59,8 +59,8 @@ char			**ft_sort_time(char **av, t_op *op)
 	int			i;
 	int			j;
 	char		*tmp;
-	struct stat data;
-	struct stat log;
+	struct stat	data;
+	struct stat	log;
 
 	while (ft_issorttime(av, op) == 0)
 	{
@@ -70,13 +70,13 @@ char			**ft_sort_time(char **av, t_op *op)
 		{
 			data = get_stat(av[i], op);
 			log = get_stat(av[j], op);
-			if ((op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec > log.st_mtimespec.tv_sec)
-									||
-				(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec < log.st_mtimespec.tv_sec)
-									||
-				(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec == log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) < 0)
-									||
-				(op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec == log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) > 0))
+		if ((op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec > \
+			log.st_mtimespec.tv_sec) || (op->t == 1 && op->r == 1 && \
+			data.st_mtimespec.tv_sec < log.st_mtimespec.tv_sec) || \
+			(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec == \
+			 log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) < 0) || \
+			(op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec == \
+			 log.st_mtimespec.tv_sec && ft_strcmp(av[i], av[j]) > 0))
 			{
 				tmp = av[i];
 				av[i] = av[j];
