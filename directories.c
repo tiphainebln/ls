@@ -17,7 +17,9 @@ t_file				*not_openable(t_file *file, t_op *op, int sub, char *entry)
 	if (sub)
 		file->completed = 1;
 	if (errno == ENOENT)
+	{
 		manage_error(file, ERROR, op, entry);
+	}
 	else
 	{
 		op->error = ft_strdup(strerror(errno));
@@ -71,7 +73,7 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 	else
 	{
 		op->error_happened = 1;
-		if (errno == ENOTDIR || op->link)
+		if (errno == ENOTDIR || (op->link && errno != ENOENT))
 			file = new_file(file, op, entry);
 		else
 			not_openable(file, op, sub, entry);

@@ -37,6 +37,32 @@ t_file		*first_things_first(t_file *file)
 	return (file);
 }
 
+// int 		has_been_asked_for(t_file *file, t_op *op)
+// {
+
+// 	if (ft_strcmp(op->order[file->noarg - 2]))
+// }
+
+// t_file 		*directed(t_file *file, t_op *op)
+// {
+// 	int 	i;
+
+// 	file = op->begin;
+// 	while (file)
+// 	{
+// 		i = 0;
+// 		while (file->path[i] && op->origin[i] && file->path[i] == op->origin[i])
+// 			i++;
+// 		if (op->origin[i] == '\0' && file->path[i] == '\0')
+// 			file->directed = 1;
+// 		else
+// 			file->directed = has_been_asked_for(file, op);
+// 		file = file->next;
+// 	}
+// 	file = op->begin;
+// 	return (file);
+// }
+
 int			main(int argc, char **argv, char **env)
 {
 	t_op	*op;
@@ -55,6 +81,7 @@ int			main(int argc, char **argv, char **env)
 		epur_and_sort(argv, op, file);
 	oldpath = NULL;
 	oldarg = 1;
+	ft_putendl("WAT");
 	while (op->order && op->order[i])
 	{
 		op->error_happened = 0;
@@ -77,7 +104,7 @@ int			main(int argc, char **argv, char **env)
 		manage_error(file, NOTHINGTODO, op, NULL);
 	file = sort_lst(file, op);
 	op->begin = file;
-	if (op->l && same_path_everywhere(file, op) && file->file == 0)
+	if (op->l && same_path_everywhere(file) && file->file == 0)
 		print_total(file, op);
 	file = first_things_first(file);
 	if (op->d == 0)

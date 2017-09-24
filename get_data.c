@@ -59,7 +59,10 @@ t_file				*store_groups_uid(t_file *file)
 	grp = getgrgid(file->st_gid);
 	file->grp = ft_strdup(grp->gr_name);
 	uid = getpwuid(file->st_uid);
-	file->uid = ft_strdup(uid->pw_name);
+	if (uid)
+		file->uid = ft_strdup(uid->pw_name);
+	else
+		file->uid = ft_strdup("4389");
 	return (file);
 }
 

@@ -58,6 +58,7 @@ t_op		*init(t_op *op, char **env)
 		op->entry = NULL;
 		op->order = NULL;
 		op->doubledash = 0;
+		op->theresbeenamistake = 0;
 		if (op->origin == NULL)
 			manage_error(NULL, ERROR, op, NULL);
 	}

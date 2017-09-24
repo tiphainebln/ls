@@ -51,7 +51,7 @@ char		*store_path(char *entry, t_op *op)
 	return (ft_strdup(op->origin));
 }
 
-void		write_path(char *path, char *origin, int noarg, int relative)
+int 	write_path(char *path, char *origin, int noarg, int relative)
 {
 	char	*tmp;
 
@@ -68,11 +68,12 @@ void		write_path(char *path, char *origin, int noarg, int relative)
 	else
 		ft_putstr(tmp);
 	ft_putendl(":");
+	return (1);
 }
 
-int			same_path_everywhere(t_file *file, t_op *op)
+int			same_path_everywhere(t_file *file)
 {
-	while (op && file->next)
+	while (file->next)
 	{
 		if (ft_strcmp(file->path, file->next->path))
 			return (0);

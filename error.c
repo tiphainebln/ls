@@ -109,6 +109,7 @@ t_file			*add_error(char *name, t_op *op)
 
 void			manage_error(t_file *f, int error, t_op *op, char *av)
 {
+	op->theresbeenamistake = 1;
 	if (error != NOTHINGTODO && errno != ELOOP && error != OPTION)
 	{
 		ft_putstr_fd("ls: ", 2);
