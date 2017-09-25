@@ -6,16 +6,16 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/11 16:27:04 by tbouline          #+#    #+#             */
-/*   Updated: 2017/08/11 16:27:09 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/25 22:01:52 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-time_t 	get_time(char *path, char *name, t_op *op)
+time_t			get_time(char *path, char *name, t_op *op)
 {
-	char 			*fullpath;
-	struct stat 	this;
+	char		*fullpath;
+	struct stat	this;
 
 	fullpath = NULL;
 	fullpath = ft_strjoin(path, name);
@@ -24,10 +24,10 @@ time_t 	get_time(char *path, char *name, t_op *op)
 	return (this.st_mtimespec.tv_sec);
 }
 
-t_file		*emperor_time(t_file *file, t_op *op)
+t_file			*emperor_time(t_file *file, t_op *op)
 {
-	time_t 	time;
-	char	*oldpath;
+	time_t		time;
+	char		*oldpath;
 
 	time = 0;
 	oldpath = NULL;
@@ -47,11 +47,11 @@ t_file		*emperor_time(t_file *file, t_op *op)
 	return (file);
 }
 
-t_file		*inject_time(t_file *file, t_op *op)
+t_file			*inject_time(t_file *file, t_op *op)
 {
-	time_t 	time;
-	time_t 	oldtime;
-	char 	*oldpath;
+	time_t		time;
+	time_t		oldtime;
+	char		*oldpath;
 
 	time = 0;
 	oldpath = NULL;
@@ -76,14 +76,14 @@ t_file		*inject_time(t_file *file, t_op *op)
 	return (file);
 }
 
-t_file				*print_time(t_file *file)
+t_file			*print_time(t_file *f)
 {
-	char			*year;
-	char			*date;
-	char			*hour;
-	char			*strtime;
+	char		*year;
+	char		*date;
+	char		*hour;
+	char		*strtime;
 
-	strtime = ctime(&file->st_mtimes);
+	strtime = ctime(&f->st_mtimes);
 	year = ft_strrchr(strtime, ':') + 4;
 	hour = ft_strrchr(strtime, ':') - 5;
 	year[4] = '\0';
@@ -92,16 +92,13 @@ t_file				*print_time(t_file *file)
 	date[6] = '\0';
 	ft_putstr(date);
 	ft_putchar(' ');
-	if (time(NULL) - 15768000 >= file->st_mtimes || time(NULL) < file->st_mtimes)
+	if (time(NULL) - 15768000 >= f->st_mtimes || time(NULL) < f->st_mtimes)
 	{
 		ft_putchar(' ');
-		if (year[0] == ' ')
-			ft_putstr("10000");
-		else
-			ft_putstr(year);
+		(year[0] == ' ') ? ft_putstr("10000") : ft_putstr(year);
 	}
 	else
 		ft_putstr(hour);
 	ft_putchar(' ');
-	return (file);
+	return (f);
 }

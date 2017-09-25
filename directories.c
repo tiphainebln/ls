@@ -73,7 +73,7 @@ t_file				*get_directory(char *entry, t_file *file, t_op *op, int sub)
 	else
 	{
 		op->error_happened = 1;
-		if (errno == ENOTDIR || (op->link && errno != ENOENT))
+		if (errno == ENOTDIR || (op->link) || (op->link && errno != ENOENT))
 			file = new_file(file, op, entry);
 		else
 			not_openable(file, op, sub, entry);

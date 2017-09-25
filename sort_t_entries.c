@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 05:10:37 by tbouline          #+#    #+#             */
-/*   Updated: 2017/09/18 13:42:59 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/25 22:10:57 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 struct stat		get_stat(char *av, t_op *op)
 {
-	char 		*fullpath;
+	char		*fullpath;
 	struct stat this;
 
 	fullpath = NULL;
@@ -70,7 +70,7 @@ char			**ft_sort_time(char **av, t_op *op)
 		{
 			data = get_stat(av[i], op);
 			log = get_stat(av[j], op);
-		if ((op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec > \
+			if ((op->t == 1 && op->r == 0 && data.st_mtimespec.tv_sec > \
 			log.st_mtimespec.tv_sec) || (op->t == 1 && op->r == 1 && \
 			data.st_mtimespec.tv_sec < log.st_mtimespec.tv_sec) || \
 			(op->t == 1 && op->r == 1 && data.st_mtimespec.tv_sec == \
@@ -89,9 +89,9 @@ char			**ft_sort_time(char **av, t_op *op)
 	return (av);
 }
 
-char 			**sort_t_entry(char **entries, t_op *op)
+char			**sort_t_entry(char **entries, t_op *op)
 {
-	char	**wordlist;
+	char		**wordlist;
 
 	wordlist = ft_sort_time(entries, op);
 	return (wordlist);

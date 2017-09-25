@@ -25,11 +25,15 @@ void				print_attributes_acl(t_file *file)
 		free(acl);
 		acl = NULL;
 	}
-	else if (acl != NULL)
+	if (acl != NULL)
+	{
+		file->acl = 1;
 		ft_putchar('+');
+	}
 	if ((file->link == 0 && listxattr(fullpath, NULL, 0, 0) > 0) \
 		|| (file->link && listxattr(fullpath, NULL, 0, XATTR_NOFOLLOW) > 0))
 	{
+		file->attr = 1;
 		ft_putchar('@');
 		free(fullpath);
 	}

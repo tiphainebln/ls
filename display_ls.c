@@ -37,7 +37,7 @@ t_file			*long_format(t_file *file, int (*tab[13])(void), t_op *op)
 	return (file);
 }
 
-t_file			*display_standard(t_file *file, t_op *op, int (*tab[13])(void))
+t_file			*display_regular(t_file *file, t_op *op, int (*tab[13])(void))
 {
 	if (file->error)
 	{

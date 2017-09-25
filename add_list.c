@@ -35,6 +35,8 @@ t_file	*add_list(struct stat data, struct dirent *dirent, t_op *op)
 	file->sub = op->sub;
 	file->directorytime = 0;
 	file->link = op->link;
+	file->attr = 0;
+	file->acl = 0;
 	return (file);
 }
 

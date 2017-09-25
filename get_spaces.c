@@ -93,8 +93,10 @@ void			ft_putspaces(t_file *file, int choice)
 		space = file->nbminorspace - ft_intlen(file->minor);
 	else
 		space = file->nblinkspace - ft_intlen(file->st_nlink);
-	if (choice != 2)
+	if ((choice != 2 && !file->acl && !file->attr) || (file->acl && file->attr))
 		ft_putstr("  ");
+	else if ((file->acl) || (file->attr))
+		ft_putstr(" ");
 	while (--space >= 0)
 		ft_putchar(' ');
 }

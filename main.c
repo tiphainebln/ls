@@ -37,32 +37,6 @@ t_file		*first_things_first(t_file *file)
 	return (file);
 }
 
-// int 		has_been_asked_for(t_file *file, t_op *op)
-// {
-
-// 	if (ft_strcmp(op->order[file->noarg - 2]))
-// }
-
-// t_file 		*directed(t_file *file, t_op *op)
-// {
-// 	int 	i;
-
-// 	file = op->begin;
-// 	while (file)
-// 	{
-// 		i = 0;
-// 		while (file->path[i] && op->origin[i] && file->path[i] == op->origin[i])
-// 			i++;
-// 		if (op->origin[i] == '\0' && file->path[i] == '\0')
-// 			file->directed = 1;
-// 		else
-// 			file->directed = has_been_asked_for(file, op);
-// 		file = file->next;
-// 	}
-// 	file = op->begin;
-// 	return (file);
-// }
-
 int			main(int argc, char **argv, char **env)
 {
 	t_op	*op;
@@ -81,7 +55,6 @@ int			main(int argc, char **argv, char **env)
 		epur_and_sort(argv, op, file);
 	oldpath = NULL;
 	oldarg = 1;
-	ft_putendl("WAT");
 	while (op->order && op->order[i])
 	{
 		op->error_happened = 0;
@@ -108,45 +81,9 @@ int			main(int argc, char **argv, char **env)
 		print_total(file, op);
 	file = first_things_first(file);
 	if (op->d == 0)
-		display_path(file, op, op->order, tab);
+		aff_path(file, op, op->order, tab);
 	if (oldpath)
 		ft_strdel(&oldpath);
 	manage_error(file, NOTHINGTODO, op, NULL);
 	return (0);
 }
-
- /*
-
-DONE = 
--segfault ft_ls - ..truc corrigé (op_a)
--boucle infinie sort -t argument corrigé
--tri path time sur la bonne voie
--separation du display ls et du display path
--espaces geres !!
--correction de l'affichage du maillon derreur
-- futur 10000
-
-FUNCT 1 =====> FONTIONS PATHTIME ET REVPATHTIME A FAIRE
-piste 1 = encore quelques ajustements a faire : pas de doublons, les sous-dossiers doivent etre de pair avec leur dossier d'origine
-piste 2 = timesort et pathtimesort se complètent, pathtime devrait etre bon miantenant il faut ajuster timesort !
-
-FUNCT 2 =====> SORT TIME ENTRIES A CORRIGER
-edit : les majuscules doivent toujours etre en haut !!!
-
-FUNCT 3 =====> FONTION REVTIME !!!
-
-petits trucs a corriger : 
-
----> ./ft_ls -r auteur Makefile ../chmod.c 
-	./ft_ls -1 -- - dir ---> IL RESTE L'OUTPUT DE ./FT_LS - a gerer sinon done :)))
-
-VOIR TESTS
-
-BONUS   ======>  ****  trier toute l'arborescence   ****
-		======>   ****  bien relire et comprendre le tri ****
-				- https://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
-		======>   ****   option couleur   ****
-		http://www.linuxforums.org/forum/linux-programming-scripting/88-color-console.html
-				- répliquer ls
-
-*/

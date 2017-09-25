@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/23 22:16:43 by tbouline          #+#    #+#             */
-/*   Updated: 2017/04/23 22:16:49 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/25 21:57:39 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void		last_slash(char *origin, int noarg, char *tmp)
 {
-	int last_slash;
-	int i;
+	int		last_slash;
+	int		i;
 
 	last_slash = 0;
 	i = 0;
@@ -51,7 +51,7 @@ char		*store_path(char *entry, t_op *op)
 	return (ft_strdup(op->origin));
 }
 
-int 	write_path(char *path, char *origin, int noarg, int relative)
+int			write_path(char *path, char *origin, int noarg, int relative)
 {
 	char	*tmp;
 

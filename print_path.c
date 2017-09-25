@@ -6,7 +6,7 @@
 /*   By: tbouline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/03 04:08:32 by tbouline          #+#    #+#             */
-/*   Updated: 2017/06/03 04:08:47 by tbouline         ###   ########.fr       */
+/*   Updated: 2017/09/25 21:58:34 by tbouline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ t_op		*without_recursive(t_file *file, t_op *op)
 		ft_putendl(":");
 	}
 	if (!op->R || (op->noarg > 2 && file->file == 0))
-		op->doubledash = write_path(file->path, op->origin, op->noarg, file->relative);
+		op->doubledash = write_path(file->path, op->origin, op->noarg, \
+				file->relative);
 	if (op->l && file->file == 0 && file->error == NULL)
 		print_total(file, op);
 	return (op);
@@ -32,7 +33,8 @@ t_op		*directories_as_arg(t_file *file, t_op *op, char *oldpath)
 	{
 		ft_putchar('\n');
 		if (file->file == 0)
-			op->doubledash = write_path(file->path, op->origin, op->noarg, file->relative);
+			op->doubledash = write_path(file->path, op->origin, op->noarg, \
+					file->relative);
 		if (op->l && file->file == 0 && file->error == NULL)
 			print_total(file, op);
 	}
@@ -49,13 +51,14 @@ t_op		*multi_arg(t_file *file, t_op *op, char *oldpath)
 		ft_putendl(":");
 	}
 	else
-		op->doubledash = write_path(file->path, op->origin, op->noarg, file->relative);
+		op->doubledash = write_path(file->path, op->origin, op->noarg, \
+				file->relative);
 	if (op->l && file->file == 0 && file->error == NULL)
 		print_total(file, op);
 	return (op);
 }
 
-t_file		*display_path(t_file *file, t_op *op, char **av, int (*tab[13])())
+t_file		*aff_path(t_file *file, t_op *op, char **av, int (*tab[13])())
 {
 	char	*oldpath;
 	int		oldarg;
@@ -81,7 +84,7 @@ t_file		*display_path(t_file *file, t_op *op, char **av, int (*tab[13])())
 			ft_strdel(&oldpath);
 		oldpath = ft_strdup(file->path);
 		oldarg = file->noarg;
-		file = display_standard(file, op, tab);
+		file = display_regular(file, op, tab);
 	}
 	return (file);
 }

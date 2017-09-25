@@ -32,11 +32,17 @@ int				does_it_exist(char *av, t_op *op, t_file *file)
 		fullpath = ft_strjoin(op->origin, av);
 	if (lstat(fullpath, &data) == -1)
 	{
-		if (op->error_epur == 1 && is_option(av) == 0)
+		if (av[0] == '-' && av[1] && av[1] == '-' && !av[2])
+		{
+			ft_strdel(&fullpath);
+			return (0);
+		}
+		else if (op->error_epur == 1 && is_option(av) == 0)
 		{
 			manage_error(file, ARGUMENT, op, av);
 			op->error = ft_strdup(strerror(errno));
 		}
+		ft_strdel(&fullpath);
 		return (0);
 	}
 	ft_strdel(&fullpath);
