@@ -58,12 +58,27 @@ t_op		*write_and_ddash(t_file *file, t_op *op)
 
 t_file		*empty_directory(t_file *file, char *oldpath, t_op *op)
 {
+	char	*tmp;
+
+	tmp = ft_strstr(file->path, "/.");
 	if (op->theresbeenamistake == 0 && ((only_one(file, op) && file->error\
-		== 0 && !op->R) || (op->R && ft_strstr(file->path, "/.") && file->sub\
+		== 0 && !op->R) || (op->R && tmp && file->sub\
 		== 1) || (op->R && only_one(file, op) && op->noarg == 2)))
 	{
-		file = file->next;
-		return (file);
+		if (op->R && tmp && file->sub == 1 && tmp[2] == '/' && everything_is_empty(file) && ft_strcmp(file->name, "."))
+		{
+			if (ft_strstr(&tmp[2], "/.") == NULL)
+			{
+				ft_putchar('\n');
+				op->doubledash = write_path(file->path, op->origin, op->noarg, \
+				file->relative);
+			}
+		}
+		else
+		{
+			file = file->next;
+			return (file);
+		}
 	}
 	else if (oldpath && ft_strcmp(file->name, ".") && \
 			only_contains_hidden(file) && ft_strcmp(file->path, oldpath))

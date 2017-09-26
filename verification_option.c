@@ -30,7 +30,6 @@ int				does_it_exist(char *av, t_op *op, t_file *file)
 	char		*fullpath;
 	struct stat	data;
 
-	fullpath = NULL;
 	if (av[0] == '/')
 		fullpath = ft_strdup(av);
 	else
@@ -45,7 +44,7 @@ int				does_it_exist(char *av, t_op *op, t_file *file)
 		}
 		else if (op->error_epur == 1 && is_option(av, op) == 0)
 		{
-			manage_error(file, ARGUMENT, op, av);
+			manage_error(file, OPTION, op, av);
 			op->error = ft_strdup(strerror(errno));
 		}
 		ft_strdel(&fullpath);

@@ -31,7 +31,7 @@ void		select_options(char *argv, t_op *op, int j)
 	else if (argv[j] == 'G' && op->G == 0)
 		op->G++;
 	else
-		manage_error(NULL, OPTION, op, argv);
+		manage_error(NULL, OPTION, op, &argv[j]);
 }
 
 t_op		*get_options(char *argv, t_op *op)
@@ -46,7 +46,7 @@ t_op		*get_options(char *argv, t_op *op)
 	}
 	if (!op->d && !op->a && !op->t && !op->r && !op->R && !op->l && !op->un\
 		&& !op->G)
-		manage_error(NULL, OPTION, op, argv);
+		manage_error(NULL, OPTION, op, &argv[1]);
 	return (op);
 }
 

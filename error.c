@@ -120,8 +120,9 @@ void			manage_error(t_file *f, int error, t_op *op, char *av)
 		if (error == OPTION)
 		{
 			ft_putstr_fd("ls: illegal option --", 2);
-			ft_putendl_fd(av, 2);
-			ft_putendl_fd("usage: ls [-Rralt] [file ...]", 2);
+			ft_putchar_fd(av[0], 2);
+			ft_putchar_fd('\n', 2);
+			ft_putendl_fd("usage: ls [-Rraltd1G] [file ...]", 2);
 		}
 		f = op->begin;
 		ft_free(f, op, error);
