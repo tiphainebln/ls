@@ -36,6 +36,7 @@ t_op		*data_op(t_op *op)
 	op->link = 0;
 	op->latest = NULL;
 	op->error_epur = 0;
+	op->option = 0;
 	return (op);
 }
 

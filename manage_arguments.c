@@ -18,8 +18,9 @@ int			nb_option(char **argv, int size, t_op *op, t_file *file)
 	i = 1;
 	while (argv[i])
 	{
-		if (argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && \
-			!argv[i][2] && i == 1)
+		if ((argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && \
+			!argv[i][2] && i == 1 && op->option == 0) || (argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' \
+			&& !argv[i][2] && i == 2 && op->option == 1))
 			op->doubledash = 0;
 		else if (argv[i][0] != '-' || !argv[i][1] || does_it_exist(argv[i], \
 					op, file) == 1)
@@ -44,8 +45,9 @@ char		**epur_args(char **argv, t_op *op, t_file *file)
 	size = 0;
 	while (argv[i])
 	{
-		if (argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && \
-			!argv[i][2] && i == 1)
+		if ((argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' && \
+			!argv[i][2] && i == 1 && op->option == 0) || (argv[i][0] == '-' && argv[i][1] && argv[i][1] == '-' \
+			&& !argv[i][2] && i == 2 && op->option == 1))
 			op->doubledash = 0;
 		else if (argv[i][0] != '-' || !argv[i][1] || does_it_exist(argv[i], \
 					op, file) == 1)

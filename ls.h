@@ -128,6 +128,7 @@ typedef struct		s_op
 	int				doubledash;
 	int				error_epur;
 	int				theresbeenamistake;
+	int 			option;
 }					t_op;
 
 char				**ft_sort_ascii_string(char **av, t_op *op);
@@ -158,7 +159,7 @@ int					print_rights(t_file *file);
 int					same_path_everywhere(t_file *file);
 int					strfils(char *patha, char *pathb);
 int					everything_is_empty(t_file *file);
-int					is_option(char *av);
+int					is_option(char *av, t_op *op);
 struct stat			get_stat(char *av, t_op *op);
 struct stat			read_links(t_file *f, t_op *op, char *fp, int v);
 t_file				*add_error(char *name, t_op *op);
