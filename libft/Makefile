@@ -6,7 +6,7 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/06 17:18:00 by tbouline          #+#    #+#              #
-#    Updated: 2017/09/07 19:16:50 by tbouline         ###   ########.fr        #
+#    Updated: 2017/09/27 22:09:53 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -153,10 +153,12 @@ OP = -c -I $(HEADER)
 
 all: $(NAME)
 
-$(NAME) :
-	@gcc $(FLAG) $(OP) $(ARG)
+$(NAME): $(OBJ)
 	@/usr/bin/ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
+
+%.o: %.c
+	@gcc $(FLAG) $(OP) $(ARG)
 
 clean:
 	@/bin/rm -f $(OBJ)

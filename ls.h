@@ -90,8 +90,9 @@ typedef struct		s_file
 	int				attr;
 	int 			insize;
 	int 			nmerges;
-	int 			psize; 
+	int 			psize;
 	int 			qsize;
+	int 			rightsize;
 }					t_file;
 
 typedef struct		s_op
@@ -129,6 +130,7 @@ typedef struct		s_op
 	int				error_epur;
 	int				theresbeenamistake;
 	int 			option;
+	int 			rightsize;
 }					t_op;
 
 char				**ft_sort_ascii_string(char **av, t_op *op);
@@ -203,7 +205,7 @@ void				check_rights(t_file *file);
 void				ft_putspaces(t_file *file, int choice);
 void				init_tab(int (*tab[13])(void));
 void				manage_error(t_file *f, int error, t_op *op, char *av);
-void				print_attributes_acl(t_file *file);
+t_file				*print_attributes_acl(t_file *file);
 void				print_major_minor(t_file *file);
 void				print_type_letter(t_file *file);
 void				read_link(char *path);

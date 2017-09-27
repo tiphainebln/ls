@@ -68,7 +68,6 @@ int			print_rights(t_file *file)
 	ft_putchar((file->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((file->st_mode & S_IWOTH) ? 'w' : '-');
 	get_stickybit(file);
-	print_attributes_acl(file);
 	ft_putspaces(file, 0);
 	return (0);
 }

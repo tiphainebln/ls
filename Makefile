@@ -6,7 +6,7 @@
 #    By: tbouline <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/09 09:36:27 by tbouline          #+#    #+#              #
-#    Updated: 2017/09/07 19:17:33 by tbouline         ###   ########.fr        #
+#    Updated: 2017/09/27 22:15:46 by tbouline         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,10 +57,14 @@ HEADER = ls.h
 
 OP = -c -I $(HEADER)
 
-all: $(OBJ) $(HEADER)
+all: $(NAME)
+
+$(NAME): $(OBJ)
 	@make -C libft/
-	$(CC) $(FLAGS) $(OP) $(SRC)
 	$(CC) -o $(NAME) $(OBJ) libft/libft.a
+
+%.o: %.c
+	$(CC) $(FLAGS) $(OP) $(SRC)
 
 clean:
 	@make -C libft/ clean

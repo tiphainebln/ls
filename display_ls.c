@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-t_file			*long_format(t_file *file, int (*tab[13])(void), t_op *op)
+t_file			*long_format(t_file *file)
 {
 	print_type_letter(file);
 	print_rights(file);
@@ -28,31 +28,27 @@ t_file			*long_format(t_file *file, int (*tab[13])(void), t_op *op)
 	if (file->linkname != NULL)
 	{
 		ft_putstr(" -> ");
-		(void)tab;
 		ft_putstr(file->linkname);
 	}
 	ft_putchar('\n');
-	if (op->G && file->next)
-		ft_putstr("\033[00m");
 	return (file);
 }
 
 t_file			*display_regular(t_file *file, t_op *op, int (*tab[13])(void))
 {
+	if (op->G)
+		tab[file->type]();
 	if (file->error)
 	{
 		ft_putstr_fd("ls: ", 2);
 		ft_putendl_fd(file->error, 2);
 	}
 	else if (op->l)
-		long_format(file, tab, op);
+		long_format(file);
 	else
 		(file->file) ? ft_putendl(file->displayname) : ft_putendl(file->name);
-	if (op->G)
-	{
-		tab[file->type]();
+	if (op->G && file->next)
 		ft_putstr("\033[00m");
-	}
 	file = file->next;
 	return (file);
 }

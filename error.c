@@ -78,6 +78,9 @@ t_file			*more_errors(t_file *file, char *name, t_op *op)
 	file->next = NULL;
 	file->file_error = 1;
 	file->directorytime = 0;
+	file->acl = 0;
+	file->attr = 0;
+	file->rightsize = 0;
 	return (file);
 }
 

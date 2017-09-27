@@ -44,6 +44,9 @@ t_op			*nb_spaces(t_file *file, t_op *op)
 	if (file->minor != -1 && op->nbminorspace < ft_intlen(file->minor))
 		op->nbminorspace = valuemax(ft_intlen(file->minor), op, \
 			file->name, op->nbminorspace);
+	if (op->rightsize < file->rightsize)
+		op->rightsize = valuemax(file->rightsize, op, \
+			file->name, op->rightsize);
 	return (op);
 }
 
@@ -93,10 +96,25 @@ void			ft_putspaces(t_file *file, int choice)
 		space = file->nbminorspace - ft_intlen(file->minor);
 	else
 		space = file->nblinkspace - ft_intlen(file->st_nlink);
-	if ((choice != 2 && !file->acl && !file->attr) || (file->acl && file->attr))
+	if (choice != 2)
 		ft_putstr("  ");
-	else if ((file->acl) || (file->attr))
-		ft_putstr(" ");
 	while (--space >= 0)
 		ft_putchar(' ');
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

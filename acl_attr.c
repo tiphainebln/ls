@@ -12,7 +12,7 @@
 
 #include "ls.h"
 
-void				print_attributes_acl(t_file *file)
+t_file				*print_attributes_acl(t_file *file)
 {
 	acl_t			acl;
 	acl_entry_t		entry_p;
@@ -28,15 +28,14 @@ void				print_attributes_acl(t_file *file)
 	if (acl != NULL)
 	{
 		file->acl = 1;
-		ft_putchar('+');
 	}
 	if ((file->link == 0 && listxattr(fullpath, NULL, 0, 0) > 0) \
 		|| (file->link && listxattr(fullpath, NULL, 0, XATTR_NOFOLLOW) > 0))
 	{
 		file->attr = 1;
-		ft_putchar('@');
-		free(fullpath);
 	}
-	else
-		return ;
+	if (acl != NULL)
+		free(acl);
+	free(fullpath);
+	return (file);
 }

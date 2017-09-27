@@ -20,6 +20,7 @@ t_op			*init_space(t_op *op)
 	op->nbsizespace = 0;
 	op->nbmajorspace = 0;
 	op->nbminorspace = 0;
+	op->rightsize = 0;
 	return (op);
 }
 

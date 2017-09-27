@@ -47,7 +47,7 @@ void				relative_or_absolute(t_op *op, int sub, char *entry)
 			change_dir(&op->current, entry, 0);
 		else
 			change_dir(&op->current, ft_strjoin(entry, "/"), 1);
-		if (sub)
+		if (sub && entry[0] != '/')
 			op->relative = 1;
 	}
 	else
