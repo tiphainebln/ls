@@ -29,8 +29,9 @@ t_file		*sort_lst(t_file *file, t_op *op)
 		}
 		else
 		{
-			file = sort(file, PATHTIME);
-			file = sort(file, TIME);
+			file = sort(file, ROOTTIME); // ./******* entre eux tout en gardant les enfants en dessous
+			file = sort(file, PATHTIME); // on trie les enfants entre eux
+			// file = sort(file, TIME); // on trie les fichiers de chaque dossier sans jamais en franchir les limites
 		}
 	}
 	else

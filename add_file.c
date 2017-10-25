@@ -65,6 +65,7 @@ t_file			*add_more(t_file *file, t_op *op, char *entry)
 	file->errorname = NULL;
 	file->directorytime = 0;
 	file->link = op->link;
+	file->index = 0;
 	return (file);
 }
 

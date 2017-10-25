@@ -37,6 +37,88 @@ t_file		*first_things_first(t_file *file)
 	return (file);
 }
 
+t_file		*highest_order(t_file *file, t_op *op)
+{
+	char 	*tmp;
+	t_file	*tempora;
+	char 	*oldpath;
+
+	tmp = NULL;
+	oldpath = NULL;
+	if (op->R && op->t)
+	{
+		while (file)
+		{
+			if (file->sub)
+			{
+				tempora = file;
+				tmp = father(file->path);
+				file = op->begin;
+				while (ft_strcmp(tmp, file->path))
+					file = file->next;
+				ft_strdel(&tmp);
+				oldpath = ft_strdup(tempora->path);
+				if (file->sub == 0)
+				{
+					file = tempora;
+					file->highestsub = 1;
+					while (file && ft_strcmp(file->path, oldpath) == 0)
+					{
+						file->highestsub = 1;
+						file = file->next;
+					}
+				}
+				else
+				{
+					file = tempora;
+					file->highestsub = 0;
+					while (file && ft_strcmp(file->path, oldpath) == 0)
+					{
+						file->highestsub = 0;
+						file = file->next;
+					}
+				}
+				ft_strdel(&oldpath);
+			}
+			else
+				file = file->next;
+		}
+	}
+	file = op->begin;
+	return (file);
+}
+
+t_file 		*beyond_space_and_time(t_file *file, t_op *op)
+{
+	t_file	*tmp;
+	int 	i;
+
+	i = 1;
+	while (file)
+	{
+		if (file->highestsub)
+		{
+			tmp = file;
+			tmp->index = i;
+			while (file && (ft_strstr(file->path, tmp->path) == NULL || file->highestsub))
+				file = file->next;
+			while (file && ft_strstr(file->path, tmp->path))
+			{
+				file->index = i;
+				file = file->next;
+			}
+			while (tmp && tmp->highestsub)
+				tmp = tmp->next;
+			i++;
+			file = tmp;
+		}
+		else
+			file = file->next;
+	}
+	file = op->begin;
+	return (file);
+}
+
 int			main(int argc, char **argv, char **env)
 {
 	t_op	*op;
@@ -73,6 +155,11 @@ int			main(int argc, char **argv, char **env)
 	}
 	file = inject_time(file, op);
 	file = space_central(file, op);
+	if (op->R && op->t)
+	{
+		file = highest_order(file, op);
+		file = beyond_space_and_time(file, op);
+	}
 	if (!file)
 		manage_error(file, NOTHINGTODO, op, NULL);
 	file = sort_lst(file, op);

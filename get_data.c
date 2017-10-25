@@ -37,6 +37,7 @@ t_file				*store_basic(t_file *file, struct stat data)
 	file->st_blocks = data.st_blocks;
 	file->st_blksize = data.st_blksize;
 	file->st_mtimes = data.st_mtimespec.tv_sec;
+	file->st_mntimes = data.st_mtimespec.tv_nsec;
 	if (S_ISBLK(file->st_mode) || S_ISCHR(file->st_mode))
 	{
 		file->major = major(data.st_rdev);

@@ -14,6 +14,8 @@
 
 t_file			*long_format(t_file *file)
 {
+	ft_putnbr(file->directorytime);
+	ft_putchar(' ');
 	print_type_letter(file);
 	print_rights(file);
 	print_links(file);

@@ -43,9 +43,12 @@
 # define REVPATHTIME 6
 # define TIME 7
 # define REVTIME 8
+# define ROOTTIME 9
 
 typedef struct		s_file
 {
+	int 			index;
+	int 			highestsub;
 	int				completed;
 	char			*name;
 	off_t			st_size;
@@ -58,7 +61,9 @@ typedef struct		s_file
 	blkcnt_t		st_blocks;
 	blksize_t		st_blksize;
 	time_t			st_mtimes;
+	long 			st_mntimes;
 	time_t			foldertime;
+	long 			microfoldertime;
 	struct s_file	*next;
 	char			*grp;
 	char			*uid;

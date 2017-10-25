@@ -101,20 +101,3 @@ void			ft_putspaces(t_file *file, int choice)
 	while (--space >= 0)
 		ft_putchar(' ');
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
